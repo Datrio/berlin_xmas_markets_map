@@ -475,7 +475,9 @@
     ],
     "url": "https://www.berlin.de/en/christmas-markets/3250138-3230598-advent-market-at-domaene-dahlem.en.html",
     "name_de": "Domäne Dahlem",
-    "name_en": "Advent Market at Domäne Dahlem"
+    "name_en": "Advent Market at Domäne Dahlem",
+    "lat": 52.4583,
+    "lng": 13.2886
   },
   {
     "name": "Alt-Rixdorfer Weihnachtsmarkt",
@@ -487,7 +489,9 @@
     ],
     "url": "https://www.berlin.de/en/christmas-markets/3240343-3230598-christmas-market-altrixdorf-in-neukoelln.en.html",
     "name_de": "Alt-Rixdorfer Weihnachtsmarkt",
-    "name_en": "Christmas Market in Alt-Rixdorf"
+    "name_en": "Christmas Market in Alt-Rixdorf",
+    "lat": 52.4742,
+    "lng": 13.4463
   },
   {
     "name": "Adventsmarkt am Karl-August-Platz",
@@ -497,7 +501,9 @@
     ],
     "url": "https://www.berlin.de/en/christmas-markets/7093285-3230598-advent-market-karlaugustplatz.en.html",
     "name_de": "Adventsmarkt am Karl-August-Platz",
-    "name_en": "Advent Market on Karl-August-Platz"
+    "name_en": "Advent Market on Karl-August-Platz",
+"lng": 13.3104,
+  "lat": 52.5084
   },
   {
     "name": "Englischer Weihnachtsmarkt",
@@ -507,7 +513,9 @@
     ],
     "url": "https://www.berlin.de/en/christmas-markets/7689300-3230598-british-christmas-market.en.html",
     "name_de": "Englischer Weihnachtsmarkt",
-    "name_en": "British Christmas Market"
+    "name_en": "British Christmas Market",
+ "lng": 13.2589,
+   "lat": 52.5121
   },
   {
     "name": "Weihnachten in Westend",
@@ -518,7 +526,9 @@
     ],
     "url": "https://www.berlin.de/en/christmas-markets/7092703-3230598-christmas-in-westend.en.html",
     "name_de": "Weihnachten in Westend",
-    "name_en": "Christmas in Westend"
+    "name_en": "Christmas in Westend",
+     "lng": 13.2594,
+          "lat": 52.5127
   },
   {
     "name": "Schwedischer Weihnachtsbasar",
@@ -530,7 +540,9 @@
     ],
     "url": "https://www.berlin.de/en/christmas-markets/5711097-3230598-swedish-christmas-bazaar.en.html",
     "name_de": "Schwedischer Weihnachtsbasar",
-    "name_en": "Swedish Christmas Bazaar"
+    "name_en": "Swedish Christmas Bazaar",
+         "lng": 13.3291,
+        "lat": 52.4876
   },
   {
     "name": "Dänischer Weihnachtsmarkt",
@@ -541,7 +553,9 @@
     ],
     "url": "https://www.berlin.de/en/christmas-markets/5701678-3230598-danish-christmas-market.en.html",
     "name_de": "Dänischer Weihnachtsmarkt",
-    "name_en": "Danish Christmas Market"
+    "name_en": "Danish Christmas Market",
+         "lng": 13.3127,
+        "lat": 52.488
   },
   {
     "name": "Grunewalder Weihnachtsmarkt",
@@ -551,7 +565,9 @@
     ],
     "url": "https://www.berlin.de/en/christmas-markets/5689204-3230598-christmas-market-grunewald.en.html",
     "name_de": "Grunewalder Weihnachtsmarkt",
-    "name_en": "Christmas Market in Grunewald"
+    "name_en": "Christmas Market in Grunewald",
+  "lng": 13.2748,
+              "lat": 52.4854
   },
   {
     "name": "Adventmarkt Leonhardtstraße",
@@ -561,7 +577,9 @@
     ],
     "url": "https://www.berlin.de/en/christmas-markets/9284175-3230598-advent-market-in-leonhardtstrasse.en.html",
     "name_de": "Adventmarkt Leonhardtstraße",
-    "name_en": "Advent Market in Leonhardtstraße"
+    "name_en": "Advent Market in Leonhardtstraße",
+          "lng": 13.2972,
+                     "lat": 52.5052
   },
   {
     "name": "Adventsmarkt im Ökowerk",
@@ -571,7 +589,9 @@
     ],
     "url": "https://www.berlin.de/en/christmas-markets/5694601-3230598-advent-market-at-oekowerk.en.html",
     "name_de": "Adventsmarkt im Ökowerk",
-    "name_en": "Advent Market at Ökowerk"
+    "name_en": "Advent Market at Ökowerk",
+                  "lng": 13.2364,
+            "lat": 52.4919
   },
   {
     "name": "Adventsmarkt St.-Michaels-Heim",
@@ -582,7 +602,9 @@
     ],
     "url": "https://www.berlin.de/en/christmas-markets/5701609-3230598-christmas-market-at-st-michaels-heim.en.html",
     "name_de": "Adventsmarkt St.-Michaels-Heim",
-    "name_en": "Christmas Market at St.-Michaels-Heim"
+    "name_en": "Christmas Market at St.-Michaels-Heim",
+"lng": 13.277,
+            "lat": 52.488
   },
   {
     "name": "Waldweihnacht Forstamt Grunewald",
@@ -592,7 +614,9 @@
     ],
     "url": "https://www.berlin.de/en/christmas-markets/7912461-3230598-christmas-market-grunewald-forestry-offi.en.html",
     "name_de": "Waldweihnacht Forstamt Grunewald",
-    "name_en": "Christmas Market at the Grunewald Forestry Office"
+    "name_en": "Christmas Market at the Grunewald Forestry Office",
+      "lng": 13.2637,
+        "lat": 52.4766
   },
   {
     "name": "Finnischer Adventsbasar",
@@ -603,7 +627,9 @@
     ],
     "url": "https://www.berlin.de/en/christmas-markets/5742137-3230598-finnish-christmas-market.en.html",
     "name_de": "Finnischer Adventsbasar",
-    "name_en": "Finnish Advent Bazaar"
+    "name_en": "Finnish Advent Bazaar",
+          "lng": 13.3971,
+            "lat": 52.4894
   },
   {
     "name": "Norwegischer Julebasar",
@@ -613,7 +639,9 @@
     ],
     "url": "https://www.berlin.de/en/christmas-markets/7792272-3230598-norwegian-julebasar.en.html",
     "name_de": "Norwegischer Julebasar",
-    "name_en": "Norwegian Christmas Bazaar"
+    "name_en": "Norwegian Christmas Bazaar",
+      "lng": 13.3808,
+    "lat": 52.4957
   },
   {
     "name": "Merry Markthalle",
@@ -625,7 +653,9 @@
     ],
     "url": "https://www.berlin.de/en/christmas-markets/8533421-3230598-merry-markthalle.en.html",
     "name_de": "Merry Markthalle",
-    "name_en": "Merry Markthalle"
+    "name_en": "Merry Markthalle",
+      "lng": 13.432,
+    "lat": 52.502
   },
   {
     "name": "Adventsbasar Christuskirche",
@@ -635,7 +665,9 @@
     ],
     "url": "https://www.berlin.de/en/christmas-markets/7868574-3230598-advent-bazaar-at-the-christuskirche.en.html",
     "name_de": "Adventsbasar Christuskirche",
-    "name_en": "Advent Bazaar at the Christuskirche"
+    "name_en": "Advent Bazaar at the Christuskirche",
+        "lng": 13.4199,
+      "lat": 52.4919
   },
   {
     "name": "Winterquartier Berlin",
@@ -644,7 +676,9 @@
     "end": "2025-12-31",
     "url": "https://www.berlin.de/en/christmas-markets/9921991-3230598-winterquartier-berlin.en.html",
     "name_de": "Winterquartier Berlin",
-    "name_en": "Winterquartier Berlin"
+    "name_en": "Winterquartier Berlin",
+              "lng": 13.4577,
+        "lat": 52.5033
   },
   {
     "name": "Solidarischer Wintermarkt Görlitzer",
@@ -655,7 +689,9 @@
     ],
     "url": "https://www.berlin.de/en/christmas-markets/8572515-3230598-solidarity-winter-market-in-goerlitzer-p.en.html",
     "name_de": "Solidarischer Wintermarkt Görlitzer",
-    "name_en": "Solidarity Winter Market in Görlitzer Park"
+    "name_en": "Solidarity Winter Market in Görlitzer Park",
+      "lng": 13.4338,
+          "lat": 52.4979
   },
   {
     "name": "Weihnachtsfest der Tiere",
@@ -665,7 +701,9 @@
     ],
     "url": "https://www.berlin.de/en/christmas-markets/7897509-3230598-christmas-market-animal-shelter.en.html",
     "name_de": "Weihnachtsfest der Tiere",
-    "name_en": "Christmas Market at the Berlin Animal Shelter"
+    "name_en": "Christmas Market at the Berlin Animal Shelter",
+  "lng": 13.5462,
+      "lat": 52.5741
   },
   {
     "name": "Trabrennbahn Karlshorst",
@@ -676,7 +714,9 @@
     ],
     "url": "https://www.berlin.de/en/christmas-markets/5695405-3230598-christmas-market-karlshorst.en.html",
     "name_de": "Trabrennbahn Karlshorst",
-    "name_en": "Christmas Market at the Karlshorst Racing Track"
+    "name_en": "Christmas Market at the Karlshorst Racing Track",
+      "lng": 13.5229,
+  "lat": 52.4752
   },
   {
     "name": "Lichtermarkt Rathaus Lichtenberg",
@@ -686,7 +726,9 @@
     ],
     "url": "https://www.berlin.de/en/christmas-markets/5692582-3230598-christmas-lights-lichtenberg.en.html",
     "name_de": "Lichtermarkt Rathaus Lichtenberg",
-    "name_en": "Christmas Lights at Lichtenberg City Hall"
+    "name_en": "Christmas Lights at Lichtenberg City Hall",
+        "lng": 13.4795,
+      "lat": 52.5158
   },
   {
     "name": "Adventsmarkt Alt-Marzahn",
@@ -698,7 +740,9 @@
     ],
     "url": "https://www.berlin.de/weihnachtsmarkt/5685805-3496862-adventsmarkt-altmarzahn.html",
     "name_de": "Adventsmarkt Alt-Marzahn",
-    "name_en": "Advent Market in Alt-Marzahn"
+    "name_en": "Advent Market in Alt-Marzahn",
+          "lng": 13.5599,
+          "lat": 52.5436
   },
   {
     "name": "Alt-Kaulsdorfer Weihnachtsmarkt",
@@ -708,7 +752,9 @@
     ],
     "url": "https://www.berlin.de/en/christmas-markets/5685370-3230598-christmas-market-alt-kaulsdorf.en.html",
     "name_de": "Alt-Kaulsdorfer Weihnachtsmarkt",
-    "name_en": "Christmas Market in Alt-Kaulsdorf"
+    "name_en": "Christmas Market in Alt-Kaulsdorf",
+      "lng": 13.5813,
+                    "lat": 52.5086
   },
   {
     "name": "Gutshof Schloss Britz",
@@ -729,7 +775,9 @@
     ],
     "url": "https://www.berlin.de/en/christmas-markets/5506372-3230598-nordic-fairy-tale-christmas-market-at-br.en.html",
     "name_de": "Gutshof Schloss Britz",
-    "name_en": "Medieval Christmas Market at Britz Palace"
+    "name_en": "Medieval Christmas Market at Britz Palace",
+    "lng": 13.4379,
+              "lat": 52.4469
   },
   {
     "name": "Rudower Weihnachtsmeile",
@@ -740,7 +788,9 @@
     ],
     "url": "https://www.berlin.de/en/christmas-markets/5685707-3230598-rudow-christmas-mile.en.html",
     "name_de": "Rudower Weihnachtsmeile",
-    "name_en": "Rudow Christmas Mile"
+    "name_en": "Rudow Christmas Mile",
+      "lng": 13.4935,
+            "lat": 52.4206
   },
   {
     "name": "Alt-Buckower Adventsmarkt",
@@ -751,7 +801,9 @@
     ],
     "url": "https://www.berlin.de/en/christmas-markets/5694654-3230598-advent-market-alt-buckow.en.html",
     "name_de": "Alt-Buckower Adventsmarkt",
-    "name_en": "Advent Market in Alt-Buckow"
+    "name_en": "Advent Market in Alt-Buckow",
+          "lng": 13.43348,
+          "lat": 52.42308
   },
   {
     "name": "Dicke Linda",
@@ -761,7 +813,9 @@
     ],
     "url": "https://www.berlin.de/en/christmas-markets/8374125-3230598-christmas-market-dicke-linda.en.html",
     "name_de": "Dicke Linda",
-    "name_en": "Christmas Market on the Dicke Linda"
+    "name_en": "Christmas Market on the Dicke Linda",
+    "lng": 13.4378,
+        "lat": 52.4664
   },
   {
     "name": "Holy Shit Shopping",
@@ -772,7 +826,9 @@
     ],
     "url": "https://www.berlin.de/en/christmas-markets/2208886-3230598-holy-shit-shopping.en.html",
     "name_de": "Holy Shit Shopping",
-    "name_en": "Holy Shit Shopping"
+    "name_en": "Holy Shit Shopping",
+           "lng": 13.4365,
+              "lat": 52.4802
   },
   {
     "name": "Adventsmarkt am Kollwitzplatz",
@@ -785,7 +841,9 @@
     ],
     "url": "https://www.berlin.de/en/christmas-markets/3250022-3230598-advent-market-kollwitzplatz.en.html",
     "name_de": "Adventsmarkt am Kollwitzplatz",
-    "name_en": "Advent Market on Kollwitzplatz"
+    "name_en": "Advent Market on Kollwitzplatz",
+          "lng": 13.4177,
+          "lat": 52.5365
   },
   {
     "name": "Weihnachtsrodeo",
@@ -796,7 +854,9 @@
     ],
     "url": "https://www.berlin.de/en/christmas-markets/4180727-3230598-weihnachtsrodeo-design-market.en.html",
     "name_de": "Weihnachtsrodeo",
-    "name_en": "Weihnachtsrodeo Design Market"
+    "name_en": "Weihnachtsrodeo Design Market",
+         "lng": 13.4131,
+        "lat": 52.5479
   },
   {
     "name": "Adventsbasar Kaspar Hauser",
@@ -806,7 +866,9 @@
     ],
     "url": "https://www.berlin.de/en/christmas-markets/7866354-3230598-advent-bazaar-kaspar-hauser-foundation.en.html",
     "name_de": "Adventsbasar Kaspar Hauser",
-    "name_en": "Advent Bazaar of the Kaspar Hauser Foundation"
+    "name_en": "Advent Bazaar of the Kaspar Hauser Foundation",
+    "lng": 13.41758,
+                "lat": 52.58193
   },
   {
     "name": "Adventsbasar Albert Schweitzer",
@@ -816,7 +878,9 @@
     ],
     "url": "https://www.berlin.de/weihnachtsmarkt/5744189-3496862-adventsbasar-der-albert-schweitzer-stift.html",
     "name_de": "Adventsbasar Albert Schweitzer",
-    "name_en": "Advent Bazaar of the Albert Schweitzer Foundation"
+    "name_en": "Advent Bazaar of the Albert Schweitzer Foundation",
+        "lng": 13.4488,
+            "lat": 52.5912
   },
   {
     "name": "Weihnachtsmarkt Frohnau",
@@ -827,7 +891,9 @@
     ],
     "url": "https://www.berlin.de/en/christmas-markets/5734991-3230598-arts-crafts-christmas-market-frohnau.en.html",
     "name_de": "Weihnachtsmarkt Frohnau",
-    "name_en": "Arts and Crafts Christmas Market in Frohnau"
+    "name_en": "Arts and Crafts Christmas Market in Frohnau",
+          "lng": 13.2897,
+            "lat": 52.6334
   },
   {
     "name": "Adventsmarkt Papierstraße",
@@ -837,7 +903,9 @@
     ],
     "url": "https://www.berlin.de/en/christmas-markets/7892913-3230598-advent-market-in-papierstrasse.en.html",
     "name_de": "Adventsmarkt Papierstraße",
-    "name_en": "Advent Market in Papierstraße"
+    "name_en": "Advent Market in Papierstraße",
+    "lng": 13.3495,
+"lat": 52.5763
   },
   {
     "name": "Adventsbasar Lübars",
@@ -847,7 +915,9 @@
     ],
     "url": "https://www.berlin.de/en/christmas-markets/5735127-3230598-advent-bazaar-luebars-church.en.html",
     "name_de": "Adventsbasar Lübars",
-    "name_en": "Advent Bazaar of the Lübars Church"
+    "name_en": "Advent Bazaar of the Lübars Church",
+          "lng": 13.3553,
+              "lat": 52.6209
   },
   {
     "name": "Advent im Forstamt Tegel",
@@ -857,7 +927,9 @@
     ],
     "url": "https://www.berlin.de/en/christmas-markets/5737880-3230598-advent-market-tegel-forestry-office.en.html",
     "name_de": "Advent im Forstamt Tegel",
-    "name_en": "Advent Market at the Tegel Forestry Office"
+    "name_en": "Advent Market at the Tegel Forestry Office",
+            "lng": 13.2719,
+        "lat": 52.6053
   },
   {
     "name": "Weihnachtsfest Alte Fasanerie",
@@ -867,7 +939,9 @@
     ],
     "url": "https://www.berlin.de/weihnachtsmarkt/7826792-3496862-weihnachtsfest-in-der-alten-fasanerie.html",
     "name_de": "Weihnachtsfest Alte Fasanerie",
-    "name_en": "Christmas Festival at the Alte Fasanerie"
+    "name_en": "Christmas Festival at the Alte Fasanerie",
+    "lng": 13.368,
+            "lat": 52.6079
   },
   {
     "name": "Wintermarkt Flughafen Tegel",
@@ -878,7 +952,9 @@
     ],
     "url": "https://www.berlin.de/en/christmas-markets/9964084-3230598-winter-market-at-former-tegel-airport.en.html",
     "name_de": "Wintermarkt Flughafen Tegel",
-    "name_en": "Winter Market at the former Tegel Airport"
+    "name_en": "Winter Market at the former Tegel Airport",
+            "lng": 13.2915,
+          "lat": 52.5541
   },
   {
     "name": "Evangelisches Johannesstift",
@@ -888,7 +964,9 @@
     ],
     "url": "https://www.berlin.de/weihnachtsmarkt/5698904-3496862-weihnachtsmarkt-im-evangelischen-johanne.html",
     "name_de": "Evangelisches Johannesstift",
-    "name_en": "Christmas Market at the Evangelical St. John"
+    "name_en": "Christmas Market at the Evangelical St. John",
+    "lng": 13.1924,
+            "lat": 52.5677
   },
   {
     "name": "Jagdschloss Grunewald",
@@ -899,7 +977,9 @@
     ],
     "url": "https://www.berlin.de/en/christmas-markets/5506437-3230598-christmas-market-at-grunewald-hunting-lo.en.html",
     "name_de": "Jagdschloss Grunewald",
-    "name_en": "Christmas Market at the Grunewald Hunting Lodge"
+    "name_en": "Christmas Market at the Grunewald Hunting Lodge",
+          "lng": 13.2612,
+            "lat": 52.4673
   },
   {
     "name": "Weihnachtsmarkt Mexikoplatz",
@@ -912,7 +992,9 @@
     ],
     "url": "https://www.berlin.de/en/christmas-markets/5734908-3230598-christmas-market-mexikoplatz.en.html",
     "name_de": "Weihnachtsmarkt Mexikoplatz",
-    "name_en": "Arts and Crafts Christmas Market on Mexikoplatz"
+    "name_en": "Arts and Crafts Christmas Market on Mexikoplatz",
+        "lng": 13.2334,
+      "lat": 52.4378
   },
   {
     "name": "Abenteueroase",
@@ -922,7 +1004,9 @@
     ],
     "url": "https://www.berlin.de/en/christmas-markets/8523637-3230598-christmas-market-at-the-abenteueroase.en.html",
     "name_de": "Abenteueroase",
-    "name_en": "Christmas Market at the Abenteueroase"
+    "name_en": "Christmas Market at the Abenteueroase",
+    "lng": 13.3471,
+    "lat": 52.4589
   },
   {
     "name": "Berliner Hundeweihnachtsmarkt",
@@ -933,7 +1017,9 @@
     ],
     "url": "https://www.berlin.de/en/christmas-markets/7794849-3230598-berlin-dog-christmas-market.en.html",
     "name_de": "Berliner Hundeweihnachtsmarkt",
-    "name_en": "Berlin Dog Christmas Market"
+    "name_en": "Berlin Dog Christmas Market",
+        "lng": 13.2562,
+                  "lat": 52.4664
   },
   {
     "name": "Zehlendorfer Weihnachtsmarkt",
@@ -942,7 +1028,9 @@
     "end": "2025-12-30",
     "url": "https://www.berlin.de/en/christmas-markets/5703047-3230598-christmas-market-zehlendorf.en.html",
     "name_de": "Zehlendorfer Weihnachtsmarkt",
-    "name_en": "Christmas Market in Zehlendorf"
+    "name_en": "Christmas Market in Zehlendorf",
+    "lng": 13.2593,
+        "lat": 52.4331
   },
   {
     "name": "Wein-Nachtsmarkt Ludwig-Beck-Platz",
@@ -953,7 +1041,9 @@
     ],
     "url": "https://www.berlin.de/en/christmas-markets/9332973-3230598-weinachtsmarkt-at-ludwig-beck-platz.en.html",
     "name_de": "Wein-Nachtsmarkt Ludwig-Beck-Platz",
-    "name_en": "Wein-Nachtsmarkt at Ludwig-Beck-Platz"
+    "name_en": "Wein-Nachtsmarkt at Ludwig-Beck-Platz",
+        "lng": 13.3122,
+            "lat": 52.4428
   },
   {
     "name": "Lehmanns Bauernhof",
@@ -968,7 +1058,9 @@
     ],
     "url": "https://www.berlin.de/en/christmas-markets/5742213-3230598-christmas-market-lehmanns-bauernhof.en.html",
     "name_de": "Lehmanns Bauernhof",
-    "name_en": "Christmas Market on Lehmann"
+    "name_en": "Christmas Market on Lehmann",
+        "lng": 13.3669,
+      "lat": 52.4119
   },
   {
     "name": "Lichtenrader Lichtermarkt",
@@ -978,7 +1070,9 @@
     ],
     "url": "https://www.berlin.de/en/christmas-markets/5702850-3230598-christmas-lights-lichtenrade.en.html",
     "name_de": "Lichtenrader Lichtermarkt",
-    "name_en": "Christmas Market in Lichtenrade"
+    "name_en": "Christmas Market in Lichtenrade",
+      "lng": 13.4102,
+  "lat": 52.39
   },
   {
     "name": "Weihnachten im Alpinia",
@@ -988,7 +1082,9 @@
     ],
     "url": "https://www.berlin.de/weihnachtsmarkt/7897062-3496862-weihnachtsmarkt-im-alpinia.html",
     "name_de": "Weihnachten im Alpinia",
-    "name_en": "Christmas Market at Alpinia"
+    "name_en": "Christmas Market at Alpinia",
+    "lng": 13.392,
+                  "lat": 52.4211
   },
   {
     "name": "Tempelhofer Flughafen",
@@ -1003,7 +1099,9 @@
     ],
     "url": "https://www.berlin.de/weihnachtsmarkt/9330357-3496862-weihnachten-im-tempelhofer-flughafen.html",
     "name_de": "Tempelhofer Flughafen",
-    "name_en": "Christmas at Tempelhof Airport"
+    "name_en": "Christmas at Tempelhof Airport",
+      "lng": 13.3862,
+        "lat": 52.4781
   },
   {
     "name": "LGBT Winterdays",
@@ -1012,7 +1110,9 @@
     "end": "2025-11-22",
     "url": "https://www.berlin.de/en/christmas-markets/5948422-3230598-christmas-avenue.en.html",
     "name_de": "LGBT Winterdays",
-    "name_en": "LGBTIQA Winterdays and Christmas Avenue"
+    "name_en": "LGBTIQA Winterdays and Christmas Avenue",
+        "lng": 13.3533,
+              "lat": 52.4992
   },
   {
     "name": "Christmas Avenue",
@@ -1021,7 +1121,9 @@
     "end": "2025-12-23",
     "url": "https://www.berlin.de/en/christmas-markets/5948422-3230598-christmas-avenue.en.html",
     "name_de": "Christmas Avenue",
-    "name_en": "LGBTIQA Winterdays and Christmas Avenue"
+    "name_en": "LGBTIQA Winterdays and Christmas Avenue",
+        "lng": 13.3533,
+        "lat": 52.4992
   },
   {
     "name": "AdventLichterGenuss Südgelände",
@@ -1034,7 +1136,9 @@
     ],
     "url": "https://www.berlin.de/en/christmas-markets/5711355-3230598-advent-at-natur-park-suedgelaende.en.html",
     "name_de": "AdventLichterGenuss Südgelände",
-    "name_en": "Advent at Natur Park Südgelände"
+    "name_en": "Advent at Natur Park Südgelände",
+        "lng": 13.3584,
+    "lat": 52.4586
   },
   {
     "name": "Weinlobbyist",
