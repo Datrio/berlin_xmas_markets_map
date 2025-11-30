@@ -1,0 +1,297 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Berlin Christmas Markets</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f5f5;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: linear-gradient(135deg, #c41e3a 0%, #a01830 100%);
+            color: white;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .filters {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        label {
+            font-weight: 500;
+            margin-right: 8px;
+        }
+
+        select, input[type="checkbox"] {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .checkbox-group {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #ffd700;
+        }
+
+        #map {
+            flex: 1;
+            background: #e8e8e8;
+        }
+
+        .info-panel {
+            background: white;
+            padding: 12px 20px;
+            border-top: 1px solid #ddd;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .marker-popup {
+            font-family: inherit;
+        }
+
+        .marker-popup h3 {
+            margin: 0 0 8px 0;
+            color: #c41e3a;
+            font-size: 16px;
+        }
+
+        .marker-popup p {
+            margin: 4px 0;
+            font-size: 13px;
+        }
+
+        .marker-popup .type-badge {
+            display: inline-block;
+            background: #ffd700;
+            color: #333;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-top: 6px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🎄 Berlin Christmas Markets</h1>
+        <div class="filters">
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <label for="dateFilter">Open on:</label>
+                <input type="date" id="dateFilter">
+            </div>
+        </div>
+    </header>
+
+    <div id="map"></div>
+    
+    <div class="info-panel">
+        <span id="markerCount">Loading markets...</span>
+    </div>
+
+    <script>
+        // load markets from markets.json in the same directory
+        let markets = [];
+        fetch('markets.json')
+            .then(res => {
+                if (!res.ok) throw new Error('Network response was not ok');
+                return res.json();
+            })
+            .then(data => {
+                // normalize numeric lat/lng (some entries are strings)
+                markets = data.map(m => {
+                    if (m.lat !== undefined) m.lat = Number(m.lat);
+                    if (m.lng !== undefined) m.lng = Number(m.lng);
+                    return m;
+                });
+                updateMarkers();
+            })
+            .catch(err => {
+                console.error('Failed to load markets.json', err);
+                document.getElementById('markerCount').textContent = 'Failed to load markets.json';
+            });
+
+        const map = L.map('map').setView([52.52, 13.405], 11);
+        
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        const markers = {};
+        // single default color (market.type removed)
+        const defaultColor = '#c41e3a';
+
+        function createMarker(market) {
+            const color = defaultColor;
+            const svgIcon = `
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="16" cy="16" r="14" fill="${color}" stroke="white" stroke-width="2"/>
+                    <circle cx="16" cy="12" r="2.5" fill="white"/>
+                </svg>
+            `;
+            
+            const icon = L.divIcon({
+                html: svgIcon,
+                iconSize: [32, 32],
+                iconAnchor: [16, 16],
+                popupAnchor: [0, -16],
+                className: 'market-marker'
+            });
+
+            const popup = `
+                <div class="marker-popup">
+                    <h3>${market.name}</h3>
+                    <p><strong>Location:</strong> ${market.loc || ''}</p>
+                    <p><strong>Dates:</strong> ${Array.isArray(market.dates) ? market.dates.join(', ') : (market.start && market.end ? `${market.start} — ${market.end}` : '')}</p>
+                    <p>${market.description || ''}</p>
+                </div>
+            `;
+
+            const marker = L.marker([market.lat, market.lng], { icon })
+                .bindPopup(popup)
+                .addTo(map);
+
+            return marker;
+        }
+
+        // return true if market is open on the given date (YYYY-MM-DD)
+        function isOpenOn(market, dateStr) {
+            if (!dateStr) return true;
+
+            // specialOpen explicitly open on these dates
+            if (Array.isArray(market.specialOpen) && market.specialOpen.includes(dateStr)) return true;
+            // closed explicitly closed on these dates
+            if (Array.isArray(market.closed) && market.closed.includes(dateStr)) return false;
+
+            // fixed single occurrence dates
+            if (Array.isArray(market.dates) && market.dates.length) {
+                return market.dates.includes(dateStr);
+            }
+
+            // range-based schedule
+            if (market.start || market.end) {
+                const d = new Date(dateStr);
+                if (market.start) {
+                    const start = new Date(market.start);
+                    if (d < start) return false;
+                }
+                if (market.end) {
+                    const end = new Date(market.end);
+                    if (d > end) return false;
+                }
+
+                // optional weekday restrictions (0=Sunday ... 6=Saturday)
+                if (Array.isArray(market.daysOfWeek) && market.daysOfWeek.length) {
+                    const dow = d.getDay();
+                    return market.daysOfWeek.includes(dow);
+                }
+
+                return true;
+            }
+
+            // no schedule info -> assume closed
+            return false;
+        }
+
+        function updateMarkers() {
+            const dateFilterVal = document.getElementById('dateFilter').value;
+            let visibleCount = 0;
+
+            markets.forEach(market => {
+                const dateOk = isOpenOn(market, dateFilterVal);
+
+                if (dateOk) {
+                    visibleCount++;
+                    const lat = Number(market.lat);
+                    const lng = Number(market.lng);
+                    if (Number.isFinite(lat) && Number.isFinite(lng)) {
+                        market.lat = lat; market.lng = lng; // ensure numeric for later
+                        if (!markers[market.name]) markers[market.name] = createMarker(market);
+                        else markers[market.name].addTo(map);
+                    }
+                } else {
+                    if (markers[market.name]) map.removeLayer(markers[market.name]);
+                }
+            });
+
+            document.getElementById('markerCount').textContent = `${visibleCount} of ${markets.length} markets are happening today`;
+         }
+
+        function addUserLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        const lat = position.coords.latitude;
+                        const lng = position.coords.longitude;
+                        
+                        const santaIcon = L.divIcon({
+                            html: '<div style="font-size: 32px; filter: drop-shadow(2px 2px 3px rgba(0,0,0,0.3));">🎅</div>',
+                            iconSize: [32, 32],
+                            iconAnchor: [16, 16],
+                            className: 'santa-marker'
+                        });
+
+                        const marker = L.marker([lat, lng], { icon: santaIcon })
+                            .bindPopup('📍 You are here!')
+                            .addTo(map);
+
+                         map.setView([lat, lng], 13);
+                     },
+                     function(error) {
+                         console.log('Location access denied or unavailable');
+                     }
+                 );
+             }
+         }
+
+         document.getElementById('dateFilter').addEventListener('change', updateMarkers);
+
+         // Set today's date as default
+         const today = new Date().toISOString().split('T')[0];
+         document.getElementById('dateFilter').value = today;
+
+         updateMarkers();
+         addUserLocation();
+     </script>
+ </body>
+ </html>
