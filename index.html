@@ -71,9 +71,82 @@
             accent-color: #ffd700;
         }
 
+        .content {
+            display: flex;
+            flex: 1;
+            gap: 0;
+            overflow: hidden;
+        }
+
         #map {
             flex: 1;
             background: #e8e8e8;
+        }
+
+        .distance-panel {
+            width: 300px;
+            background: white;
+            border-left: 1px solid #ddd;
+            display: flex;
+            flex-direction: column;
+            box-shadow: -2px 0 8px rgba(0,0,0,0.05);
+        }
+
+        .distance-panel-header {
+            padding: 12px 16px;
+            border-bottom: 1px solid #ddd;
+            font-weight: 600;
+            color: #333;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .distance-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 8px;
+        }
+
+        .market-item {
+            padding: 10px;
+            margin-bottom: 8px;
+            background: #f9f9f9;
+            border-radius: 4px;
+            border-left: 3px solid #c41e3a;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .market-item:hover {
+            background: #f0f0f0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .market-item-name {
+            font-weight: 600;
+            font-size: 13px;
+            color: #333;
+            margin-bottom: 4px;
+        }
+
+        .market-item-distance {
+            font-size: 12px;
+            color: #c41e3a;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .market-item-location {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .distance-empty {
+            padding: 20px;
+            text-align: center;
+            color: #999;
+            font-size: 13px;
         }
 
         .info-panel {
@@ -82,6 +155,9 @@
             border-top: 1px solid #ddd;
             font-size: 14px;
             color: #666;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .marker-popup {
@@ -109,6 +185,98 @@
             font-weight: bold;
             margin-top: 6px;
         }
+
+        .toggle-panel-btn {
+            display: none;
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: #c41e3a;
+            color: white;
+            border: none;
+            padding: 12px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            transition: all 0.2s ease;
+        }
+
+        .toggle-panel-btn:hover {
+            background: #a01830;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .toggle-panel-btn:active {
+            transform: scale(0.95);
+        }
+
+        .panel-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+            display: none;
+        }
+
+        .panel-overlay.active {
+            display: block;
+        }
+
+        .distance-panel-close {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .toggle-panel-btn {
+                display: block;
+            }
+
+            .content {
+                position: relative;
+            }
+
+            .distance-panel {
+                position: absolute;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                width: 100%;
+                max-width: 320px;
+                height: 100%;
+                z-index: 1001;
+                transform: translateX(100%);
+                transition: transform 0.3s ease;
+                border-left: 1px solid #ddd;
+            }
+
+            .distance-panel.active {
+                transform: translateX(0);
+            }
+
+            .distance-panel-close {
+                display: none;
+                position: absolute;
+                top: 5px;
+                right: 5px;
+                background: none;
+                border: none;
+                font-size: 20px;
+                cursor: pointer;
+                color: #666;
+                padding: 4px 8px;
+                z-index: 1002;
+            }
+
+            .distance-panel.active .distance-panel-close {
+                display: block;
+            }
+        }
     </style>
 </head>
 <body>
@@ -122,22 +290,34 @@
         </div>
     </header>
 
-    <div id="map"></div>
+    <div class="content">
+        <div id="map"></div>
+        <div class="panel-overlay" id="panelOverlay"></div>
+        <button class="toggle-panel-btn" id="togglePanelBtn">📍 Nearby Markets</button>
+        <div class="distance-panel">
+            <button class="distance-panel-close" id="closePanelBtn">✕</button>
+            <div class="distance-panel-header">📍 Nearby Markets</div>
+            <div class="distance-list" id="distanceList">
+                <div class="distance-empty">Enable location to see nearby markets</div>
+            </div>
+        </div>
+    </div>
     
     <div class="info-panel">
         <span id="markerCount">Loading markets...</span>
+        <span style="color: #999; font-size: 13px;">❤️ made with love by Dariusz</span>
     </div>
 
     <script>
-        // load markets from markets.json in the same directory
         let markets = [];
+        let userLocation = null;
+        
         fetch('markets.json')
             .then(res => {
                 if (!res.ok) throw new Error('Network response was not ok');
                 return res.json();
             })
             .then(data => {
-                // normalize numeric lat/lng (some entries are strings)
                 markets = data.map(m => {
                     if (m.lat !== undefined) m.lat = Number(m.lat);
                     if (m.lng !== undefined) m.lng = Number(m.lng);
@@ -158,8 +338,18 @@
         }).addTo(map);
 
         const markers = {};
-        // single default color (market.type removed)
         const defaultColor = '#c41e3a';
+
+        function calculateDistance(lat1, lng1, lat2, lng2) {
+            const R = 6371;
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLng = (lng2 - lng1) * Math.PI / 180;
+            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                Math.sin(dLng / 2) * Math.sin(dLng / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            return R * c;
+        }
 
         function createMarker(market) {
             const color = defaultColor;
@@ -194,21 +384,16 @@
             return marker;
         }
 
-        // return true if market is open on the given date (YYYY-MM-DD)
         function isOpenOn(market, dateStr) {
             if (!dateStr) return true;
 
-            // specialOpen explicitly open on these dates
             if (Array.isArray(market.specialOpen) && market.specialOpen.includes(dateStr)) return true;
-            // closed explicitly closed on these dates
             if (Array.isArray(market.closed) && market.closed.includes(dateStr)) return false;
 
-            // fixed single occurrence dates
             if (Array.isArray(market.dates) && market.dates.length) {
                 return market.dates.includes(dateStr);
             }
 
-            // range-based schedule
             if (market.start || market.end) {
                 const d = new Date(dateStr);
                 if (market.start) {
@@ -220,7 +405,6 @@
                     if (d > end) return false;
                 }
 
-                // optional weekday restrictions (0=Sunday ... 6=Saturday)
                 if (Array.isArray(market.daysOfWeek) && market.daysOfWeek.length) {
                     const dow = d.getDay();
                     return market.daysOfWeek.includes(dow);
@@ -229,8 +413,39 @@
                 return true;
             }
 
-            // no schedule info -> assume closed
             return false;
+        }
+
+        function updateDistancePanel() {
+            const distanceList = document.getElementById('distanceList');
+            
+            if (!userLocation) {
+                distanceList.innerHTML = '<div class="distance-empty">Enable location to see nearby markets</div>';
+                return;
+            }
+
+            const dateFilterVal = document.getElementById('dateFilter').value;
+            const openMarkets = markets.filter(m => isOpenOn(m, dateFilterVal));
+
+            if (openMarkets.length === 0) {
+                distanceList.innerHTML = '<div class="distance-empty">No markets open on this date</div>';
+                return;
+            }
+
+            const marketsWithDistance = openMarkets
+                .map(market => ({
+                    ...market,
+                    distance: calculateDistance(userLocation.lat, userLocation.lng, market.lat, market.lng)
+                }))
+                .sort((a, b) => a.distance - b.distance);
+
+            distanceList.innerHTML = marketsWithDistance.map(market => `
+                <div class="market-item" onclick="map.setView([${market.lat}, ${market.lng}], 15);">
+                    <div class="market-item-name">${market.name}</div>
+                    <div class="market-item-distance">📍 ${market.distance.toFixed(1)} km away</div>
+                    <div class="market-item-location">${market.loc || ''}</div>
+                </div>
+            `).join('');
         }
 
         function updateMarkers() {
@@ -245,7 +460,7 @@
                     const lat = Number(market.lat);
                     const lng = Number(market.lng);
                     if (Number.isFinite(lat) && Number.isFinite(lng)) {
-                        market.lat = lat; market.lng = lng; // ensure numeric for later
+                        market.lat = lat; market.lng = lng;
                         if (!markers[market.name]) markers[market.name] = createMarker(market);
                         else markers[market.name].addTo(map);
                     }
@@ -255,14 +470,17 @@
             });
 
             document.getElementById('markerCount').textContent = `${visibleCount} of ${markets.length} markets are happening today`;
-         }
+            updateDistancePanel();
+        }
 
         function addUserLocation() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
                     function(position) {
-                        const lat = position.coords.latitude;
-                        const lng = position.coords.longitude;
+                        userLocation = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude
+                        };
                         
                         const santaIcon = L.divIcon({
                             html: '<div style="font-size: 32px; filter: drop-shadow(2px 2px 3px rgba(0,0,0,0.3));">🎅</div>',
@@ -271,27 +489,47 @@
                             className: 'santa-marker'
                         });
 
-                        const marker = L.marker([lat, lng], { icon: santaIcon })
+                        L.marker([userLocation.lat, userLocation.lng], { icon: santaIcon })
                             .bindPopup('📍 You are here!')
                             .addTo(map);
 
-                         map.setView([lat, lng], 13);
-                     },
-                     function(error) {
-                         console.log('Location access denied or unavailable');
-                     }
-                 );
-             }
-         }
+                        map.setView([userLocation.lat, userLocation.lng], 13);
+                        updateDistancePanel();
+                    },
+                    function(error) {
+                        console.log('Location access denied or unavailable');
+                    }
+                );
+            }
+        }
 
-         document.getElementById('dateFilter').addEventListener('change', updateMarkers);
+        document.getElementById('dateFilter').addEventListener('change', updateMarkers);
 
-         // Set today's date as default
-         const today = new Date().toISOString().split('T')[0];
-         document.getElementById('dateFilter').value = today;
+        // Mobile panel controls
+        const togglePanelBtn = document.getElementById('togglePanelBtn');
+        const closePanelBtn = document.getElementById('closePanelBtn');
+        const panelOverlay = document.getElementById('panelOverlay');
+        const distancePanel = document.querySelector('.distance-panel');
 
-         updateMarkers();
-         addUserLocation();
-     </script>
- </body>
- </html>
+        function openPanel() {
+            distancePanel.classList.add('active');
+            panelOverlay.classList.add('active');
+        }
+
+        function closePanel() {
+            distancePanel.classList.remove('active');
+            panelOverlay.classList.remove('active');
+        }
+
+        togglePanelBtn.addEventListener('click', openPanel);
+        closePanelBtn.addEventListener('click', closePanel);
+        panelOverlay.addEventListener('click', closePanel);
+
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('dateFilter').value = today;
+
+        updateMarkers();
+        addUserLocation();
+    </script>
+</body>
+</html>
