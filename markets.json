@@ -1148,5 +1148,35 @@
     "url": "https://www.derweinlobbyist.de/weihnachtsmarkt-berlin-2025",
     "name_de": "Weinlobbyist",
     "name_en": "Weinlobbyist"
+  },
+  {
+    "name": "Weihnachtsmarkt Hauptbahnhof/Kanzleramt",
+    "loc": "Mitte",
+    "start": "2025-11-24",
+    "end": "2025-12-31",
+    "url": "https://www.visitberlin.de/de/weihnachtsmarkt-hauptbahnhof-kanzleramt-berlin",
+    "name_de": "Weihnachtsmarkt zwischen Hauptbahnhof und Kanzleramt",
+    "name_en": "Christmas Market between Central Station and Chancellery",
+        "lat":52.5241927,"lng":13.370059
+  },
+  {
+    "name": "Christmas Garden Berlin",
+    "loc": "Steglitz",
+    "start": "2025-11-19",
+    "end": "2026-01-11",
+    "url": "https://www.berlin.de/en/events/4602948-2842498-christmas-garden-berlin.en.html",
+    "name_de": "Christmas Garden Berlin",
+    "name_en": "Christmas Garden Berlin",
+        "lat":52.45884,"lng":13.30535
+  },
+  {
+    "name": "Weihnachten im Tierpark",
+    "loc": "Friedrichsfelde",
+    "start": "2025-11-21",
+    "end": "2026-01-10",
+    "url": "https://www.visitberlin.de/de/weihnachten-im-tierpark",
+    "name_de": "Weihnachten im Tierpark",
+    "name_en": "Christmas at the Tierpark",
+        "lat":52.5023038,"lng":13.5313559
   }
 ]
