@@ -12,9 +12,62 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --bg: #f5f5f5;
+            --panel-bg: #ffffff;
+            --panel-border: #dddddd;
+            --text-primary: #333333;
+            --text-secondary: #666666;
+            --text-muted: #999999;
+            --item-bg: #f9f9f9;
+            --item-bg-hover: #f0f0f0;
+            --popup-text: #444444;
+            --tbc-bg: #fff4e0;
+            --tbc-text: #92590a;
+            --attribution-bg: rgba(255,255,255,0.8);
+            color-scheme: light dark;
+
+            --space-1: 4px;
+            --space-2: 8px;
+            --space-3: 12px;
+            --space-4: 16px;
+            --space-5: 20px;
+            --space-6: 24px;
+            --space-7: 32px;
+
+            --font-xs: 12px;
+            --font-sm: 13px;
+            --font-base: 14px;
+            --font-md: 15px;
+            --font-lg: 17px;
+            --font-xl: 22px;
+            --font-2xl: 30px;
+
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #1c1c1e;
+                --panel-bg: #2c2c2e;
+                --panel-border: #3a3a3c;
+                --text-primary: #f5f5f7;
+                --text-secondary: #c7c7cc;
+                --text-muted: #8e8e93;
+                --item-bg: #3a3a3c;
+                --item-bg-hover: #48484a;
+                --popup-text: #d1d1d6;
+                --tbc-bg: #4a3a1a;
+                --tbc-text: #ffcf8a;
+                --attribution-bg: rgba(44,44,46,0.85);
+            }
+        }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: #f5f5f5;
+            background: var(--bg);
             height: 100vh;
             display: flex;
             flex-direction: column;
@@ -23,33 +76,73 @@
         header {
             background: linear-gradient(135deg, #c41e3a 0%, #a01830 100%);
             color: white;
-            padding: 20px;
+            padding: var(--space-6) var(--space-7);
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
         h1 {
-            font-size: 28px;
-            margin-bottom: 10px;
+            font-size: var(--font-2xl);
+            font-weight: 700;
+            letter-spacing: -0.015em;
+            margin-bottom: var(--space-4);
         }
 
         .filters {
             display: flex;
-            gap: 12px;
+            gap: var(--space-4);
             flex-wrap: wrap;
             align-items: center;
         }
 
         label {
             font-weight: 500;
-            margin-right: 8px;
+            font-size: var(--font-base);
+            margin-right: var(--space-2);
+            opacity: 0.9;
         }
 
         select, input[type="checkbox"] {
-            padding: 8px 12px;
+            padding: var(--space-2) var(--space-3);
             border: none;
-            border-radius: 4px;
-            font-size: 14px;
+            border-radius: var(--radius-sm);
+            font-size: var(--font-base);
             cursor: pointer;
+        }
+
+        input[type="date"] {
+            padding: 9px var(--space-3);
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: var(--font-base);
+            font-family: inherit;
+            cursor: pointer;
+            background: rgba(255,255,255,0.95);
+            color: #333;
+        }
+
+        .show-all-btn {
+            padding: 9px var(--space-4);
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: var(--font-base);
+            font-weight: 600;
+            cursor: pointer;
+            background: #ffd700;
+            color: #333;
+            transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), background 0.15s ease, color 0.15s ease;
+        }
+
+        .show-all-btn:hover {
+            background: #ffc700;
+        }
+
+        .show-all-btn:active {
+            transform: scale(0.95);
+        }
+
+        .show-all-btn.active {
+            background: #333;
+            color: #ffd700;
         }
 
         .checkbox-group {
@@ -80,128 +173,261 @@
 
         #map {
             flex: 1;
-            background: #e8e8e8;
+            background: var(--bg);
         }
 
         .distance-panel {
             width: 300px;
-            background: white;
-            border-left: 1px solid #ddd;
+            background: var(--panel-bg);
+            border-left: 1px solid var(--panel-border);
             display: flex;
             flex-direction: column;
             box-shadow: -2px 0 8px rgba(0,0,0,0.05);
         }
 
         .distance-panel-header {
-            padding: 12px 16px;
-            border-bottom: 1px solid #ddd;
+            padding: var(--space-4) var(--space-4);
+            border-bottom: 1px solid var(--panel-border);
             font-weight: 600;
-            color: #333;
-            font-size: 13px;
+            color: var(--text-primary);
+            font-size: var(--font-sm);
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.06em;
         }
 
         .distance-list {
             flex: 1;
             overflow-y: auto;
-            padding: 8px;
+            padding: var(--space-3);
         }
 
         .market-item {
-            padding: 10px;
-            margin-bottom: 8px;
-            background: #f9f9f9;
-            border-radius: 4px;
+            padding: var(--space-3) var(--space-4);
+            margin-bottom: var(--space-2);
+            background: var(--item-bg);
+            border-radius: var(--radius-sm);
             border-left: 3px solid #c41e3a;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+            animation: itemFadeInUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) backwards;
         }
 
         .market-item:hover {
-            background: #f0f0f0;
+            background: var(--item-bg-hover);
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transform: translateY(-1px);
+        }
+
+        .market-item:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        @keyframes itemFadeInUp {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .market-item-name {
             font-weight: 600;
-            font-size: 13px;
-            color: #333;
-            margin-bottom: 4px;
+            font-size: var(--font-sm);
+            color: var(--text-primary);
+            margin-bottom: var(--space-1);
+            line-height: 1.35;
         }
 
         .market-item-distance {
-            font-size: 12px;
+            font-size: var(--font-xs);
             color: #c41e3a;
             font-weight: 600;
             margin-bottom: 2px;
         }
 
         .market-item-location {
-            font-size: 12px;
-            color: #666;
+            font-size: var(--font-xs);
+            color: var(--text-secondary);
         }
 
         .distance-empty {
-            padding: 20px;
+            padding: var(--space-6);
             text-align: center;
-            color: #999;
-            font-size: 13px;
+            color: var(--text-muted);
+            font-size: var(--font-sm);
         }
 
         .info-panel {
-            background: white;
-            padding: 12px 20px;
-            border-top: 1px solid #ddd;
-            font-size: 14px;
-            color: #666;
+            background: var(--panel-bg);
+            padding: var(--space-3) var(--space-5);
+            border-top: 1px solid var(--panel-border);
+            font-size: var(--font-base);
+            color: var(--text-secondary);
             display: flex;
             justify-content: space-between;
             align-items: center;
+        }
+
+        #markerCount {
+            transition: opacity 0.15s ease;
+        }
+
+        .credit-text {
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        .credit-text a {
+            color: var(--text-secondary);
+        }
+
+        .marker-inner {
+            display: block;
+            animation: markerPopIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+            transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s ease;
+        }
+
+        .market-marker:hover .marker-inner {
+            transform: scale(1.18);
+        }
+
+        .marker-inner.marker-removing {
+            transform: scale(0);
+            opacity: 0;
+        }
+
+        @keyframes markerPopIn {
+            from { transform: scale(0); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        /* Leaflet popup chrome, restyled to match the app */
+        .leaflet-popup-content-wrapper {
+            padding: 0;
+            border-radius: 14px;
+            overflow: hidden;
+            background: var(--panel-bg);
+            color: var(--text-primary);
+            box-shadow: 0 16px 32px rgba(0,0,0,0.18), 0 3px 8px rgba(0,0,0,0.08);
+        }
+
+        .leaflet-popup-tip-container .leaflet-popup-tip {
+            background: var(--panel-bg);
+        }
+
+        .leaflet-popup-content {
+            margin: 0;
+        }
+
+        .leaflet-popup-tip {
+            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+        }
+
+        .leaflet-popup-close-button {
+            top: 10px !important;
+            right: 10px !important;
+            width: 22px !important;
+            height: 22px !important;
+            border-radius: 50%;
+            background: #c41e3a;
+            color: white !important;
+            font-size: 14px !important;
+            line-height: 22px !important;
+            text-align: center;
+            font-weight: 400 !important;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+            transition: background 0.15s ease, transform 0.15s ease;
+        }
+
+        .leaflet-popup-close-button:hover {
+            background: #a01830;
+            color: white !important;
+            transform: scale(1.1);
         }
 
         .marker-popup {
             font-family: inherit;
         }
 
-        .marker-popup h3 {
-            margin: 0 0 8px 0;
-            color: #c41e3a;
-            font-size: 16px;
+        .marker-popup-header {
+            background: linear-gradient(135deg, #c41e3a 0%, #a01830 100%);
+            color: white;
+            padding: var(--space-4) 34px var(--space-3) var(--space-4);
         }
 
-        .marker-popup p {
-            margin: 4px 0;
-            font-size: 13px;
+        .marker-popup-header h3 {
+            margin: 0;
+            font-size: var(--font-md);
+            font-weight: 700;
+            line-height: 1.35;
         }
 
-        .marker-popup .type-badge {
+        .marker-popup-body {
+            padding: var(--space-3) var(--space-4) var(--space-4);
+        }
+
+        .marker-popup-row {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-2);
+            font-size: var(--font-sm);
+            line-height: 1.45;
+            color: var(--popup-text);
+            margin-bottom: var(--space-2);
+        }
+
+        .marker-popup-row:last-of-type {
+            margin-bottom: 0;
+        }
+
+        .marker-popup-row .icon {
+            flex-shrink: 0;
+        }
+
+        .marker-popup-tbc {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-2);
+            background: var(--tbc-bg);
+            color: var(--tbc-text);
+            border-radius: var(--radius-sm);
+            padding: var(--space-2) var(--space-3);
+            font-size: var(--font-xs);
+            line-height: 1.45;
+            margin-top: var(--space-3);
+        }
+
+        .marker-popup-link {
             display: inline-block;
-            background: #ffd700;
-            color: #333;
-            padding: 3px 8px;
-            border-radius: 3px;
-            font-size: 12px;
-            font-weight: bold;
-            margin-top: 6px;
+            margin-top: var(--space-3);
+            font-size: var(--font-xs);
+            font-weight: 600;
+            color: #c41e3a;
+            text-decoration: none;
+            border: 1px solid #c41e3a;
+            padding: 5px var(--space-3);
+            border-radius: 999px;
+            transition: background 0.15s ease, color 0.15s ease;
+        }
+
+        .marker-popup-link:hover {
+            background: #c41e3a;
+            color: white;
         }
 
         .toggle-panel-btn {
             display: none;
             position: absolute;
-            bottom: 20px;
-            right: 20px;
+            bottom: var(--space-5);
+            right: var(--space-5);
             z-index: 1000;
             background: #c41e3a;
             color: white;
             border: none;
-            padding: 12px 16px;
-            border-radius: 6px;
-            font-size: 14px;
+            padding: var(--space-3) var(--space-4);
+            border-radius: var(--radius-sm);
+            font-size: var(--font-base);
             font-weight: 600;
             cursor: pointer;
             box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-            transition: all 0.2s ease;
+            transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.15s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .toggle-panel-btn:hover {
@@ -221,15 +447,29 @@
             bottom: 0;
             background: rgba(0,0,0,0.5);
             z-index: 999;
-            display: none;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0s linear 0.3s;
         }
 
         .panel-overlay.active {
-            display: block;
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 0.3s ease, visibility 0s linear 0s;
         }
 
         .distance-panel-close {
             display: none;
+            color: var(--text-secondary);
+            transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), color 0.15s ease;
+        }
+
+        .distance-panel-close:hover {
+            color: #c41e3a;
+        }
+
+        .distance-panel-close:active {
+            transform: scale(0.9);
         }
 
         @media (max-width: 768px) {
@@ -251,8 +491,8 @@
                 height: 100%;
                 z-index: 1001;
                 transform: translateX(100%);
-                transition: transform 0.3s ease;
-                border-left: 1px solid #ddd;
+                transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+                border-left: 1px solid var(--panel-border);
             }
 
             .distance-panel.active {
@@ -268,7 +508,7 @@
                 border: none;
                 font-size: 20px;
                 cursor: pointer;
-                color: #666;
+                color: var(--text-secondary);
                 padding: 4px 8px;
                 z-index: 1002;
             }
@@ -276,6 +516,25 @@
             .distance-panel.active .distance-panel-close {
                 display: block;
             }
+        }
+
+        /* Leaflet's own chrome (zoom buttons, attribution), themed to match */
+        .leaflet-control-zoom a {
+            background: var(--panel-bg) !important;
+            color: var(--text-primary) !important;
+        }
+
+        .leaflet-control-zoom a:hover {
+            background: var(--item-bg-hover) !important;
+        }
+
+        .leaflet-control-attribution {
+            background: var(--attribution-bg) !important;
+            color: var(--text-secondary) !important;
+        }
+
+        .leaflet-control-attribution a {
+            color: var(--text-secondary) !important;
         }
     </style>
 </head>
@@ -286,6 +545,7 @@
             <div style="display: flex; align-items: center; gap: 8px;">
                 <label for="dateFilter">Open on:</label>
                 <input type="date" id="dateFilter">
+                <button type="button" class="show-all-btn" id="showAllBtn">Show all</button>
             </div>
         </div>
     </header>
@@ -305,7 +565,7 @@
     
     <div class="info-panel">
         <span id="markerCount">Loading markets...</span>
-        <span style="color: #999; font-size: 13px;">❤️ made with love by <a href="https://github.com/Datrio/berlin_xmas_markets_map">Dariusz</a>, original list by <a href="https://charles.pizza/berlin-xmas/">Charles Vestal</a></span>
+        <span class="credit-text">❤️ made with love by <a href="https://github.com/Datrio/berlin_xmas_markets_map">Dariusz</a></span>
     </div>
 
     <script>
@@ -331,11 +591,23 @@
             });
 
         const map = L.map('map').setView([52.52, 13.405], 11);
-        
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '© OpenStreetMap contributors'
+
+        const CARTO_KEY = 'cb1_4o55_1_ff398abaa401c3d4a6cc72ea';
+        function tileUrlFor(isDark) {
+            const style = isDark ? 'dark_all' : 'voyager';
+            return `https://basemaps.cartocdn.com/rastertiles/${style}/{z}/{x}/{y}{r}.png?key=${CARTO_KEY}`;
+        }
+
+        const darkModeQuery = window.matchMedia('(prefers-color-scheme: dark)');
+        const tileLayer = L.tileLayer(tileUrlFor(darkModeQuery.matches), {
+            maxZoom: 20,
+            detectRetina: true,
+            attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors © <a href="https://carto.com/attributions">CARTO</a>'
         }).addTo(map);
+
+        darkModeQuery.addEventListener('change', (e) => {
+            tileLayer.setUrl(tileUrlFor(e.matches));
+        });
 
         const markers = {};
         const defaultColor = '#c41e3a';
@@ -354,12 +626,14 @@
         function createMarker(market) {
             const color = defaultColor;
             const svgIcon = `
-                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="16" cy="16" r="14" fill="${color}" stroke="white" stroke-width="2"/>
-                    <circle cx="16" cy="12" r="2.5" fill="white"/>
-                </svg>
+                <div class="marker-inner">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="16" cy="16" r="14" fill="${color}" stroke="white" stroke-width="2"/>
+                        <circle cx="16" cy="12" r="2.5" fill="white"/>
+                    </svg>
+                </div>
             `;
-            
+
             const icon = L.divIcon({
                 html: svgIcon,
                 iconSize: [32, 32],
@@ -368,20 +642,44 @@
                 className: 'market-marker'
             });
 
+            const hasDates = (Array.isArray(market.dates) && market.dates.length) || (market.start && market.end);
+            const datesLine = hasDates
+                ? (Array.isArray(market.dates) ? market.dates.join(', ') : `${market.start} — ${market.end}`)
+                : 'Not yet announced for 2026';
+            const tbcNote = market.tbc
+                ? `<div class="marker-popup-tbc"><span>⚠️</span><span><strong>${hasDates ? 'Estimated dates' : 'Dates TBC'}</strong> — pending official confirmation for 2026.</span></div>`
+                : '';
+            const descriptionRow = market.description
+                ? `<div class="marker-popup-row"><span>${market.description}</span></div>`
+                : '';
+            const link = market.url
+                ? `<a class="marker-popup-link" href="${market.url}" target="_blank" rel="noopener">Official page →</a>`
+                : '';
+
             const popup = `
                 <div class="marker-popup">
-                    <h3>${market.name}</h3>
-                    <p><strong>Location:</strong> ${market.loc || ''}</p>
-                    <p><strong>Dates:</strong> ${Array.isArray(market.dates) ? market.dates.join(', ') : (market.start && market.end ? `${market.start} — ${market.end}` : '')}</p>
-                    <p>${market.description || ''}</p>
+                    <div class="marker-popup-header">
+                        <h3>${market.name}</h3>
+                    </div>
+                    <div class="marker-popup-body">
+                        <div class="marker-popup-row"><span class="icon">📍</span><span>${market.loc || ''}</span></div>
+                        <div class="marker-popup-row"><span class="icon">📅</span><span>${datesLine}</span></div>
+                        ${tbcNote}
+                        ${descriptionRow}
+                        ${link}
+                    </div>
                 </div>
             `;
 
             const marker = L.marker([market.lat, market.lng], { icon })
-                .bindPopup(popup)
+                .bindPopup(popup, { maxWidth: 280, minWidth: 240 })
                 .addTo(map);
 
             return marker;
+        }
+
+        function hasDateInfo(market) {
+            return (Array.isArray(market.dates) && market.dates.length > 0) || !!(market.start || market.end);
         }
 
         function isOpenOn(market, dateStr) {
@@ -439,8 +737,8 @@
                 }))
                 .sort((a, b) => a.distance - b.distance);
 
-            distanceList.innerHTML = marketsWithDistance.map(market => `
-                <div class="market-item" onclick="map.setView([${market.lat}, ${market.lng}], 15);">
+            distanceList.innerHTML = marketsWithDistance.map((market, i) => `
+                <div class="market-item" style="animation-delay: ${Math.min(i, 12) * 25}ms" onclick="map.flyTo([${market.lat}, ${market.lng}], 15, { duration: 0.8 });">
                     <div class="market-item-name">${market.name}</div>
                     <div class="market-item-distance">📍 ${market.distance.toFixed(1)} km away</div>
                     <div class="market-item-location">${market.loc || ''}</div>
@@ -448,28 +746,73 @@
             `).join('');
         }
 
+        const pendingRemoval = {};
+
+        function showMarker(market) {
+            if (!markers[market.name]) {
+                markers[market.name] = createMarker(market);
+                return;
+            }
+            const marker = markers[market.name];
+            if (pendingRemoval[market.name]) {
+                clearTimeout(pendingRemoval[market.name]);
+                delete pendingRemoval[market.name];
+            }
+            if (!map.hasLayer(marker)) {
+                marker.addTo(map);
+            } else {
+                const inner = marker.getElement() && marker.getElement().querySelector('.marker-inner');
+                if (inner) inner.classList.remove('marker-removing');
+            }
+        }
+
+        function hideMarker(name) {
+            const marker = markers[name];
+            if (!marker || !map.hasLayer(marker) || pendingRemoval[name]) return;
+            const inner = marker.getElement() && marker.getElement().querySelector('.marker-inner');
+            if (!inner) { map.removeLayer(marker); return; }
+            inner.classList.add('marker-removing');
+            pendingRemoval[name] = setTimeout(() => {
+                map.removeLayer(marker);
+                delete pendingRemoval[name];
+            }, 220);
+        }
+
+        function setMarkerCountText(text) {
+            const el = document.getElementById('markerCount');
+            if (el.textContent === text) return;
+            el.style.opacity = '0';
+            setTimeout(() => {
+                el.textContent = text;
+                el.style.opacity = '1';
+            }, 150);
+        }
+
         function updateMarkers() {
             const dateFilterVal = document.getElementById('dateFilter').value;
             let visibleCount = 0;
+            let shownCount = 0;
 
             markets.forEach(market => {
                 const dateOk = isOpenOn(market, dateFilterVal);
 
                 if (dateOk) {
-                    visibleCount++;
+                    if (hasDateInfo(market)) visibleCount++;
+                    shownCount++;
                     const lat = Number(market.lat);
                     const lng = Number(market.lng);
                     if (Number.isFinite(lat) && Number.isFinite(lng)) {
                         market.lat = lat; market.lng = lng;
-                        if (!markers[market.name]) markers[market.name] = createMarker(market);
-                        else markers[market.name].addTo(map);
+                        showMarker(market);
                     }
                 } else {
-                    if (markers[market.name]) map.removeLayer(markers[market.name]);
+                    hideMarker(market.name);
                 }
             });
 
-            document.getElementById('markerCount').textContent = `${visibleCount} of ${markets.length} markets are happening today`;
+            setMarkerCountText(dateFilterVal
+                ? `${visibleCount} of ${markets.length} markets are happening today`
+                : `Showing all ${shownCount} markets`);
             updateDistancePanel();
         }
 
@@ -490,10 +833,15 @@
                         });
 
                         L.marker([userLocation.lat, userLocation.lng], { icon: santaIcon })
-                            .bindPopup('📍 You are here!')
+                            .bindPopup(
+                                '<div class="marker-popup"><div class="marker-popup-body" style="padding-top:14px;">' +
+                                '<div class="marker-popup-row"><span class="icon">📍</span><span><strong>You are here!</strong></span></div>' +
+                                '</div></div>',
+                                { minWidth: 160 }
+                            )
                             .addTo(map);
 
-                        map.setView([userLocation.lat, userLocation.lng], 13);
+                        map.flyTo([userLocation.lat, userLocation.lng], 13, { duration: 1.2 });
                         updateDistancePanel();
                     },
                     function(error) {
@@ -503,7 +851,26 @@
             }
         }
 
-        document.getElementById('dateFilter').addEventListener('change', updateMarkers);
+        const dateFilterInput = document.getElementById('dateFilter');
+        const showAllBtn = document.getElementById('showAllBtn');
+        const todayStr = new Date().toISOString().split('T')[0];
+
+        function updateShowAllState() {
+            const showingAll = !dateFilterInput.value;
+            showAllBtn.classList.toggle('active', showingAll);
+            showAllBtn.textContent = showingAll ? 'Show today' : 'Show all';
+        }
+
+        dateFilterInput.addEventListener('change', () => {
+            updateShowAllState();
+            updateMarkers();
+        });
+
+        showAllBtn.addEventListener('click', () => {
+            dateFilterInput.value = dateFilterInput.value ? '' : todayStr;
+            updateShowAllState();
+            updateMarkers();
+        });
 
         // Mobile panel controls
         const togglePanelBtn = document.getElementById('togglePanelBtn');
@@ -525,8 +892,8 @@
         closePanelBtn.addEventListener('click', closePanel);
         panelOverlay.addEventListener('click', closePanel);
 
-        const today = new Date().toISOString().split('T')[0];
-        document.getElementById('dateFilter').value = today;
+        dateFilterInput.value = todayStr;
+        updateShowAllState();
 
         updateMarkers();
         addUserLocation();
