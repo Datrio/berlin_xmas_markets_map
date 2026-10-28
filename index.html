@@ -3787,6 +3787,8 @@
             return (liveInfo[market.name] && liveInfo[market.name][field]) || (market.info && market.info[field]) || '';
         }
 
+        // Handlers stopPropagation because they remove the clicked button from the DOM; Leaflet then can't
+        // tell the click came from inside the popup and treats it as a map click, which closes the popup.
         function renderCommunity(box, market) {
             if (!box) return;
             box.replaceChildren();
@@ -3806,7 +3808,7 @@
                 const btn = document.createElement('button');
                 btn.type = 'button';
                 btn.textContent = val ? '✎ Edit' : '✎ Add';
-                btn.addEventListener('click', () => showEditForm(row, market, field, label, val, box));
+                btn.addEventListener('click', e => { e.stopPropagation(); showEditForm(row, market, field, label, val, box); });
                 row.append(lbl, v, btn);
                 box.append(row);
             });
@@ -3829,8 +3831,9 @@
             cancel.type = 'button'; cancel.textContent = 'Cancel';
             const msg = document.createElement('div');
             msg.className = 'msg';
-            cancel.addEventListener('click', () => renderCommunity(box, market));
-            send.addEventListener('click', async () => {
+            cancel.addEventListener('click', e => { e.stopPropagation(); renderCommunity(box, market); });
+            send.addEventListener('click', async e => {
+                e.stopPropagation();
                 if (!ta.value.trim()) { msg.textContent = 'Please enter a value.'; return; }
                 send.disabled = true;
                 const body = { market: market.name, field, value: ta.value, note: note.value, website: hp.value };
