@@ -3774,8 +3774,12 @@
                 </div>
             `;
 
+            // Popup content is a persistent element (not an HTML string) so popup.update() keeps the community block.
+            const popupEl = document.createElement('div');
+            popupEl.innerHTML = popup;
+            renderCommunity(popupEl.querySelector('.community'), market);
             const marker = L.marker([market.lat, market.lng], { icon })
-                .bindPopup(popup, { maxWidth: 280, minWidth: 240 })
+                .bindPopup(popupEl, { maxWidth: 280, minWidth: 240, autoPanPadding: [12, 12] })
                 .addTo(map);
             marker.on('popupopen', e => renderCommunity(e.popup.getElement().querySelector('.community'), market));
 
@@ -3823,6 +3827,9 @@
                 row.append(lbl, v, btn);
                 box.append(row);
             });
+            // The community block changes the popup's height after Leaflet panned for it; re-fit it in view.
+            const popup = markers[market.name] && markers[market.name].getPopup();
+            if (popup && popup.isOpen()) popup.update();
         }
 
         // Full-screen editor: the popup is too small to type in comfortably on a phone.
