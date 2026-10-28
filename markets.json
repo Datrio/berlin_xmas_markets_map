@@ -18,6 +18,11 @@
   {
     "name": "Glühwald am Uber Platz",
     "loc": "Friedrichshain",
+    "url": "https://www.berlin.de/weihnachtsmarkt/7839542-3496862-gluehwald-am-uber-platz.html",
+    "name_de": "Glühwald am Uber Platz",
+    "name_en": "Glühwald at Uber Platz",
+    "lat": 52.5057,
+    "lng": 13.4432,
     "start": "2026-11-06",
     "end": "2027-01-04",
     "daysOfWeek": [
@@ -27,11 +32,6 @@
       6,
       0
     ],
-    "url": "https://www.berlin.de/weihnachtsmarkt/7839542-3496862-gluehwald-am-uber-platz.html",
-    "name_de": "Glühwald am Uber Platz",
-    "name_en": "Glühwald at Uber Platz",
-    "lat": 52.5057,
-    "lng": 13.4432,
     "tbc": true
   },
   {
@@ -51,6 +51,11 @@
   {
     "name": "Heissa Holzmarkt",
     "loc": "Friedrichshain",
+    "url": "https://www.berlin.de/weihnachtsmarkt/5703554-3496862-heissa-holzmarkt.html",
+    "name_de": "Heissa Holzmarkt",
+    "name_en": "Heissa Holzmarkt",
+    "lat": 52.5115,
+    "lng": 13.4269,
     "start": "2026-11-06",
     "end": "2026-12-20",
     "daysOfWeek": [
@@ -59,23 +64,11 @@
       5,
       6,
       0
-    ],
-    "url": "https://www.berlin.de/weihnachtsmarkt/5703554-3496862-heissa-holzmarkt.html",
-    "name_de": "Heissa Holzmarkt",
-    "name_en": "Heissa Holzmarkt",
-    "lat": 52.5115,
-    "lng": 13.4269
+    ]
   },
   {
     "name": "Winterwelt Grünau",
     "loc": "Treptow-Köpenick",
-    "daysOfWeek": [
-      3,
-      4,
-      5,
-      6,
-      0
-    ],
     "url": "https://www.visitberlin.de/de/winterwelt-gruenau",
     "name_de": "Winterwelt Grünau",
     "name_en": "Winterwelt Grünau",
@@ -83,6 +76,13 @@
     "lng": 13.612423,
     "start": "2026-11-13",
     "end": "2027-02-14",
+    "daysOfWeek": [
+      3,
+      4,
+      5,
+      6,
+      0
+    ],
     "closed": [
       "2026-12-24",
       "2027-01-01"
@@ -101,18 +101,18 @@
   {
     "name": "Weihnachten an der Spree",
     "loc": "Friedrichshain",
+    "url": "https://www.berlin.de/weihnachtsmarkt/6333570-3496862-all-inclusive-weihnachtsmarkt-spreespeic.html",
+    "name_de": "Weihnachten an der Spree",
+    "name_en": "All Inclusive Christmas Market at Spreespeicher",
+    "lat": 52.5018,
+    "lng": 13.4489,
     "start": "2026-11-16",
     "end": "2026-12-30",
     "closed": [
       "2026-12-24",
       "2026-12-25",
       "2026-12-26"
-    ],
-    "url": "https://www.berlin.de/weihnachtsmarkt/6333570-3496862-all-inclusive-weihnachtsmarkt-spreespeic.html",
-    "name_de": "Weihnachten an der Spree",
-    "name_en": "All Inclusive Christmas Market at Spreespeicher",
-    "lat": 52.5018,
-    "lng": 13.4489
+    ]
   },
   {
     "name": "WeihnachtsZauber Gendarmenmarkt",
@@ -175,13 +175,13 @@
   {
     "name": "Spandauer Winterland",
     "loc": "Spandau",
-    "start": "2026-11-13",
-    "end": "2026-12-27",
     "url": "https://www.berlin.de/weihnachtsmarkt/10000126-3496862-spandauer-winterland.html",
     "name_de": "Spandauer Winterland",
     "name_en": "Spandauer Winterland",
     "lat": 52.5336,
     "lng": 13.1994,
+    "start": "2026-11-13",
+    "end": "2026-12-27",
     "closed": [
       "2026-11-15",
       "2026-11-22",
@@ -221,13 +221,13 @@
   {
     "name": "Kulinarischer Weihnachtsmarkt in Schöneberg",
     "loc": "Schöneberg",
-    "start": "2026-11-23",
-    "end": "2026-12-23",
     "url": "https://www.berlin.de/weihnachtsmarkt/9248226-3496862-kulinarischer-weihnachtsmarkt-in-schoene.html",
     "name_de": "Kulinarischer Weihnachtsmarkt in Schöneberg",
     "name_en": "Culinary Christmas Market in Schöneberg",
     "lat": 52.4866,
     "lng": 13.3593,
+    "start": "2026-11-23",
+    "end": "2026-12-23",
     "closed": [
       "2026-12-24"
     ]
@@ -235,41 +235,41 @@
   {
     "name": "Bloody X-Mas Markt",
     "loc": "Spandau",
-    "dates": [
-      "2026-11-27",
-      "2026-11-28"
-    ],
     "url": "https://www.berlin.de/weihnachtsmarkt/9358333-3496862-bloody-xmas-markt.html",
     "name_de": "Bloody X-Mas Markt",
     "name_en": "Bloody X-Mas Market",
     "lat": 52.5234,
     "lng": 13.3779,
+    "dates": [
+      "2026-11-27",
+      "2026-11-28"
+    ],
     "tbc": true
   },
   {
     "name": "Adventsmarkt in Hanff's Ruh",
     "loc": "Treptow-Köpenick",
-    "dates": [
-      "2026-11-28",
-      "2026-11-29"
-    ],
     "url": "https://www.berlin.de/weihnachtsmarkt/7828055-3496862-adventsmarkt-in-hanffs-ruh.html",
     "name_de": "Adventsmarkt in Hanff's Ruh",
     "name_en": "Advent Market at Hanff",
     "lat": 52.4078,
-    "lng": 13.5991
+    "lng": 13.5991,
+    "dates": [
+      "2026-11-28",
+      "2026-11-29"
+    ]
   },
   {
     "name": "Lichtermarkt an der Christuskirche Oberschöneweide",
     "loc": "Treptow-Köpenick",
-    "dates": [
-      "2026-11-28"
-    ],
     "url": "https://www.berlin.de/weihnachtsmarkt/5710626-3496862-lichtermarkt-an-der-christuskirche-obers.html",
     "name_de": "Lichtermarkt an der Christuskirche Oberschöneweide",
     "name_en": "Christmas Market at the Christuskirche in Oberschöneweide",
     "lat": 52.4634,
     "lng": 13.524,
+    "dates": [
+      "2026-11-28"
+    ],
     "tbc": true
   },
   {
@@ -311,143 +311,143 @@
   {
     "name": "Japanischer Weihnachtsmarkt Japanmarkt",
     "loc": "Treptow-Köpenick",
-    "dates": [
-      "2026-12-06"
-    ],
     "url": "https://www.berlin.de/weihnachtsmarkt/7079116-3496862-japanmarkt-christmas-edition.html",
     "name_de": "Japanischer Weihnachtsmarkt Japanmarkt",
     "name_en": "Japan Market Christmas Edition",
     "lat": 52.4968,
-    "lng": 13.451
+    "lng": 13.451,
+    "dates": [
+      "2026-12-06"
+    ]
   },
   {
     "name": "Weihnachtsmarkt auf dem Schlossplatz Köpenick",
     "loc": "Treptow-Köpenick",
-    "start": "2026-12-11",
-    "end": "2026-12-13",
     "url": "https://www.berlin.de/weihnachtsmarkt/5666333-3496862-weihnachtsmarkt-auf-dem-schlossplatz-koe.html",
     "name_de": "Weihnachtsmarkt auf dem Schlossplatz Köpenick",
     "name_en": "Christmas Market at Köpenick Palace",
     "lat": 52.4449,
-    "lng": 13.5759
+    "lng": 13.5759,
+    "start": "2026-12-11",
+    "end": "2026-12-13"
   },
   {
     "name": "Weihnachtsmarkt in Oberschöneweide",
     "loc": "Treptow-Köpenick",
-    "dates": [
-      "2026-12-05",
-      "2026-12-06"
-    ],
     "url": "https://www.berlin.de/weihnachtsmarkt/8544404-3496862-weihnachtsmarkt-in-oberschoeneweide.html",
     "name_de": "Weihnachtsmarkt in Oberschöneweide",
     "name_en": "Christmas Market in Oberschöneweide",
     "lat": 52.4587,
     "lng": 13.5256,
+    "dates": [
+      "2026-12-05",
+      "2026-12-06"
+    ],
     "tbc": true
   },
   {
     "name": "Schauriger Weihnachtsmarkt im Goerzwerk",
     "loc": "Steglitz",
-    "dates": [
-      "2026-12-05"
-    ],
     "url": "https://www.berlin.de/weihnachtsmarkt/9323172-3496862-schauriger-weihnachtsmarkt-im-goerzwerk.html",
     "name_de": "Schauriger Weihnachtsmarkt im Goerzwerk",
     "name_en": "Spooky Christmas Market at Goerzwerk",
     "lat": 52.4126,
     "lng": 13.2774,
+    "dates": [
+      "2026-12-05"
+    ],
     "tbc": true
   },
   {
     "name": "Japanischer Weihnachtsmarkt der Manufakturen",
     "loc": "Tempelhof-Schöneberg",
-    "dates": [
-      "2026-12-11",
-      "2026-12-12",
-      "2026-12-13"
-    ],
     "url": "https://www.berlin.de/weihnachtsmarkt/8538065-3496862-japanischer-weihnachtsmarkt-der-manufakt.html",
     "name_de": "Japanischer Weihnachtsmarkt der Manufakturen",
     "name_en": "Japanese Christmas market of Manufactories",
     "lat": 52.5014,
     "lng": 13.3645,
+    "dates": [
+      "2026-12-11",
+      "2026-12-12",
+      "2026-12-13"
+    ],
     "tbc": true
   },
   {
     "name": "Wintermarkt in den Atelier Gardens",
     "loc": "Tempelhof-Schöneberg",
-    "dates": [
-      "2026-12-12",
-      "2026-12-13"
-    ],
     "url": "https://www.berlin.de/weihnachtsmarkt/8567733-3496862-wintermarkt-in-den-atelier-gardens.html",
     "name_de": "Wintermarkt in den Atelier Gardens",
     "name_en": "Winter market in the Atelier Gardens",
     "lat": 52.4644,
     "lng": 13.4113,
+    "dates": [
+      "2026-12-12",
+      "2026-12-13"
+    ],
     "tbc": true
   },
   {
     "name": "Weddingmarkt - Weihnachtsausgabe",
     "loc": "Mitte",
+    "url": "https://www.berlin.de/weihnachtsmarkt/7791702-3496862-weddingmarkt-christmas-edition.html",
+    "name_de": "Weddingmarkt - Weihnachtsausgabe",
+    "name_en": "Weddingmarkt - Christmas Edition",
+    "lat": 52.5475,
+    "lng": 13.3599,
     "dates": [
       "2026-11-29",
       "2026-12-06",
       "2026-12-13",
       "2026-12-20"
     ],
-    "url": "https://www.berlin.de/weihnachtsmarkt/7791702-3496862-weddingmarkt-christmas-edition.html",
-    "name_de": "Weddingmarkt - Weihnachtsausgabe",
-    "name_en": "Weddingmarkt - Christmas Edition",
-    "lat": 52.5475,
-    "lng": 13.3599,
     "tbc": true
   },
   {
     "name": "Altglienicker Adventsmarkt",
     "loc": "Treptow-Köpenick",
-    "dates": [
-      "2026-12-06"
-    ],
     "url": "https://www.berlin.de/weihnachtsmarkt/5685464-3496862-altglienicker-adventsmarkt.html",
     "name_de": "Altglienicker Adventsmarkt",
     "name_en": "Advent Market in Altglienicke",
     "lat": 52.4103,
-    "lng": 13.5592
+    "lng": 13.5592,
+    "dates": [
+      "2026-12-06"
+    ]
   },
   {
     "name": "Potsdamer Platz (Markt)",
     "loc": "Mitte",
-    "start": "2026-11-23",
-    "end": "2026-12-26",
     "url": "https://www.berlin.de/weihnachtsmarkt/3249647-3496862-weihnachtsmarkt-am-potsdamer-platz.html",
     "name_de": "Potsdamer Platz (Markt)",
     "name_en": "Winter World on Potsdamer Platz",
     "lat": 52.5089,
-    "lng": 13.3772
+    "lng": 13.3772,
+    "start": "2026-11-23",
+    "end": "2026-12-26"
   },
   {
     "name": "Alexanderplatz",
     "loc": "Mitte",
-    "start": "2026-11-23",
-    "end": "2026-12-26",
     "url": "https://www.berlin.de/weihnachtsmarkt/3240090-3496862-weihnachtsmarkt-am-alexanderplatz.html",
     "name_de": "Alexanderplatz",
     "name_en": "Christmas Market on Alexanderplatz",
     "lat": 52.5218,
     "lng": 13.413,
+    "start": "2026-11-23",
+    "end": "2026-12-26",
     "tbc": true
   },
   {
     "name": "Weihnachtsmarkt am KaDeWe",
     "loc": "Schöneberg",
-    "start": "2026-11-23",
-    "end": "2027-01-03",
     "url": "https://www.berlin.de/weihnachtsmarkt/9934333-3496862-weihnachtsmarkt-am-kadewe.html",
     "name_de": "Weihnachtsmarkt am KaDeWe",
     "name_en": "Christmas Market at KaDeWe",
     "lat": 52.5017,
-    "lng": 13.3429
+    "lng": 13.3429,
+    "start": "2026-11-23",
+    "end": "2027-01-03"
   },
   {
     "name": "Domäne Dahlem",
@@ -490,8 +490,8 @@
     "url": "https://www.berlin.de/weihnachtsmarkt/7093285-3496862-kunsthandwerklicher-adventmarkt-am-karla.html",
     "name_de": "Adventsmarkt am Karl-August-Platz",
     "name_en": "Advent Market on Karl-August-Platz",
-    "lng": 13.3104,
     "lat": 52.5084,
+    "lng": 13.3104,
     "dates": [
       "2026-11-29"
     ]
@@ -499,14 +499,14 @@
   {
     "name": "Englischer Weihnachtsmarkt",
     "loc": "Charlottenburg",
-    "dates": [
-      "2026-12-05"
-    ],
     "url": "https://www.berlin.de/weihnachtsmarkt/7689300-3496862-englischer-weihnachtsmarkt.html",
     "name_de": "Englischer Weihnachtsmarkt",
     "name_en": "British Christmas Market",
+    "lat": 52.5121,
     "lng": 13.2589,
-    "lat": 52.5121
+    "dates": [
+      "2026-12-05"
+    ]
   },
   {
     "name": "Weihnachten in Westend",
@@ -514,8 +514,8 @@
     "url": "https://www.berlin.de/weihnachtsmarkt/7092703-3496862-weihnachten-in-westend.html",
     "name_de": "Weihnachten in Westend",
     "name_en": "Christmas in Westend",
-    "lng": 13.2594,
     "lat": 52.5127,
+    "lng": 13.2594,
     "dates": [
       "2026-12-19",
       "2026-12-20"
@@ -527,8 +527,8 @@
     "url": "https://www.berlin.de/weihnachtsmarkt/5711097-3496862-schwedischer-weihnachtsbasar.html",
     "name_de": "Schwedischer Weihnachtsbasar",
     "name_en": "Swedish Christmas Bazaar",
-    "lng": 13.3291,
     "lat": 52.4876,
+    "lng": 13.3291,
     "dates": [
       "2026-11-28",
       "2026-11-29"
@@ -537,28 +537,28 @@
   {
     "name": "Dänischer Weihnachtsmarkt",
     "loc": "Charlottenburg",
+    "url": "https://www.berlin.de/weihnachtsmarkt/5701678-3496862-daenischer-weihnachtsmarkt.html",
+    "name_de": "Dänischer Weihnachtsmarkt",
+    "name_en": "Danish Christmas Market",
+    "lat": 52.488,
+    "lng": 13.3127,
     "dates": [
       "2026-11-27",
       "2026-11-28",
       "2026-11-29"
-    ],
-    "url": "https://www.berlin.de/weihnachtsmarkt/5701678-3496862-daenischer-weihnachtsmarkt.html",
-    "name_de": "Dänischer Weihnachtsmarkt",
-    "name_en": "Danish Christmas Market",
-    "lng": 13.3127,
-    "lat": 52.488
+    ]
   },
   {
     "name": "Grunewalder Weihnachtsmarkt",
     "loc": "Charlottenburg",
-    "dates": [
-      "2026-11-29"
-    ],
     "url": "https://www.berlin.de/weihnachtsmarkt/5689204-3496862-grunewalder-weihnachtsmarkt.html",
     "name_de": "Grunewalder Weihnachtsmarkt",
     "name_en": "Christmas Market in Grunewald",
+    "lat": 52.4854,
     "lng": 13.2748,
-    "lat": 52.4854
+    "dates": [
+      "2026-11-29"
+    ]
   },
   {
     "name": "Adventmarkt Leonhardtstraße",
@@ -566,8 +566,8 @@
     "url": "https://www.berlin.de/weihnachtsmarkt/9284175-3496862-adventmarkt-in-der-leonhardtstrasse.html",
     "name_de": "Adventmarkt Leonhardtstraße",
     "name_en": "Advent Market in Leonhardtstraße",
-    "lng": 13.2972,
     "lat": 52.5052,
+    "lng": 13.2972,
     "dates": [
       "2026-12-06"
     ]
@@ -575,41 +575,41 @@
   {
     "name": "Adventsmarkt im Ökowerk",
     "loc": "Charlottenburg",
-    "dates": [
-      "2026-11-22"
-    ],
     "url": "https://www.berlin.de/weihnachtsmarkt/5694601-3496862-adventsmarkt-im-oekowerk.html",
     "name_de": "Adventsmarkt im Ökowerk",
     "name_en": "Advent Market at Ökowerk",
-    "lng": 13.2364,
     "lat": 52.4919,
+    "lng": 13.2364,
+    "dates": [
+      "2026-11-22"
+    ],
     "tbc": true
   },
   {
     "name": "Adventsmarkt St.-Michaels-Heim",
     "loc": "Charlottenburg",
+    "url": "https://www.berlin.de/weihnachtsmarkt/5701609-3496862-weihnachtsmarkt-im-st-michaels-heim.html",
+    "name_de": "Adventsmarkt St.-Michaels-Heim",
+    "name_en": "Christmas Market at St.-Michaels-Heim",
+    "lat": 52.488,
+    "lng": 13.277,
     "dates": [
       "2026-11-28",
       "2026-11-29"
     ],
-    "url": "https://www.berlin.de/weihnachtsmarkt/5701609-3496862-weihnachtsmarkt-im-st-michaels-heim.html",
-    "name_de": "Adventsmarkt St.-Michaels-Heim",
-    "name_en": "Christmas Market at St.-Michaels-Heim",
-    "lng": 13.277,
-    "lat": 52.488,
     "tbc": true
   },
   {
     "name": "Waldweihnacht Forstamt Grunewald",
     "loc": "Charlottenburg",
-    "dates": [
-      "2026-12-13"
-    ],
     "url": "https://www.berlin.de/weihnachtsmarkt/7912461-3496862-weihnachtsmarkt-und-wildfleischverkauf-i.html",
     "name_de": "Waldweihnacht Forstamt Grunewald",
     "name_en": "Christmas Market at the Grunewald Forestry Office",
+    "lat": 52.4766,
     "lng": 13.2637,
-    "lat": 52.4766
+    "dates": [
+      "2026-12-13"
+    ]
   },
   {
     "name": "Finnischer Adventsbasar",
@@ -617,8 +617,8 @@
     "url": "https://www.berlin.de/weihnachtsmarkt/5742137-3496862-finnischer-weihnachtsmarkt.html",
     "name_de": "Finnischer Adventsbasar",
     "name_en": "Finnish Advent Bazaar",
-    "lng": 13.3971,
     "lat": 52.4894,
+    "lng": 13.3971,
     "dates": [
       "2026-11-14",
       "2026-11-15"
@@ -627,40 +627,40 @@
   {
     "name": "Norwegischer Julebasar",
     "loc": "Kreuzberg",
-    "dates": [
-      "2026-12-05"
-    ],
     "url": "https://www.berlin.de/weihnachtsmarkt/7792272-3496862-norwegischer-julebasar.html",
     "name_de": "Norwegischer Julebasar",
     "name_en": "Norwegian Christmas Bazaar",
+    "lat": 52.4957,
     "lng": 13.3808,
-    "lat": 52.4957
+    "dates": [
+      "2026-12-05"
+    ]
   },
   {
     "name": "Merry Markthalle",
     "loc": "Kreuzberg",
+    "url": "https://www.berlin.de/weihnachtsmarkt/8533421-3496862-merry-markthalle.html",
+    "name_de": "Merry Markthalle",
+    "name_en": "Merry Markthalle",
+    "lat": 52.502,
+    "lng": 13.432,
     "dates": [
       "2026-12-06",
       "2026-12-13",
       "2026-12-20"
-    ],
-    "url": "https://www.berlin.de/weihnachtsmarkt/8533421-3496862-merry-markthalle.html",
-    "name_de": "Merry Markthalle",
-    "name_en": "Merry Markthalle",
-    "lng": 13.432,
-    "lat": 52.502
+    ]
   },
   {
     "name": "Adventsbasar Christuskirche",
     "loc": "Kreuzberg",
-    "dates": [
-      "2026-11-28"
-    ],
     "url": "https://www.berlin.de/weihnachtsmarkt/7868574-3496862-adventsbasar-an-der-christuskirche.html",
     "name_de": "Adventsbasar Christuskirche",
     "name_en": "Advent Bazaar at the Christuskirche",
-    "lng": 13.4199,
     "lat": 52.4919,
+    "lng": 13.4199,
+    "dates": [
+      "2026-11-28"
+    ],
     "tbc": true
   },
   {
@@ -669,23 +669,23 @@
     "url": "https://www.berlin.de/weihnachtsmarkt/9921991-3496862-winterquartier-berlin.html",
     "name_de": "Winterquartier Berlin",
     "name_en": "Winterquartier Berlin",
-    "lng": 13.4577,
     "lat": 52.5033,
+    "lng": 13.4577,
     "start": "2026-11-06",
     "end": "2027-02-28"
   },
   {
     "name": "Solidarischer Wintermarkt Görlitzer",
     "loc": "Kreuzberg",
+    "url": "https://www.berlin.de/weihnachtsmarkt/8572515-3496862-solidarischer-wintermarkt-im-goerlitzer-.html",
+    "name_de": "Solidarischer Wintermarkt Görlitzer",
+    "name_en": "Solidarity Winter Market in Görlitzer Park",
+    "lat": 52.4979,
+    "lng": 13.4338,
     "dates": [
       "2026-12-12",
       "2026-12-13"
     ],
-    "url": "https://www.berlin.de/weihnachtsmarkt/8572515-3496862-solidarischer-wintermarkt-im-goerlitzer-.html",
-    "name_de": "Solidarischer Wintermarkt Görlitzer",
-    "name_en": "Solidarity Winter Market in Görlitzer Park",
-    "lng": 13.4338,
-    "lat": 52.4979,
     "tbc": true
   },
   {
@@ -694,8 +694,8 @@
     "url": "https://www.berlin.de/weihnachtsmarkt/7897509-3496862-weihnachtsmarkt-im-tierheim-berlin.html",
     "name_de": "Weihnachtsfest der Tiere",
     "name_en": "Christmas Market at the Berlin Animal Shelter",
-    "lng": 13.5462,
     "lat": 52.5741,
+    "lng": 13.5462,
     "dates": [
       "2026-12-06"
     ]
@@ -703,59 +703,64 @@
   {
     "name": "Trabrennbahn Karlshorst",
     "loc": "Lichtenberg",
-    "dates": [
-      "2026-11-28",
-      "2026-11-29"
-    ],
     "url": "https://www.berlin.de/weihnachtsmarkt/5695405-3496862-weihnachtsmarkt-auf-der-trabrennbahn-kar.html",
     "name_de": "Trabrennbahn Karlshorst",
     "name_en": "Christmas Market at the Karlshorst Racing Track",
+    "lat": 52.4752,
     "lng": 13.5229,
-    "lat": 52.4752
+    "dates": [
+      "2026-11-28",
+      "2026-11-29"
+    ]
   },
   {
     "name": "Lichtermarkt Rathaus Lichtenberg",
     "loc": "Lichtenberg",
-    "dates": [
-      "2026-11-29"
-    ],
     "url": "https://www.berlin.de/weihnachtsmarkt/5692582-3496862-lichtermarkt-am-rathaus-lichtenberg.html",
     "name_de": "Lichtermarkt Rathaus Lichtenberg",
     "name_en": "Christmas Lights at Lichtenberg City Hall",
-    "lng": 13.4795,
     "lat": 52.5158,
+    "lng": 13.4795,
+    "dates": [
+      "2026-11-29"
+    ],
     "tbc": true
   },
   {
     "name": "Adventsmarkt Alt-Marzahn",
     "loc": "Marzahn",
+    "url": "https://www.berlin.de/weihnachtsmarkt/5685805-3496862-adventsmarkt-altmarzahn.html",
+    "name_de": "Adventsmarkt Alt-Marzahn",
+    "name_en": "Advent Market in Alt-Marzahn",
+    "lat": 52.5436,
+    "lng": 13.5599,
     "dates": [
       "2026-11-27",
       "2026-11-28",
       "2026-11-29"
     ],
-    "url": "https://www.berlin.de/weihnachtsmarkt/5685805-3496862-adventsmarkt-altmarzahn.html",
-    "name_de": "Adventsmarkt Alt-Marzahn",
-    "name_en": "Advent Market in Alt-Marzahn",
-    "lng": 13.5599,
-    "lat": 52.5436,
     "tbc": true
   },
   {
     "name": "Alt-Kaulsdorfer Weihnachtsmarkt",
     "loc": "Marzahn",
-    "dates": [
-      "2026-12-05"
-    ],
     "url": "https://www.berlin.de/weihnachtsmarkt/5685370-3496862-altkaulsdorfer-weihnachtsmarkt.html",
     "name_de": "Alt-Kaulsdorfer Weihnachtsmarkt",
     "name_en": "Christmas Market in Alt-Kaulsdorf",
+    "lat": 52.5086,
     "lng": 13.5813,
-    "lat": 52.5086
+    "dates": [
+      "2026-12-05"
+    ]
   },
   {
     "name": "Gutshof Schloss Britz",
     "loc": "Neukölln",
+    "url": "https://www.berlin.de/weihnachtsmarkt/5506372-3496862-mittelalterlicher-weihnachtsmarkt-am-gut.html",
+    "name_de": "Gutshof Schloss Britz",
+    "name_en": "Medieval Christmas Market at Britz Palace",
+    "lat": 52.4469,
+    "lng": 13.4379,
     "dates": [
       "2026-11-27",
       "2026-11-28",
@@ -769,51 +774,46 @@
       "2026-12-18",
       "2026-12-19",
       "2026-12-20"
-    ],
-    "url": "https://www.berlin.de/weihnachtsmarkt/5506372-3496862-mittelalterlicher-weihnachtsmarkt-am-gut.html",
-    "name_de": "Gutshof Schloss Britz",
-    "name_en": "Medieval Christmas Market at Britz Palace",
-    "lng": 13.4379,
-    "lat": 52.4469
+    ]
   },
   {
     "name": "Rudower Weihnachtsmeile",
     "loc": "Neukölln",
-    "dates": [
-      "2026-12-05",
-      "2026-12-06"
-    ],
     "url": "https://www.berlin.de/weihnachtsmarkt/5685707-3496862-rudower-weihnachtsmeile.html",
     "name_de": "Rudower Weihnachtsmeile",
     "name_en": "Rudow Christmas Mile",
+    "lat": 52.4206,
     "lng": 13.4935,
-    "lat": 52.4206
+    "dates": [
+      "2026-12-05",
+      "2026-12-06"
+    ]
   },
   {
     "name": "Alt-Buckower Adventsmarkt",
     "loc": "Neukölln",
+    "url": "https://www.berlin.de/weihnachtsmarkt/5694654-3496862-alt-buckower-adventsmarkt.html",
+    "name_de": "Alt-Buckower Adventsmarkt",
+    "name_en": "Advent Market in Alt-Buckow",
+    "lat": 52.4231,
+    "lng": 13.4335,
     "dates": [
       "2026-11-27",
       "2026-11-28",
       "2026-11-29"
-    ],
-    "url": "https://www.berlin.de/weihnachtsmarkt/5694654-3496862-alt-buckower-adventsmarkt.html",
-    "name_de": "Alt-Buckower Adventsmarkt",
-    "name_en": "Advent Market in Alt-Buckow",
-    "lng": 13.4335,
-    "lat": 52.4231
+    ]
   },
   {
     "name": "Dicke Linda",
     "loc": "Neukölln",
-    "dates": [
-      "2026-12-12"
-    ],
     "url": "https://www.berlin.de/weihnachtsmarkt/8374125-3496862-weihnachtsmarkt-auf-der-dicken-linda.html",
     "name_de": "Dicke Linda",
     "name_en": "Christmas Market on the Dicke Linda",
+    "lat": 52.4664,
     "lng": 13.4378,
-    "lat": 52.4664
+    "dates": [
+      "2026-12-12"
+    ]
   },
   {
     "name": "Holy Shit Shopping",
@@ -821,8 +821,8 @@
     "url": "https://www.berlin.de/weihnachtsmarkt/2208886-3496862-holy-shit-shopping.html",
     "name_de": "Holy Shit Shopping",
     "name_en": "Holy Shit Shopping",
-    "lng": 13.453986686509,
     "lat": 52.496078776217,
+    "lng": 13.453986686509,
     "dates": [
       "2026-11-28",
       "2026-11-29"
@@ -834,8 +834,8 @@
     "url": "https://www.berlin.de/weihnachtsmarkt/3250022-3496862-adventsoekomarkt-am-kollwitzplatz.html",
     "name_de": "Adventsmarkt am Kollwitzplatz",
     "name_en": "Advent Market on Kollwitzplatz",
-    "lng": 13.4177,
     "lat": 52.5365,
+    "lng": 13.4177,
     "dates": [
       "2026-11-29",
       "2026-12-06",
@@ -846,169 +846,169 @@
   {
     "name": "Weihnachtsrodeo",
     "loc": "Pankow",
-    "dates": [
-      "2026-12-12",
-      "2026-12-13"
-    ],
     "url": "https://www.berlin.de/weihnachtsmarkt/4180727-3496862-weihnachtsrodeo.html",
     "name_de": "Weihnachtsrodeo",
     "name_en": "Weihnachtsrodeo Design Market",
+    "lat": 52.5479,
     "lng": 13.4131,
-    "lat": 52.5479
+    "dates": [
+      "2026-12-12",
+      "2026-12-13"
+    ]
   },
   {
     "name": "Adventsbasar Kaspar Hauser",
     "loc": "Pankow",
-    "dates": [
-      "2026-11-28"
-    ],
     "url": "https://www.berlin.de/weihnachtsmarkt/7866354-3496862-adventsbasar-der-kaspar-hauser-stiftung.html",
     "name_de": "Adventsbasar Kaspar Hauser",
     "name_en": "Advent Bazaar of the Kaspar Hauser Foundation",
-    "lng": 13.4176,
     "lat": 52.5819,
+    "lng": 13.4176,
+    "dates": [
+      "2026-11-28"
+    ],
     "tbc": true
   },
   {
     "name": "Adventsbasar Albert Schweitzer",
     "loc": "Pankow",
-    "dates": [
-      "2026-11-28"
-    ],
     "url": "https://www.berlin.de/weihnachtsmarkt/5744189-3496862-adventsbasar-der-albert-schweitzer-stift.html",
     "name_de": "Adventsbasar Albert Schweitzer",
     "name_en": "Advent Bazaar of the Albert Schweitzer Foundation",
-    "lng": 13.4488,
     "lat": 52.5912,
+    "lng": 13.4488,
+    "dates": [
+      "2026-11-28"
+    ],
     "tbc": true
   },
   {
     "name": "Weihnachtsmarkt Frohnau",
     "loc": "Reinickendorf",
-    "dates": [
-      "2026-12-05",
-      "2026-12-06"
-    ],
     "url": "https://www.berlin.de/weihnachtsmarkt/5734991-3496862-kunsthandwerklicher-weihnachtsmarkt-in-f.html",
     "name_de": "Weihnachtsmarkt Frohnau",
     "name_en": "Arts and Crafts Christmas Market in Frohnau",
+    "lat": 52.6334,
     "lng": 13.2897,
-    "lat": 52.6334
+    "dates": [
+      "2026-12-05",
+      "2026-12-06"
+    ]
   },
   {
     "name": "Adventsmarkt Papierstraße",
     "loc": "Reinickendorf",
-    "dates": [
-      "2026-11-19",
-      "2026-12-03"
-    ],
     "url": "https://www.berlin.de/weihnachtsmarkt/7892913-3496862-weihnachtsmarkt-in-der-papierstrasse.html",
     "name_de": "Adventsmarkt Papierstraße",
     "name_en": "Advent Market in Papierstraße",
+    "lat": 52.5763,
     "lng": 13.3495,
-    "lat": 52.5763
+    "dates": [
+      "2026-11-19",
+      "2026-12-03"
+    ]
   },
   {
     "name": "Adventsbasar Lübars",
     "loc": "Reinickendorf",
-    "dates": [
-      "2026-11-29"
-    ],
     "url": "https://www.berlin.de/weihnachtsmarkt/5735127-3496862-adventsbasar-der-kirchengemeinde-luebars.html",
     "name_de": "Adventsbasar Lübars",
     "name_en": "Advent Bazaar of the Lübars Church",
-    "lng": 13.3553,
     "lat": 52.6209,
+    "lng": 13.3553,
+    "dates": [
+      "2026-11-29"
+    ],
     "tbc": true
   },
   {
     "name": "Advent im Forstamt Tegel",
     "loc": "Reinickendorf",
-    "dates": [
-      "2026-11-28"
-    ],
     "url": "https://www.berlin.de/weihnachtsmarkt/5737880-3496862-advent-im-forstamt-tegel.html",
     "name_de": "Advent im Forstamt Tegel",
     "name_en": "Advent Market at the Tegel Forestry Office",
+    "lat": 52.6053,
     "lng": 13.2719,
-    "lat": 52.6053
+    "dates": [
+      "2026-11-28"
+    ]
   },
   {
     "name": "Weihnachtsfest Alte Fasanerie",
     "loc": "Reinickendorf",
-    "dates": [
-      "2026-12-06"
-    ],
     "url": "https://www.berlin.de/weihnachtsmarkt/7826792-3496862-weihnachtsfest-in-der-alten-fasanerie.html",
     "name_de": "Weihnachtsfest Alte Fasanerie",
     "name_en": "Christmas Festival at the Alte Fasanerie",
+    "lat": 52.6079,
     "lng": 13.368,
-    "lat": 52.6079
+    "dates": [
+      "2026-12-06"
+    ]
   },
   {
     "name": "Wintermarkt Flughafen Tegel",
     "loc": "Reinickendorf",
-    "dates": [
-      "2026-11-28",
-      "2026-11-29"
-    ],
     "url": "https://www.berlin.de/weihnachtsmarkt/9964084-3496862-wintermarkt-am-ehemaligen-flughafen-tege.html",
     "name_de": "Wintermarkt Flughafen Tegel",
     "name_en": "Winter Market at the former Tegel Airport",
+    "lat": 52.5541,
     "lng": 13.2915,
-    "lat": 52.5541
+    "dates": [
+      "2026-11-28",
+      "2026-11-29"
+    ]
   },
   {
     "name": "Evangelisches Johannesstift",
     "loc": "Spandau",
-    "dates": [
-      "2026-11-29"
-    ],
     "url": "https://www.berlin.de/weihnachtsmarkt/5698904-3496862-weihnachtsmarkt-im-evangelischen-johanne.html",
     "name_de": "Evangelisches Johannesstift",
     "name_en": "Christmas Market at the Evangelical St. John",
+    "lat": 52.5677,
     "lng": 13.1924,
-    "lat": 52.5677
+    "dates": [
+      "2026-11-29"
+    ]
   },
   {
     "name": "Jagdschloss Grunewald",
     "loc": "Steglitz",
-    "dates": [
-      "2026-12-05",
-      "2026-12-06"
-    ],
     "url": "https://www.berlin.de/weihnachtsmarkt/5506437-3496862-weihnachtsmarkt-am-jagdschloss-grunewald.html",
     "name_de": "Jagdschloss Grunewald",
     "name_en": "Christmas Market at the Grunewald Hunting Lodge",
+    "lat": 52.4673,
     "lng": 13.2612,
-    "lat": 52.4673
+    "dates": [
+      "2026-12-05",
+      "2026-12-06"
+    ]
   },
   {
     "name": "Weihnachtsmarkt Mexikoplatz",
     "loc": "Steglitz",
+    "url": "https://www.berlin.de/weihnachtsmarkt/5734908-3496862-kunsthandwerklicher-weihnachtsmarkt-am-m.html",
+    "name_de": "Weihnachtsmarkt Mexikoplatz",
+    "name_en": "Arts and Crafts Christmas Market on Mexikoplatz",
+    "lat": 52.4378,
+    "lng": 13.2334,
     "dates": [
       "2026-11-29",
       "2026-12-06",
       "2026-12-13",
       "2026-12-20"
-    ],
-    "url": "https://www.berlin.de/weihnachtsmarkt/5734908-3496862-kunsthandwerklicher-weihnachtsmarkt-am-m.html",
-    "name_de": "Weihnachtsmarkt Mexikoplatz",
-    "name_en": "Arts and Crafts Christmas Market on Mexikoplatz",
-    "lng": 13.2334,
-    "lat": 52.4378
+    ]
   },
   {
     "name": "Abenteueroase",
     "loc": "Steglitz",
-    "dates": [
-      "2026-12-05"
-    ],
     "url": "https://www.berlin.de/weihnachtsmarkt/8523637-3496862-weihnachtsmarkt-in-der-abenteueroase.html",
     "name_de": "Abenteueroase",
     "name_en": "Christmas Market at the Abenteueroase",
-    "lng": 13.3471,
     "lat": 52.4589,
+    "lng": 13.3471,
+    "dates": [
+      "2026-12-05"
+    ],
     "tbc": true
   },
   {
@@ -1017,8 +1017,8 @@
     "url": "https://www.berlin.de/weihnachtsmarkt/7794849-3496862-berliner-hundeweihnachtsmarkt.html",
     "name_de": "Berliner Hundeweihnachtsmarkt",
     "name_en": "Berlin Dog Christmas Market",
-    "lng": 13.2562,
     "lat": 52.4664,
+    "lng": 13.2562,
     "dates": [
       "2026-11-28",
       "2026-11-29"
@@ -1027,13 +1027,13 @@
   {
     "name": "Zehlendorfer Weihnachtsmarkt",
     "loc": "Steglitz",
-    "start": "2026-11-23",
-    "end": "2026-12-30",
     "url": "https://www.berlin.de/weihnachtsmarkt/5703047-3496862-zehlendorfer-weihnachtsmarkt.html",
     "name_de": "Zehlendorfer Weihnachtsmarkt",
     "name_en": "Christmas Market in Zehlendorf",
+    "lat": 52.4331,
     "lng": 13.2593,
-    "lat": 52.4331
+    "start": "2026-11-23",
+    "end": "2026-12-30"
   },
   {
     "name": "Wein-Nachtsmarkt Ludwig-Beck-Platz",
@@ -1041,14 +1041,19 @@
     "url": "https://www.berlin.de/weihnachtsmarkt/9332973-3496862-weinachtsmarkt-am-ludwigbeckplatz.html",
     "name_de": "Wein-Nachtsmarkt Ludwig-Beck-Platz",
     "name_en": "Wein-Nachtsmarkt at Ludwig-Beck-Platz",
-    "lng": 13.3122,
     "lat": 52.4428,
+    "lng": 13.3122,
     "start": "2026-12-12",
     "end": "2026-12-13"
   },
   {
     "name": "Lehmanns Bauernhof",
     "loc": "Tempelhof",
+    "url": "https://www.berlin.de/weihnachtsmarkt/5742213-3496862-weihnachtsmarkt-auf-lehmanns-bauernhof.html",
+    "name_de": "Lehmanns Bauernhof",
+    "name_en": "Christmas Market on Lehmann",
+    "lat": 52.4119,
+    "lng": 13.3669,
     "dates": [
       "2026-12-04",
       "2026-12-05",
@@ -1056,43 +1061,43 @@
       "2026-12-11",
       "2026-12-12",
       "2026-12-13"
-    ],
-    "url": "https://www.berlin.de/weihnachtsmarkt/5742213-3496862-weihnachtsmarkt-auf-lehmanns-bauernhof.html",
-    "name_de": "Lehmanns Bauernhof",
-    "name_en": "Christmas Market on Lehmann",
-    "lng": 13.3669,
-    "lat": 52.4119
+    ]
   },
   {
     "name": "Lichtenrader Lichtermarkt",
     "loc": "Tempelhof",
-    "dates": [
-      "2026-11-29"
-    ],
     "url": "https://www.berlin.de/weihnachtsmarkt/5702850-3496862-lichtenrader-lichtermarkt.html",
     "name_de": "Lichtenrader Lichtermarkt",
     "name_en": "Christmas Market in Lichtenrade",
+    "lat": 52.39,
     "lng": 13.4102,
-    "lat": 52.39
+    "dates": [
+      "2026-11-29"
+    ]
   },
   {
     "name": "Weihnachten im Alpinia",
     "loc": "Tempelhof",
+    "url": "https://www.berlin.de/weihnachtsmarkt/7897062-3496862-weihnachtsmarkt-im-alpinia.html",
+    "name_de": "Weihnachten im Alpinia",
+    "name_en": "Christmas Market at Alpinia",
+    "lat": 52.4211,
+    "lng": 13.392,
     "dates": [
       "2026-11-29",
       "2026-12-06",
       "2026-12-13",
       "2026-12-20"
-    ],
-    "url": "https://www.berlin.de/weihnachtsmarkt/7897062-3496862-weihnachtsmarkt-im-alpinia.html",
-    "name_de": "Weihnachten im Alpinia",
-    "name_en": "Christmas Market at Alpinia",
-    "lng": 13.392,
-    "lat": 52.4211
+    ]
   },
   {
     "name": "Tempelhofer Flughafen",
     "loc": "Tempelhof",
+    "url": "https://www.berlin.de/weihnachtsmarkt/9330357-3496862-weihnachten-im-tempelhofer-flughafen.html",
+    "name_de": "Tempelhofer Flughafen",
+    "name_en": "Christmas at Tempelhof Airport",
+    "lat": 52.4781,
+    "lng": 13.3862,
     "dates": [
       "2026-12-04",
       "2026-12-05",
@@ -1100,12 +1105,7 @@
       "2026-12-11",
       "2026-12-12",
       "2026-12-13"
-    ],
-    "url": "https://www.berlin.de/weihnachtsmarkt/9330357-3496862-weihnachten-im-tempelhofer-flughafen.html",
-    "name_de": "Tempelhofer Flughafen",
-    "name_en": "Christmas at Tempelhof Airport",
-    "lng": 13.3862,
-    "lat": 52.4781
+    ]
   },
   {
     "name": "Christmas Avenue",
@@ -1113,8 +1113,8 @@
     "url": "https://www.berlin.de/weihnachtsmarkt/5948422-3496862-christmas-avenue.html",
     "name_de": "Christmas Avenue",
     "name_en": "LGBTIQA Winterdays and Christmas Avenue",
-    "lng": 13.3533,
     "lat": 52.4992,
+    "lng": 13.3533,
     "start": "2026-11-04",
     "end": "2026-12-23",
     "closed": [
@@ -1125,17 +1125,17 @@
   {
     "name": "AdventLichterGenuss Südgelände",
     "loc": "Schöneberg",
+    "url": "https://www.berlin.de/kultur-und-tickets/tipps/lichterglanz-weihnachten/5711355-7095298-advent-im-naturpark-suedgelaende.html",
+    "name_de": "AdventLichterGenuss Südgelände",
+    "name_en": "Advent at Natur Park Südgelände",
+    "lat": 52.4586,
+    "lng": 13.3584,
     "dates": [
       "2026-11-28",
       "2026-11-29",
       "2026-12-05",
       "2026-12-06"
-    ],
-    "url": "https://www.berlin.de/kultur-und-tickets/tipps/lichterglanz-weihnachten/5711355-7095298-advent-im-naturpark-suedgelaende.html",
-    "name_de": "AdventLichterGenuss Südgelände",
-    "name_en": "Advent at Natur Park Südgelände",
-    "lng": 13.3584,
-    "lat": 52.4586
+    ]
   },
   {
     "name": "Weinlobbyist",
@@ -1143,10 +1143,10 @@
     "url": "https://www.derweinlobbyist.de/weihnachtsmarkt-berlin-2025",
     "name_de": "Weinlobbyist",
     "name_en": "Weinlobbyist",
-    "start": "2026-11-23",
-    "end": "2026-12-23",
     "lat": 52.4865465,
-    "lng": 13.3592248
+    "lng": 13.3592248,
+    "start": "2026-11-23",
+    "end": "2026-12-23"
   },
   {
     "name": "Weihnachtsmarkt Hauptbahnhof/Kanzleramt",
@@ -1654,6 +1654,11 @@
   {
     "name": "Winter Wonderland im Britzer Garten",
     "loc": "Neukölln",
+    "url": "https://www.berlin.de/weihnachtsmarkt/10720667-3496862-winter-wonderland-im-britzer-garten.html",
+    "name_de": "Winter Wonderland im Britzer Garten",
+    "name_en": "Winter Wonderland at Britzer Garten",
+    "lat": 52.4394,
+    "lng": 13.4131,
     "dates": [
       "2026-11-27",
       "2026-11-28",
@@ -1667,24 +1672,19 @@
       "2026-12-18",
       "2026-12-19",
       "2026-12-20"
-    ],
-    "url": "https://www.berlin.de/weihnachtsmarkt/10720667-3496862-winter-wonderland-im-britzer-garten.html",
-    "name_de": "Winter Wonderland im Britzer Garten",
-    "name_en": "Winter Wonderland at Britzer Garten",
-    "lat": 52.4394,
-    "lng": 13.4131
+    ]
   },
   {
     "name": "Weihnachtsmarkt to go im Kranoldkiez",
     "loc": "Steglitz",
-    "dates": [
-      "2026-12-12"
-    ],
     "url": "https://www.berlin.de/weihnachtsmarkt/5692701-3496862-weihnachtsmarkt-am-kranoldplatz.html",
     "name_de": "Weihnachtsmarkt to go im Kranoldkiez",
     "name_en": "Christmas Market To Go in Kranoldkiez",
     "lat": 52.4278,
-    "lng": 13.3284
+    "lng": 13.3284,
+    "dates": [
+      "2026-12-12"
+    ]
   },
   {
     "name": "Weihnachtsmarkt am Orankesee",
