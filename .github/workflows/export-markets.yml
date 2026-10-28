@@ -1,0 +1,30 @@
+name: Export markets from D1
+
+on:
+  schedule:
+    - cron: "17 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Export markets.json
+        env:
+          EXPORT_TOKEN: ${{ secrets.EXPORT_TOKEN }}
+        run: python3 scripts/export_markets.py
+      - name: Regenerate SEO content
+        run: python3 scripts/generate_seo_content.py
+      - name: Commit if changed
+        run: |
+          if [ -n "$(git status --porcelain markets.json index.html)" ]; then
+            git config user.name "github-actions"
+            git config user.email "actions@github.com"
+            git add markets.json index.html
+            git commit -m "Update markets from database"
+            git push
+          fi

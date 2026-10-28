@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex"><title>Review edits</title>
+<style>
+body{font:16px/1.4 system-ui,sans-serif;max-width:720px;margin:0 auto;padding:16px;color:#222;background:#fff}
+@media(prefers-color-scheme:dark){body{background:#161616;color:#eee}.card{border-color:#444}textarea{background:#222;color:#eee}}
+nav button{margin-right:6px;padding:6px 12px;border:1px solid #c41e3a;background:none;color:inherit;border-radius:6px;cursor:pointer}
+nav button.on{background:#c41e3a;color:#fff}
+.card{border:1px solid #ddd;border-radius:8px;padding:12px;margin:12px 0}
+.old{opacity:.6;text-decoration:line-through}.badge{background:#e8a200;color:#000;border-radius:4px;padding:1px 6px;font-size:12px}
+textarea{width:100%;box-sizing:border-box;min-height:60px;font:inherit}.row{display:flex;gap:8px;margin-top:8px}
+.row button{padding:6px 14px;border-radius:6px;border:1px solid #888;cursor:pointer}.ok{background:#2e7d32;color:#fff;border-color:#2e7d32}.no{background:#b71c1c;color:#fff;border-color:#b71c1c}
+</style></head><body>
+<h1>Community edits</h1>
+<nav><button data-s="pending" class="on">Pending</button><button data-s="approved">Approved</button><button data-s="rejected">Rejected</button></nav>
+<div id="list"></div>
+<script>
+let status='pending';
+const list=document.getElementById('list');
+const el=(t,props={},...kids)=>{const e=document.createElement(t);Object.assign(e,props);kids.forEach(k=>e.append(k));return e};
+async function load(){
+  const r=await fetch('/api/admin/suggestions?status='+status);
+  list.replaceChildren();
+  if(!r.ok){list.append('Failed to load ('+r.status+')');return}
+  const rows=await r.json();
+  if(!rows.length)list.append('Nothing here.');
+  for(const s of rows){
+    const far=s.distance_m==null||s.distance_m>1000;
+    const ta=el('textarea',{value:s.value});
+    const card=el('div',{className:'card'},
+      el('strong',{},s.market+' — '+s.field),' ',far?el('span',{className:'badge'},'far from market'):'',
+      el('div',{},el('span',{className:'old'},s.old_value||'(empty)'),' → '),
+      status==='pending'?ta:el('div',{},s.value),
+      s.note?el('div',{},'Note: '+s.note):'',
+      el('small',{},s.created_at+(s.distance_m!=null?' · '+s.distance_m+' m away':'')));
+    if(status==='pending'){
+      card.append(el('div',{className:'row'},
+        el('button',{className:'ok',onclick:()=>act(s.id,'approve',ta.value)},'Approve'+''),
+        el('button',{className:'no',onclick:()=>act(s.id,'reject')},'Reject')));
+    }
+    list.append(card);
+  }
+}
+async function act(id,what,value){
+  await fetch(`/api/admin/suggestions/${id}/${what}`,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({value})});
+  load();
+}
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{status=b.dataset.s;document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('on',x===b));load()});
+load();
+</script></body></html>

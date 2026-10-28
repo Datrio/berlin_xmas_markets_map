@@ -3386,7 +3386,20 @@
             font-size: var(--font-xs);
             margin-top: 2px;
         }
-    </style>
+    
+        .community { margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--panel-border); font-size: var(--font-sm); color: var(--popup-text); }
+        .community h4 { margin: 0 0 6px; font-size: var(--font-sm); }
+        .community-row { margin: 4px 0; }
+        .community-row .lbl { font-weight: 600; }
+        .community-row .empty { color: var(--text-muted); }
+        .community button, .community-banner button { font: inherit; cursor: pointer; border: 1px solid #c41e3a; background: none; color: #c41e3a; border-radius: var(--radius-sm); padding: 2px 8px; margin-left: 4px; }
+        .community button.primary, .community-banner button { background: #c41e3a; color: #fff; }
+        .community textarea, .community input[type=text] { width: 100%; box-sizing: border-box; font: inherit; margin: 4px 0; background: var(--item-bg); color: var(--text-primary); border: 1px solid var(--panel-border); border-radius: var(--radius-sm); padding: 4px 6px; }
+        .community .hp { position: absolute; left: -9999px; }
+        .community .msg { color: var(--text-secondary); }
+        .community-banner { position: fixed; z-index: 1000; left: 50%; transform: translateX(-50%); top: 12px; background: var(--panel-bg); color: var(--text-primary); border: 1px solid var(--panel-border); border-radius: var(--radius-md); padding: 8px 12px; box-shadow: 0 2px 10px rgba(0,0,0,.25); font-size: var(--font-base); max-width: calc(100vw - 32px); }
+        .community-banner .x { background: none; color: var(--text-muted); border: none; }
+</style>
 </head>
 <body>
     <div class="app-shell">
@@ -3661,6 +3674,7 @@
                     return m;
                 });
                 updateMarkers();
+                showNearbyBanner();
             })
             .catch(err => {
                 console.error('Failed to load markets.json', err);
@@ -3744,6 +3758,7 @@
                         ${tbcNote}
                         ${descriptionRow}
                         ${link}
+                        <div class="community"></div>
                     </div>
                 </div>
             `;
@@ -3751,8 +3766,110 @@
             const marker = L.marker([market.lat, market.lng], { icon })
                 .bindPopup(popup, { maxWidth: 280, minWidth: 240 })
                 .addTo(map);
+            marker.on('popupopen', e => renderCommunity(e.popup.getElement().querySelector('.community'), market));
 
             return marker;
+        }
+
+
+        const API = 'https://xmas-api.datrio.workers.dev';
+        const COMMUNITY_FIELDS = [
+            ['entrance', 'Entrance fee', 'No entrance info yet'],
+            ['gluehwein_price', 'Glühwein price', 'No price yet'],
+            ['fun_fact', 'Fun fact', 'No fun fact yet'],
+            ['description', 'Description', 'No description yet']
+        ];
+        let liveInfo = {};
+        // Live approved info overlays the snapshot baked into markets.json; failure just keeps the snapshot.
+        fetch(API + '/api/info').then(r => r.ok ? r.json() : {}).then(d => { liveInfo = d; }).catch(() => {});
+
+        function infoFor(market, field) {
+            return (liveInfo[market.name] && liveInfo[market.name][field]) || (market.info && market.info[field]) || '';
+        }
+
+        function renderCommunity(box, market) {
+            if (!box) return;
+            box.replaceChildren();
+            const h = document.createElement('h4');
+            h.textContent = 'Community info';
+            box.append(h);
+            COMMUNITY_FIELDS.forEach(([field, label, emptyText]) => {
+                const row = document.createElement('div');
+                row.className = 'community-row';
+                const val = infoFor(market, field);
+                const lbl = document.createElement('span');
+                lbl.className = 'lbl';
+                lbl.textContent = label + ': ';
+                const v = document.createElement('span');
+                v.textContent = val || emptyText;
+                if (!val) v.className = 'empty';
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = val ? '✎ Edit' : '✎ Add';
+                btn.addEventListener('click', () => showEditForm(row, market, field, label, val, box));
+                row.append(lbl, v, btn);
+                box.append(row);
+            });
+        }
+
+        function showEditForm(row, market, field, label, current, box) {
+            row.replaceChildren();
+            const lbl = document.createElement('div');
+            lbl.className = 'lbl';
+            lbl.textContent = label;
+            const ta = document.createElement('textarea');
+            ta.rows = 2; ta.maxLength = 500; ta.value = current;
+            const note = document.createElement('input');
+            note.type = 'text'; note.maxLength = 300; note.placeholder = 'Optional note for the reviewer';
+            const hp = document.createElement('input');
+            hp.type = 'text'; hp.className = 'hp'; hp.tabIndex = -1; hp.autocomplete = 'off'; hp.setAttribute('aria-hidden', 'true');
+            const send = document.createElement('button');
+            send.type = 'button'; send.className = 'primary'; send.textContent = 'Send for review';
+            const cancel = document.createElement('button');
+            cancel.type = 'button'; cancel.textContent = 'Cancel';
+            const msg = document.createElement('div');
+            msg.className = 'msg';
+            cancel.addEventListener('click', () => renderCommunity(box, market));
+            send.addEventListener('click', async () => {
+                if (!ta.value.trim()) { msg.textContent = 'Please enter a value.'; return; }
+                send.disabled = true;
+                const body = { market: market.name, field, value: ta.value, note: note.value, website: hp.value };
+                if (userLocation) body.distance_m = Math.round(calculateDistance(userLocation.lat, userLocation.lng, market.lat, market.lng) * 1000);
+                try {
+                    const r = await fetch(API + '/api/suggest', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) });
+                    if (!r.ok) throw new Error((await r.json()).error || 'Failed');
+                    row.replaceChildren();
+                    msg.textContent = 'Thanks, sent for review!';
+                    row.append(msg);
+                    setTimeout(() => renderCommunity(box, market), 2500);
+                } catch (e) {
+                    msg.textContent = e.message || 'Could not send, please try again.';
+                    send.disabled = false;
+                }
+            });
+            row.append(lbl, ta, note, hp, send, cancel, msg);
+        }
+
+        function showNearbyBanner() {
+            if (!userLocation) return;
+            let best = null, bestD = Infinity;
+            markets.forEach(m => {
+                const d = calculateDistance(userLocation.lat, userLocation.lng, m.lat, m.lng) * 1000;
+                if (d < bestD) { best = m; bestD = d; }
+            });
+            if (!best || bestD > 300 || document.querySelector('.community-banner')) return;
+            const bar = document.createElement('div');
+            bar.className = 'community-banner';
+            const t = document.createElement('span');
+            t.textContent = "You're at " + best.name + ' ';
+            const add = document.createElement('button');
+            add.type = 'button'; add.textContent = 'Add info';
+            add.addEventListener('click', () => { if (markers[best.name]) markers[best.name].openPopup(); bar.remove(); });
+            const x = document.createElement('button');
+            x.type = 'button'; x.className = 'x'; x.textContent = '✕'; x.setAttribute('aria-label', 'Dismiss');
+            x.addEventListener('click', () => bar.remove());
+            bar.append(t, add, x);
+            document.body.append(bar);
         }
 
         function hasDateInfo(market) {
@@ -3920,6 +4037,7 @@
 
                         map.flyTo([userLocation.lat, userLocation.lng], 13, { duration: 1.2 });
                         updateDistancePanel();
+                        showNearbyBanner();
                     },
                     function(error) {
                         console.log('Location access denied or unavailable');
