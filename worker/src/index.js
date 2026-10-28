@@ -153,7 +153,7 @@ export default {
     if (url.pathname.startsWith('/api/admin/') || url.pathname.startsWith('/admin')) {
       if (!(await verifyAccess(request, env))) return json({ error: 'Forbidden' }, 403);
       if (url.pathname.startsWith('/api/admin/')) return adminApi(request, env, url);
-      return env.ASSETS.fetch(new Request(new URL('/index.html', url), request));
+      return env.ASSETS.fetch(new Request(new URL('/', url), request));
     }
     return json({ error: 'Not found' }, 404);
   },
