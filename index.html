@@ -3410,6 +3410,8 @@
         .edit-sheet button { display: block; width: 100%; font: inherit; font-size: 16px; padding: 12px; margin-bottom: 10px; border-radius: var(--radius-sm); border: 1px solid #c41e3a; background: none; color: #c41e3a; cursor: pointer; }
         .edit-sheet button.primary { background: #c41e3a; color: #fff; }
         .edit-sheet button:disabled { opacity: .6; }
+
+        .share-btn { font: inherit; font-size: var(--font-sm); cursor: pointer; border: 1px solid var(--panel-border); background: var(--item-bg); color: var(--text-primary); border-radius: var(--radius-sm); padding: 4px 10px; margin: 8px 0 0 6px; }
 </style>
 </head>
 <body>
@@ -3672,6 +3674,16 @@
     <script>
         let markets = [];
         let userLocation = null;
+
+        // Deep links: https://.../#<market-slug> opens that market's popup.
+        function marketSlug(name) {
+            return name.replace(/ß/g, 'ss').normalize('NFKD').replace(/[\u0300-\u036f]/g, '')
+                .toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+        }
+        function marketLink(market) {
+            return location.origin + location.pathname + '#' + marketSlug(market.name);
+        }
+        const hasDeepLink = location.hash.length > 1;
         
         fetch('markets.json')
             .then(res => {
@@ -3685,6 +3697,7 @@
                     return m;
                 });
                 updateMarkers();
+                openFromHash();
                 showNearbyBanner();
             })
             .catch(err => {
@@ -3778,10 +3791,36 @@
             const popupEl = document.createElement('div');
             popupEl.innerHTML = popup;
             renderCommunity(popupEl.querySelector('.community'), market);
+            const share = document.createElement('button');
+            share.type = 'button';
+            share.className = 'share-btn';
+            share.textContent = '🔗 Share';
+            share.addEventListener('click', async e => {
+                e.stopPropagation();
+                const url = marketLink(market);
+                if (navigator.share) {
+                    try { await navigator.share({ title: market.name, url }); } catch (err) { /* cancelled */ }
+                    return;
+                }
+                try {
+                    await navigator.clipboard.writeText(url);
+                    share.textContent = '✓ Link copied';
+                } catch (err) {
+                    window.prompt('Copy this link:', url);
+                }
+                setTimeout(() => { share.textContent = '🔗 Share'; }, 2000);
+            });
+            popupEl.querySelector('.marker-popup-body').insertBefore(share, popupEl.querySelector('.community'));
             const marker = L.marker([market.lat, market.lng], { icon })
                 .bindPopup(popupEl, { maxWidth: 280, minWidth: 240, autoPanPadding: [12, 12] })
                 .addTo(map);
-            marker.on('popupopen', e => renderCommunity(e.popup.getElement().querySelector('.community'), market));
+            marker.on('popupopen', e => {
+                renderCommunity(e.popup.getElement().querySelector('.community'), market);
+                history.replaceState(null, '', '#' + marketSlug(market.name));
+            });
+            marker.on('popupclose', () => {
+                if (location.hash === '#' + marketSlug(market.name)) history.replaceState(null, '', location.pathname + location.search);
+            });
 
             return marker;
         }
@@ -3900,6 +3939,21 @@
             bar.append(t, add, x);
             document.body.append(bar);
         }
+
+        function openFromHash() {
+            const slug = decodeURIComponent(location.hash.slice(1));
+            const market = slug && markets.find(m => marketSlug(m.name) === slug);
+            if (!market || !Number.isFinite(market.lat)) return;
+            if (!markers[market.name]) {
+                // Hidden by the "open today" filter: show everything so the linked market is there.
+                dateFilterInput.value = '';
+                updateShowAllState();
+                updateMarkers();
+            }
+            map.setView([market.lat, market.lng], 15, { animate: false });
+            markers[market.name].openPopup();
+        }
+        window.addEventListener('hashchange', openFromHash);
 
         function hasDateInfo(market) {
             return (Array.isArray(market.dates) && market.dates.length > 0) || !!(market.start || market.end);
@@ -4064,7 +4118,7 @@
                             )
                             .addTo(map);
 
-                        map.flyTo([userLocation.lat, userLocation.lng], 13, { duration: 1.2 });
+                        if (!hasDeepLink) map.flyTo([userLocation.lat, userLocation.lng], 13, { duration: 1.2 });
                         updateDistancePanel();
                         showNearbyBanner();
                     },
