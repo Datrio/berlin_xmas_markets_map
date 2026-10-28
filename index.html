@@ -3843,6 +3843,7 @@
             const sub = mk('div', 'edit-sub', market.name);
             const ta = mk('textarea');
             ta.rows = 5; ta.maxLength = 500; ta.value = current;
+            if (field === 'entrance' || field === 'gluehwein_price') ta.placeholder = 'e.g. 3.50 EUR, or free';
             ta.setAttribute('aria-label', label);
             const note = mk('input');
             note.type = 'text'; note.maxLength = 300; note.placeholder = 'Optional note for the reviewer';

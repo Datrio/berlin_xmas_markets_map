@@ -3,6 +3,13 @@ const MAX_VALUE = 500;
 const MAX_NOTE = 300;
 const DAY_LIMIT_PER_IP = 30;
 
+// Price fields: a bare number like "3.50" gets " EUR" appended; text without digits ("free") or with a currency is left as is.
+function withCurrency(field, value) {
+  if (field !== 'entrance' && field !== 'gluehwein_price') return value;
+  if (!/\d/.test(value) || /€|\beur\b|euro|\$|\busd\b|£|\bgbp\b|\bchf\b/i.test(value)) return value;
+  return `${value} EUR`;
+}
+
 const json = (data, status = 200, extra = {}) =>
   new Response(JSON.stringify(data), {
     status,
@@ -88,7 +95,7 @@ async function postSuggest(request, env, cors) {
   if (!market) return json({ error: 'Unknown market' }, 400, cors);
   const dist = Number.isFinite(body.distance_m) ? Math.max(0, Math.round(body.distance_m)) : null;
   await env.DB.prepare('INSERT INTO suggestions (market_id, field, value, note, distance_m) VALUES (?, ?, ?, ?, ?)')
-    .bind(market.id, body.field, value, note || null, dist).run();
+    .bind(market.id, body.field, withCurrency(body.field, value), note || null, dist).run();
   return json({ ok: true }, 200, cors);
 }
 
@@ -115,7 +122,7 @@ async function adminApi(request, env, url) {
     let value = s.value;
     try {
       const b = await request.json();
-      if (typeof b.value === 'string' && b.value.trim()) value = b.value.trim().slice(0, MAX_VALUE);
+      if (typeof b.value === 'string' && b.value.trim()) value = withCurrency(s.field, b.value.trim()).slice(0, MAX_VALUE);
     } catch {}
     await env.DB.batch([
       env.DB.prepare("INSERT INTO market_info (market_id, field, value, suggestion_id) VALUES (?1, ?2, ?3, ?4) ON CONFLICT(market_id, field) DO UPDATE SET value=?3, suggestion_id=?4, approved_at=datetime('now')")
