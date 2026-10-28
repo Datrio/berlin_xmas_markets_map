@@ -1,3 +1,5 @@
+import adminHtml from './admin.html';
+
 const FIELDS = ['entrance', 'gluehwein_price', 'fun_fact', 'description'];
 const MAX_VALUE = 500;
 const MAX_NOTE = 300;
@@ -8,6 +10,44 @@ function withCurrency(field, value) {
   if (field !== 'entrance' && field !== 'gluehwein_price') return value;
   if (!/\d/.test(value) || /€|\beur\b|euro|\$|\busd\b|£|\bgbp\b|\bchf\b/i.test(value)) return value;
   return `${value} EUR`;
+}
+
+function marketSlug(name) {
+  return name.replace(/ß/g, 'ss').normalize('NFKD').replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+}
+
+const escXml = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+
+async function marketPage(request, env, url, slug) {
+  const { results } = await env.DB.prepare('SELECT name, loc FROM markets').all();
+  const market = results.find((r) => marketSlug(r.name) === slug);
+  if (!market) return Response.redirect(new URL('/', url).toString(), 302);
+  const page = await env.ASSETS.fetch(new Request(new URL('/', url), request));
+  const title = `${market.name} – Berlin Christmas Market 2026`;
+  const desc = `${market.name}${market.loc ? ' in ' + market.loc : ''}: dates, location, entrance fee and Glühwein price for this Berlin Christmas market (Weihnachtsmarkt) 2026.`;
+  const canonical = `${env.SITE_ORIGIN}/market/${slug}`;
+  const attr = (name, value) => ({ element: (e) => e.setAttribute(name, value) });
+  return new HTMLRewriter()
+    .on('title', { element: (e) => e.setInnerContent(title) })
+    .on('meta[name="description"]', attr('content', desc))
+    .on('link[rel="canonical"]', attr('href', canonical))
+    .on('meta[property="og:url"]', attr('content', canonical))
+    .on('meta[property="og:title"]', attr('content', title))
+    .on('meta[property="og:description"]', attr('content', desc))
+    .on('meta[name="twitter:title"]', attr('content', title))
+    .on('meta[name="twitter:description"]', attr('content', desc))
+    .transform(page);
+}
+
+async function sitemap(env) {
+  const { results } = await env.DB.prepare('SELECT name FROM markets ORDER BY name').all();
+  const today = new Date().toISOString().slice(0, 10);
+  const urls = [`${env.SITE_ORIGIN}/`, ...results.map((r) => `${env.SITE_ORIGIN}/market/${marketSlug(r.name)}`)];
+  const body = urls.map((u) => `  <url><loc>${escXml(u)}</loc><lastmod>${today}</lastmod></url>`).join('\n');
+  return new Response(`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</urlset>\n`, {
+    headers: { 'content-type': 'application/xml', 'cache-control': 'public, max-age=3600' },
+  });
 }
 
 const json = (data, status = 200, extra = {}) =>
@@ -160,8 +200,13 @@ export default {
     if (url.pathname.startsWith('/api/admin/') || url.pathname.startsWith('/admin')) {
       if (!(await verifyAccess(request, env))) return json({ error: 'Forbidden' }, 403);
       if (url.pathname.startsWith('/api/admin/')) return adminApi(request, env, url);
-      return env.ASSETS.fetch(new Request(new URL('/', url), request));
+      return new Response(adminHtml, { headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'no-store' } });
     }
-    return json({ error: 'Not found' }, 404);
+
+    if (url.pathname === '/sitemap.xml') return sitemap(env);
+    const m = url.pathname.match(/^\/market\/([a-z0-9-]+)\/?$/);
+    if (m) return marketPage(request, env, url, m[1]);
+    if (url.pathname.startsWith('/api/')) return json({ error: 'Not found' }, 404);
+    return env.ASSETS.fetch(request);
   },
 };

@@ -3681,11 +3681,16 @@
                 .toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
         }
         function marketLink(market) {
-            return location.origin + location.pathname + '#' + marketSlug(market.name);
+            return location.origin + '/market/' + marketSlug(market.name);
         }
-        const hasDeepLink = location.hash.length > 1;
+        // Linked market slug: /market/<slug> (preferred) or the older #<slug>.
+        function linkedSlug() {
+            const m = location.pathname.match(/^\/market\/([^/]+)\/?$/);
+            return m ? decodeURIComponent(m[1]) : decodeURIComponent(location.hash.slice(1));
+        }
+        const hasDeepLink = !!linkedSlug();
         
-        fetch('markets.json')
+        fetch('/markets.json')
             .then(res => {
                 if (!res.ok) throw new Error('Network response was not ok');
                 return res.json();
@@ -3816,17 +3821,17 @@
                 .addTo(map);
             marker.on('popupopen', e => {
                 renderCommunity(e.popup.getElement().querySelector('.community'), market);
-                history.replaceState(null, '', '#' + marketSlug(market.name));
+                history.replaceState(null, '', '/market/' + marketSlug(market.name));
             });
             marker.on('popupclose', () => {
-                if (location.hash === '#' + marketSlug(market.name)) history.replaceState(null, '', location.pathname + location.search);
+                if (location.pathname.replace(/\/$/, '') === '/market/' + marketSlug(market.name)) history.replaceState(null, '', '/');
             });
 
             return marker;
         }
 
 
-        const API = 'https://xmas-api.datrio.workers.dev';
+        const API = ''; // same origin: the Worker serves both the site and /api/*
         const COMMUNITY_FIELDS = [
             ['entrance', 'Entrance fee', 'No entrance info yet'],
             ['gluehwein_price', 'Glühwein price', 'No price yet'],
@@ -3941,7 +3946,7 @@
         }
 
         function openFromHash() {
-            const slug = decodeURIComponent(location.hash.slice(1));
+            const slug = linkedSlug();
             const market = slug && markets.find(m => marketSlug(m.name) === slug);
             if (!market || !Number.isFinite(market.lat)) return;
             if (!markers[market.name]) {

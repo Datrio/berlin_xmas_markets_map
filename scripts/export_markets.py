@@ -10,7 +10,7 @@ import sys
 import urllib.request
 from pathlib import Path
 
-API = os.environ.get("XMAS_API", "https://xmas-api.datrio.workers.dev")
+API = os.environ.get("XMAS_API", "https://xmas.dariuszsiedlecki.com")
 OUT = Path(__file__).resolve().parent.parent / "markets.json"
 
 req = urllib.request.Request(API + "/api/export", headers={"authorization": "Bearer " + os.environ["EXPORT_TOKEN"], "user-agent": "xmas-export"})

@@ -20,6 +20,7 @@ jobs:
       - name: Regenerate SEO content
         run: python3 scripts/generate_seo_content.py
       - name: Commit if changed
+        id: commit
         run: |
           if [ -n "$(git status --porcelain markets.json index.html)" ]; then
             git config user.name "github-actions"
@@ -27,4 +28,13 @@ jobs:
             git add markets.json index.html
             git commit -m "Update markets from database"
             git push
+            echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
+      # Commits pushed with GITHUB_TOKEN don't trigger other workflows, so deploy from here.
+      - name: Deploy to Cloudflare
+        if: steps.commit.outputs.changed == 'true'
+        working-directory: worker
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: 5c31ae8ccfe76e5ffa33ed88afcd73b8
+        run: npx --yes wrangler@4 deploy

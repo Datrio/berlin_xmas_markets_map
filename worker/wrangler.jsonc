@@ -1,8 +1,9 @@
 {
   "name": "xmas-api",
   "main": "src/index.js",
+  "routes": [{ "pattern": "xmas.dariuszsiedlecki.com", "custom_domain": true }],
   "compatibility_date": "2026-10-01",
-  "assets": { "directory": "./admin", "binding": "ASSETS", "run_worker_first": true },
+  "assets": { "directory": "..", "binding": "ASSETS", "run_worker_first": true },
   "d1_databases": [
     { "binding": "DB", "database_name": "berlin-xmas-markets", "database_id": "431bdc06-0b82-4c17-904d-fbc59541dd4c" }
   ],

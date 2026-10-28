@@ -1,0 +1,13 @@
+.git
+.github
+.assetsignore
+.DS_Store
+worker
+docs
+scripts
+README.md
+LICENSE
+sitemap.xml
+node_modules
+.wrangler
+.gitignore
