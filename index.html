@@ -3415,6 +3415,15 @@
 
         .travel-link { display: block; margin-top: 8px; font-size: var(--font-sm); font-weight: 600; color: #c41e3a; text-decoration: none; }
         .travel-link:hover { text-decoration: underline; }
+
+        .sheet { position: fixed; left: 50%; bottom: 0; z-index: 1200; width: min(560px, 100%); max-height: 60vh; max-height: 60dvh; display: flex; flex-direction: column; overflow: hidden; padding-bottom: env(safe-area-inset-bottom); background: var(--panel-bg); color: var(--text-primary); border-radius: 16px 16px 0 0; box-shadow: 0 -8px 30px rgba(0,0,0,.28); transform: translate(-50%, 105%); visibility: hidden; transition: transform .28s cubic-bezier(.16, 1, .3, 1), visibility 0s linear .28s; }
+        .sheet.open { transform: translate(-50%, 0); visibility: visible; transition-delay: 0s; }
+        .sheet-content { overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
+        .sheet-close { position: absolute; top: 10px; right: 10px; z-index: 2; width: 30px; height: 30px; border: none; border-radius: 50%; background: rgba(255,255,255,.28); color: #fff; font-size: 15px; cursor: pointer; }
+        .sheet .marker-popup-header { padding-right: 52px; }
+        @media (prefers-reduced-motion: reduce) { .sheet { transition: none; } }
+        .market-marker.selected { z-index: 1000 !important; }
+        .market-marker.selected svg { transform: scale(1.35); transition: transform .2s ease; filter: drop-shadow(0 0 6px rgba(255,255,255,.9)); }
 </style>
 </head>
 <body>
@@ -3823,7 +3832,7 @@
                 </div>
             `;
 
-            // Popup content is a persistent element (not an HTML string) so popup.update() keeps the community block.
+            // Sheet content is a persistent element so the community block and travel link keep their listeners.
             const popupEl = document.createElement('div');
             popupEl.innerHTML = popup;
             renderCommunity(popupEl.querySelector('.community'), market);
@@ -3854,17 +3863,9 @@
             const body = popupEl.querySelector('.marker-popup-body');
             body.insertBefore(travel, popupEl.querySelector('.community'));
             body.insertBefore(share, popupEl.querySelector('.community'));
-            const marker = L.marker([market.lat, market.lng], { icon })
-                .bindPopup(popupEl, { maxWidth: 280, minWidth: 240, autoPanPadding: [12, 12] })
-                .addTo(map);
-            marker.on('popupopen', e => {
-                renderTravel(e.popup.getElement().querySelector('.travel-link'), market);
-                renderCommunity(e.popup.getElement().querySelector('.community'), market);
-                history.replaceState(null, '', '/market/' + marketSlug(market.name));
-            });
-            marker.on('popupclose', () => {
-                if (location.pathname.replace(/\/$/, '') === '/market/' + marketSlug(market.name)) history.replaceState(null, '', '/');
-            });
+            sheetContents[market.name] = popupEl;
+            const marker = L.marker([market.lat, market.lng], { icon }).addTo(map);
+            marker.on('click', () => openSheet(market));
 
             return marker;
         }
@@ -3885,8 +3886,6 @@
             return (liveInfo[market.name] && liveInfo[market.name][field]) || (market.info && market.info[field]) || '';
         }
 
-        // Handlers stopPropagation because they remove the clicked button from the DOM; Leaflet then can't
-        // tell the click came from inside the popup and treats it as a map click, which closes the popup.
         function renderCommunity(box, market) {
             if (!box) return;
             box.replaceChildren();
@@ -3910,12 +3909,9 @@
                 row.append(lbl, v, btn);
                 box.append(row);
             });
-            // The community block changes the popup's height after Leaflet panned for it; re-fit it in view.
-            const popup = markers[market.name] && markers[market.name].getPopup();
-            if (popup && popup.isOpen()) popup.update();
         }
 
-        // Full-screen editor: the popup is too small to type in comfortably on a phone.
+        // Full-screen editor: the sheet is too small to type in comfortably on a phone.
         function showEditForm(row, market, field, label, current, box) {
             const mk = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text) e.textContent = text; return e; };
             const overlay = mk('div', 'edit-overlay');
@@ -3976,13 +3972,85 @@
             t.textContent = "You're at " + best.name + ' ';
             const add = document.createElement('button');
             add.type = 'button'; add.textContent = 'Add info';
-            add.addEventListener('click', () => { if (markers[best.name]) markers[best.name].openPopup(); bar.remove(); });
+            add.addEventListener('click', () => { openSheet(best); bar.remove(); });
             const x = document.createElement('button');
             x.type = 'button'; x.className = 'x'; x.textContent = '✕'; x.setAttribute('aria-label', 'Dismiss');
             x.addEventListener('click', () => bar.remove());
             bar.append(t, add, x);
             document.body.append(bar);
         }
+
+        // Bottom sheet that replaces the map popup. The marker is centred in the map area left visible above it.
+        const sheetContents = {};
+        let activeMarket = null;
+        const sheet = document.createElement('div');
+        sheet.className = 'sheet';
+        sheet.setAttribute('role', 'dialog');
+        sheet.setAttribute('aria-label', 'Market details');
+        const sheetClose = document.createElement('button');
+        sheetClose.type = 'button';
+        sheetClose.className = 'sheet-close';
+        sheetClose.setAttribute('aria-label', 'Close');
+        sheetClose.textContent = '✕';
+        const sheetBody = document.createElement('div');
+        sheetBody.className = 'sheet-content';
+        sheet.append(sheetClose, sheetBody);
+        document.body.append(sheet);
+
+        function centerOnActive(animate, zoom) {
+            if (!activeMarket) return;
+            const z = zoom || Math.max(map.getZoom(), 14);
+            const mapH = map.getSize().y;
+            const visibleH = Math.max(120, window.innerHeight - sheet.offsetHeight - map.getContainer().getBoundingClientRect().top);
+            const shift = mapH / 2 - visibleH / 2;
+            const target = map.project([activeMarket.lat, activeMarket.lng], z).add([0, shift]);
+            map.setView(map.unproject(target, z), z, { animate });
+        }
+
+        function setSelected(market, on) {
+            const m = market && markers[market.name];
+            if (m && m.getElement()) m.getElement().classList.toggle('selected', on);
+        }
+
+        function openSheet(market, zoom) {
+            const el = sheetContents[market.name];
+            if (!el) return;
+            renderTravel(el.querySelector('.travel-link'), market);
+            renderCommunity(el.querySelector('.community'), market);
+            sheetBody.replaceChildren(el);
+            sheetBody.scrollTop = 0;
+            setSelected(activeMarket, false);
+            activeMarket = market;
+            setSelected(market, true);
+            sheet.classList.add('open');
+            history.replaceState(null, '', '/market/' + marketSlug(market.name));
+            centerOnActive(true, zoom);
+        }
+
+        function closeSheet() {
+            if (!activeMarket) return;
+            const slug = marketSlug(activeMarket.name);
+            setSelected(activeMarket, false);
+            activeMarket = null;
+            sheet.classList.remove('open');
+            if (location.pathname.replace(/\/$/, '') === '/market/' + slug) history.replaceState(null, '', '/');
+        }
+
+        sheetClose.addEventListener('click', closeSheet);
+        map.on('click', closeSheet);
+        document.addEventListener('keydown', e => { if (e.key === 'Escape' && !document.querySelector('.edit-overlay')) closeSheet(); });
+        // The sheet grows/shrinks (editing a field, rotating the phone): keep the marker centred above it.
+        if (window.ResizeObserver) {
+            let raf = 0;
+            new ResizeObserver(() => { cancelAnimationFrame(raf); raf = requestAnimationFrame(() => centerOnActive(false)); }).observe(sheet);
+        }
+        // Swipe down on the sheet (when scrolled to the top) to dismiss.
+        let swipeY = null;
+        sheet.addEventListener('touchstart', e => { swipeY = sheetBody.scrollTop === 0 ? e.touches[0].clientY : null; }, { passive: true });
+        sheet.addEventListener('touchend', e => {
+            if (swipeY !== null && e.changedTouches[0].clientY - swipeY > 70) closeSheet();
+            swipeY = null;
+        }, { passive: true });
 
         function openFromHash() {
             const slug = linkedSlug();
@@ -3994,8 +4062,7 @@
                 updateShowAllState();
                 updateMarkers();
             }
-            map.setView([market.lat, market.lng], 15, { animate: false });
-            markers[market.name].openPopup();
+            openSheet(market, 15);
         }
         window.addEventListener('hashchange', openFromHash);
 
