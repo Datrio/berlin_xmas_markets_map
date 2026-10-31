@@ -2875,6 +2875,8 @@
             }
         }
 
+        html, body { overscroll-behavior-y: none; }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             background: var(--bg);
@@ -4138,13 +4140,33 @@
             let raf = 0;
             new ResizeObserver(() => { cancelAnimationFrame(raf); raf = requestAnimationFrame(() => centerOnActive(false)); }).observe(sheet);
         }
-        // Swipe down on the sheet (when scrolled to the top) to dismiss.
-        let swipeY = null;
-        sheet.addEventListener('touchstart', e => { swipeY = sheetBody.scrollTop === 0 ? e.touches[0].clientY : null; }, { passive: true });
-        sheet.addEventListener('touchend', e => {
-            if (swipeY !== null && e.changedTouches[0].clientY - swipeY > 70) closeSheet();
-            swipeY = null;
+        // Drag the sheet down (when its content is scrolled to the top) to dismiss. The sheet follows the
+        // finger and preventDefault stops the page behind it from scrolling or pull-to-refreshing.
+        let dragStartY = null, dragDy = 0, dragging = false;
+        sheet.addEventListener('touchstart', e => {
+            dragStartY = sheetBody.scrollTop === 0 ? e.touches[0].clientY : null;
+            dragDy = 0; dragging = false;
         }, { passive: true });
+        sheet.addEventListener('touchmove', e => {
+            if (dragStartY === null) return;
+            const dy = e.touches[0].clientY - dragStartY;
+            if (!dragging && (dy <= 0 || sheetBody.scrollTop > 0)) { dragStartY = null; return; }
+            dragging = true;
+            dragDy = Math.max(0, dy);
+            e.preventDefault();
+            sheet.style.transition = 'none';
+            sheet.style.transform = `translate(-50%, ${dragDy}px)`;
+        }, { passive: false });
+        function endDrag() {
+            if (!dragging) { dragStartY = null; return; }
+            const dismiss = dragDy > 90;
+            sheet.style.transition = '';
+            sheet.style.transform = '';
+            if (dismiss) closeSheet();
+            dragStartY = null; dragging = false; dragDy = 0;
+        }
+        sheet.addEventListener('touchend', endDrag);
+        sheet.addEventListener('touchcancel', endDrag);
 
         function openFromHash() {
             const slug = linkedSlug();
