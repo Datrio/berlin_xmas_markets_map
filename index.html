@@ -2809,6 +2809,8 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/leaflet.markercluster.js"></script>
     <style>
         * {
             margin: 0;
@@ -3486,6 +3488,8 @@
         .market-marker.tbc .marker-inner { opacity: .72; }
         @media (prefers-reduced-motion: reduce) { .marker-inner, .market-item, .distance-panel, .panel-overlay { animation: none !important; transition: none !important; } }
         .pin { vertical-align: -2px; }
+        .market-cluster { display: flex; align-items: center; justify-content: center; border-radius: 50%; background: var(--brand); color: #fff; border: 3px solid #fff; box-shadow: 0 2px 8px rgba(0,0,0,.3); font-weight: 700; font-size: var(--font-sm); font-variant-numeric: tabular-nums; transition: transform .15s var(--ease-out); }
+        .market-cluster:hover { transform: scale(1.1); }
         .market-marker.selected svg { transform: scale(1.35); transition: transform .2s ease; filter: drop-shadow(0 0 6px rgba(255,255,255,.9)); }
 </style>
 </head>
@@ -3818,6 +3822,21 @@
         });
 
         const markers = {};
+        const cluster = L.markerClusterGroup({
+            maxClusterRadius: 48,
+            disableClusteringAtZoom: 14,
+            showCoverageOnHover: false,
+            spiderfyOnMaxZoom: false,
+            iconCreateFunction: c => {
+                const n = c.getChildCount();
+                const size = n < 10 ? 36 : n < 30 ? 42 : 48;
+                return L.divIcon({
+                    html: `<span>${n}</span>`,
+                    className: 'market-cluster',
+                    iconSize: [size, size]
+                });
+            }
+        }).addTo(map);
         const defaultColor = '#c41e3a';
 
         function calculateDistance(lat1, lng1, lat2, lng2) {
@@ -3940,7 +3959,8 @@
             body.insertBefore(travel, popupEl.querySelector('.community'));
             body.insertBefore(share, popupEl.querySelector('.community'));
             sheetContents[market.name] = popupEl;
-            const marker = L.marker([market.lat, market.lng], { icon }).addTo(map);
+            const marker = L.marker([market.lat, market.lng], { icon });
+            cluster.addLayer(marker);
             marker.on('click', () => openSheet(market));
 
             return marker;
@@ -4229,8 +4249,8 @@
                 clearTimeout(pendingRemoval[market.name]);
                 delete pendingRemoval[market.name];
             }
-            if (!map.hasLayer(marker)) {
-                marker.addTo(map);
+            if (!cluster.hasLayer(marker)) {
+                cluster.addLayer(marker);
             } else {
                 const inner = marker.getElement() && marker.getElement().querySelector('.marker-inner');
                 if (inner) inner.classList.remove('marker-removing');
@@ -4239,12 +4259,12 @@
 
         function hideMarker(name) {
             const marker = markers[name];
-            if (!marker || !map.hasLayer(marker) || pendingRemoval[name]) return;
+            if (!marker || !cluster.hasLayer(marker) || pendingRemoval[name]) return;
             const inner = marker.getElement() && marker.getElement().querySelector('.marker-inner');
-            if (!inner) { map.removeLayer(marker); return; }
+            if (!inner) { cluster.removeLayer(marker); return; }
             inner.classList.add('marker-removing');
             pendingRemoval[name] = setTimeout(() => {
-                map.removeLayer(marker);
+                cluster.removeLayer(marker);
                 delete pendingRemoval[name];
             }, 220);
         }
