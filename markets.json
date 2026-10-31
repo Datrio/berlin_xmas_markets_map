@@ -272,8 +272,7 @@
     "lng": 13.524,
     "dates": [
       "2026-11-28"
-    ],
-    "tbc": true
+    ]
   },
   {
     "name": "Umwelt- und Weihnachtsmarkt in der Sophienstraße",
@@ -345,8 +344,7 @@
     "dates": [
       "2026-12-05",
       "2026-12-06"
-    ],
-    "tbc": true
+    ]
   },
   {
     "name": "Schauriger Weihnachtsmarkt im Goerzwerk",
@@ -688,8 +686,7 @@
     "dates": [
       "2026-12-12",
       "2026-12-13"
-    ],
-    "tbc": true
+    ]
   },
   {
     "name": "Weihnachtsfest der Tiere",
@@ -726,8 +723,7 @@
     "lng": 13.4795,
     "dates": [
       "2026-11-29"
-    ],
-    "tbc": true
+    ]
   },
   {
     "name": "Adventsmarkt Alt-Marzahn",
@@ -869,8 +865,7 @@
     "lng": 13.4176,
     "dates": [
       "2026-11-28"
-    ],
-    "tbc": true
+    ]
   },
   {
     "name": "Adventsbasar Albert Schweitzer",
@@ -921,8 +916,7 @@
     "lng": 13.3553,
     "dates": [
       "2026-11-29"
-    ],
-    "tbc": true
+    ]
   },
   {
     "name": "Advent im Forstamt Tegel",
@@ -1118,7 +1112,7 @@
     "name_en": "LGBTIQA Winterdays and Christmas Avenue",
     "lat": 52.4992,
     "lng": 13.3533,
-    "start": "2026-11-04",
+    "start": "2026-11-07",
     "end": "2026-12-23",
     "closed": [
       "2026-11-15",
@@ -1185,7 +1179,9 @@
     "name_en": "Weihnachtsmarkt in der Villa Donnersmarck",
     "lat": 52.4272,
     "lng": 13.2584,
-    "tbc": true
+    "dates": [
+      "2026-12-13"
+    ]
   },
   {
     "name": "Designer Christmas Market",
@@ -1230,24 +1226,8 @@
     "lat": 52.4925,
     "lng": 13.4313,
     "dates": [
-      "2026-12-05",
-      "2026-12-06"
-    ],
-    "tbc": true
-  },
-  {
-    "name": "Weihnachtsflohmarkt auf dem Kranoldplatz",
-    "loc": "Neukölln",
-    "url": "https://www.berlin.de/weihnachtsmarkt/10041394-3496862-weihnachtsflohmarkt-auf-dem-kranoldplatz.html",
-    "name_de": "Weihnachtsflohmarkt auf dem Kranoldplatz",
-    "name_en": "Weihnachtsflohmarkt auf dem Kranoldplatz",
-    "lat": 52.4664,
-    "lng": 13.4378,
-    "dates": [
-      "2026-12-12",
-      "2026-12-13"
-    ],
-    "tbc": true
+      "2026-11-29"
+    ]
   },
   {
     "name": "Weihnachtsbasar in Britz",
@@ -1270,7 +1250,9 @@
     "name_en": "Gatower Kunst- und Handwerker-Weihnachtsmarkt",
     "lat": 52.4865,
     "lng": 13.1815,
-    "tbc": true
+    "dates": [
+      "2026-12-13"
+    ]
   },
   {
     "name": "Kunsthandwerklicher Weihnachtsmarkt im Gotischen Haus",
@@ -1708,33 +1690,5 @@
     "lng": 13.2850602,
     "start": "2026-11-23",
     "end": "2026-12-27"
-  },
-  {
-    "name": "Weihnachtsmarkt im Tierheim Berlin",
-    "loc": "Falkenberg",
-    "url": "https://www.berlin.de/weihnachtsmarkt/7897509-3496862-christmas-market-animal-shelter.html",
-    "name_de": "Weihnachtsmarkt im Tierheim Berlin",
-    "name_en": "Christmas Market at Tierheim Berlin",
-    "lat": 52.5755866,
-    "lng": 13.545059,
-    "dates": [
-      "2026-12-06"
-    ]
-  },
-  {
-    "name": "All inclusive Weihnachtsmarkt am Spreespeicher",
-    "loc": "Friedrichshain",
-    "url": "https://www.berlin.de/weihnachtsmarkt/6333570-3496862-all-inclusive-christmas-market-at-sprees.html",
-    "name_de": "All inclusive Weihnachtsmarkt am Spreespeicher",
-    "name_en": "All-Inclusive Christmas Market at Spreespeicher",
-    "lat": 52.5017408,
-    "lng": 13.4486425,
-    "start": "2026-11-16",
-    "end": "2026-12-30",
-    "closed": [
-      "2026-12-24",
-      "2026-12-25",
-      "2026-12-26"
-    ]
   }
 ]
