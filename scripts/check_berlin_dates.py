@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """
-Compares the dates in markets.json with the official berlin.de market pages and
+Compares the dates served by /api/markets with the official berlin.de market pages and
 flags possible duplicates. It only reports; it never changes any data.
 
     python3 scripts/check_berlin_dates.py            # fetches every berlin.de page (~1 min)
     python3 scripts/check_berlin_dates.py --cache f  # reuse/store the fetched pages in f (JSON)
 
 Run it before each season. Apply any fix in the D1 database (the source of truth),
-then let the nightly export update markets.json.
+the live API picks it up within a minute.
 """
 import argparse
 import collections
@@ -20,7 +20,11 @@ import math
 import re
 import time
 import urllib.request
+import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from markets_api import fetch_markets
 
 ROOT = Path(__file__).resolve().parent.parent
 MONTHS = {m: i + 1 for i, m in enumerate(
@@ -128,7 +132,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--cache", help="JSON file to read fetched pages from and write them to")
     args = ap.parse_args()
-    markets = json.loads((ROOT / "markets.json").read_text())
+    markets = fetch_markets()
     cache = json.loads(Path(args.cache).read_text()) if args.cache and Path(args.cache).exists() else {}
 
     report = collections.defaultdict(list)

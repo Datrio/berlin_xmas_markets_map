@@ -116,6 +116,17 @@ async function getInfo(env) {
   return out;
 }
 
+// Every market in the shape the map and the build scripts read, with approved community info under `info`.
+async function allMarkets(env) {
+  const { results } = await env.DB.prepare('SELECT * FROM markets ORDER BY id').all();
+  const info = await getInfo(env);
+  return results.map((r) => {
+    const m = marketRowToJson(r);
+    if (info[r.name]) m.info = info[r.name];
+    return m;
+  });
+}
+
 async function postSuggest(request, env, cors) {
   const ip = request.headers.get('cf-connecting-ip') || 'unknown';
   const ipHash = (await sha256Hex(ip + ':xmas')).slice(0, 16);
@@ -185,16 +196,8 @@ export default {
     }
     if (url.pathname === '/api/suggest' && request.method === 'POST') return postSuggest(request, env, cors);
 
-    if (url.pathname === '/api/export' && request.method === 'GET') {
-      const auth = request.headers.get('authorization') || '';
-      if (!env.EXPORT_TOKEN || auth !== `Bearer ${env.EXPORT_TOKEN}`) return json({ error: 'Unauthorized' }, 401);
-      const { results } = await env.DB.prepare('SELECT * FROM markets ORDER BY id').all();
-      const info = await getInfo(env);
-      return json(results.map((r) => {
-        const m = marketRowToJson(r);
-        if (info[r.name]) m.info = info[r.name];
-        return m;
-      }));
+    if (url.pathname === '/api/markets' && request.method === 'GET') {
+      return json(await allMarkets(env), 200, { ...cors, 'cache-control': 'public, max-age=60' });
     }
 
     if (url.pathname.startsWith('/api/admin/') || url.pathname.startsWith('/admin')) {

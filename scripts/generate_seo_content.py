@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """
 Regenerates the static, crawlable market list and JSON-LD structured data
-in index.html from markets.json.
+in index.html from the live /api/markets endpoint.
 
-Search engines don't execute the app's own fetch('markets.json') + Leaflet
+Search engines don't execute the app's own fetch('/api/markets') + Leaflet
 rendering reliably, so this bakes the same data into plain HTML/JSON-LD at
-build time instead. Run this again whenever markets.json changes:
+build time instead. Run this again whenever the market data changes (the nightly workflow does):
 
     python3 scripts/generate_seo_content.py
 """
@@ -16,8 +16,10 @@ from collections import defaultdict
 from datetime import date
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from markets_api import fetch_markets
+
 ROOT = Path(__file__).resolve().parent.parent
-MARKETS_JSON = ROOT / "markets.json"
 INDEX_HTML = ROOT / "index.html"
 SITE_URL = "https://xmas.dariuszsiedlecki.com/"
 
@@ -179,14 +181,14 @@ def replace_block(html, start_marker, end_marker, new_block):
 
 
 def main():
-    markets = json.loads(MARKETS_JSON.read_text(encoding="utf-8"))
+    markets = fetch_markets()
     html = INDEX_HTML.read_text(encoding="utf-8")
 
     html = replace_block(html, LIST_START, LIST_END, build_market_list_html(markets))
     html = replace_block(html, JSONLD_START, JSONLD_END, build_jsonld(markets))
 
     INDEX_HTML.write_text(html, encoding="utf-8")
-    print(f"Updated {INDEX_HTML} from {len(markets)} markets in {MARKETS_JSON}")
+    print(f"Updated {INDEX_HTML} from {len(markets)} markets")
 
 
 if __name__ == "__main__":

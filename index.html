@@ -3782,7 +3782,7 @@
         }
         const hasDeepLink = !!linkedSlug();
         
-        fetch('/markets.json')
+        fetch('/api/markets')
             .then(res => {
                 if (!res.ok) throw new Error('Network response was not ok');
                 return res.json();
@@ -3798,8 +3798,8 @@
                 showNearbyBanner();
             })
             .catch(err => {
-                console.error('Failed to load markets.json', err);
-                document.getElementById('markerCount').textContent = 'Failed to load markets.json';
+                console.error('Failed to load markets', err);
+                document.getElementById('markerCount').textContent = 'Couldn\'t load the markets. Please reload the page.';
             });
 
         const map = L.map('map').setView([52.52, 13.405], 11);
@@ -3974,12 +3974,8 @@
             ['fun_fact', 'Fun fact', 'No fun fact yet'],
             ['description', 'Description', 'No description yet']
         ];
-        let liveInfo = {};
-        // Live approved info overlays the snapshot baked into markets.json; failure just keeps the snapshot.
-        fetch(API + '/api/info').then(r => r.ok ? r.json() : {}).then(d => { liveInfo = d; }).catch(() => {});
-
         function infoFor(market, field) {
-            return (liveInfo[market.name] && liveInfo[market.name][field]) || (market.info && market.info[field]) || '';
+            return (market.info && market.info[field]) || '';
         }
 
         function renderCommunity(box, market) {
