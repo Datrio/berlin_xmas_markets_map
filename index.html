@@ -2822,13 +2822,17 @@
             --panel-border: #dddddd;
             --text-primary: #333333;
             --text-secondary: #666666;
-            --text-muted: #999999;
+            --text-muted: #6b6b6b;
+            --brand: #c41e3a;
+            --brand-deep: #a01830;
+            --gold: #ffd54a;
             --item-bg: #f9f9f9;
             --item-bg-hover: #f0f0f0;
             --popup-text: #444444;
             --tbc-bg: #fff4e0;
             --tbc-text: #92590a;
             --attribution-bg: rgba(255,255,255,0.8);
+            --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
             color-scheme: light dark;
 
             --space-1: 4px;
@@ -2859,7 +2863,7 @@
                 --panel-border: #3a3a3c;
                 --text-primary: #f5f5f7;
                 --text-secondary: #c7c7cc;
-                --text-muted: #8e8e93;
+                --text-muted: #a1a1a6;
                 --item-bg: #3a3a3c;
                 --item-bg-hover: #48484a;
                 --popup-text: #d1d1d6;
@@ -2880,96 +2884,104 @@
             flex-direction: column;
         }
 
+        ::selection { background: var(--brand); color: #fff; }
+        :focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+        .filters :focus-visible, .sheet :focus-visible, .distance-panel :focus-visible { outline-color: var(--brand); }
+        header .filters :focus-visible, header .brand :focus-visible { outline-color: #fff; }
+
         header {
-            background: linear-gradient(135deg, #c41e3a 0%, #a01830 100%);
+            background: var(--brand);
             color: white;
-            padding: var(--space-6) var(--space-7);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            padding: var(--space-3) var(--space-6);
+            box-shadow: 0 1px 0 rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.08);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: var(--space-3) var(--space-6);
+            position: relative;
+            z-index: 1100;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+        }
+
+        .brand svg {
+            flex-shrink: 0;
+            width: 26px;
+            height: 26px;
         }
 
         h1 {
-            font-size: var(--font-2xl);
+            font-size: var(--font-xl);
             font-weight: 700;
             letter-spacing: -0.015em;
-            margin-bottom: var(--space-4);
+            line-height: 1.15;
+            text-wrap: balance;
         }
 
         .filters {
             display: flex;
-            gap: var(--space-4);
+            gap: var(--space-3);
             flex-wrap: wrap;
             align-items: center;
         }
 
-        label {
+        .filter-label {
             font-weight: 500;
             font-size: var(--font-base);
-            margin-right: var(--space-2);
-            opacity: 0.9;
+            opacity: 0.92;
         }
 
-        select, input[type="checkbox"] {
-            padding: var(--space-2) var(--space-3);
-            border: none;
+        .segmented {
+            display: inline-flex;
+            padding: 3px;
+            gap: 2px;
+            background: rgba(0,0,0,0.22);
             border-radius: var(--radius-sm);
+        }
+
+        .segmented button {
+            font: inherit;
             font-size: var(--font-base);
+            font-weight: 600;
+            min-height: 36px;
+            padding: 0 var(--space-4);
+            border: none;
+            border-radius: 6px;
+            background: transparent;
+            color: rgba(255,255,255,0.88);
             cursor: pointer;
+            white-space: nowrap;
+            transition: background 0.18s var(--ease-out), color 0.18s var(--ease-out);
+        }
+
+        .segmented button:hover { background: rgba(255,255,255,0.14); color: #fff; }
+        .segmented button:active { transform: scale(0.97); }
+
+        .segmented button[aria-pressed="true"] {
+            background: var(--gold);
+            color: #3a2a00;
         }
 
         input[type="date"] {
-            padding: 9px var(--space-3);
+            min-height: 42px;
+            padding: 0 var(--space-3);
             border: none;
             border-radius: var(--radius-sm);
             font-size: var(--font-base);
             font-family: inherit;
+            font-variant-numeric: tabular-nums;
             cursor: pointer;
-            background: rgba(255,255,255,0.95);
+            background: rgba(255,255,255,0.96);
             color: #333;
+            accent-color: var(--brand);
         }
 
-        .show-all-btn {
-            padding: 9px var(--space-4);
-            border: none;
-            border-radius: var(--radius-sm);
-            font-size: var(--font-base);
-            font-weight: 600;
-            cursor: pointer;
-            background: #ffd700;
-            color: #333;
-            transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), background 0.15s ease, color 0.15s ease;
-        }
-
-        .show-all-btn:hover {
-            background: #ffc700;
-        }
-
-        .show-all-btn:active {
-            transform: scale(0.95);
-        }
-
-        .show-all-btn.active {
-            background: #333;
-            color: #ffd700;
-        }
-
-        .checkbox-group {
-            display: flex;
-            gap: 16px;
-            align-items: center;
-        }
-
-        .checkbox-item {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-            accent-color: #ffd700;
-        }
+        input[type="date"][data-empty="true"] { color: #6b6b6b; }
 
         .content {
             display: flex;
@@ -3013,7 +3025,6 @@
             margin-bottom: var(--space-2);
             background: var(--item-bg);
             border-radius: var(--radius-sm);
-            border-left: 3px solid #c41e3a;
             cursor: pointer;
             transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
             animation: itemFadeInUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) backwards;
@@ -3044,10 +3055,14 @@
 
         .market-item-distance {
             font-size: var(--font-xs);
-            color: #c41e3a;
-            font-weight: 600;
+            color: var(--brand);
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
             margin-bottom: 2px;
         }
+
+        .market-item { display: block; width: 100%; text-align: left; font: inherit; color: inherit; border: 1px solid var(--panel-border); }
+        .market-item:focus-visible { outline: 2px solid var(--brand); outline-offset: 1px; }
 
         .market-item-location {
             font-size: var(--font-xs);
@@ -3070,7 +3085,12 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: var(--space-4);
         }
+
+        .info-links { display: flex; align-items: center; gap: var(--space-5); white-space: nowrap; }
+        .info-links > a { color: var(--brand); font-weight: 600; }
+        @media (prefers-color-scheme: dark) { .info-links > a { color: #ff8da1; } .market-item-distance { color: #ff8da1; } }
 
         #markerCount {
             transition: opacity 0.15s ease;
@@ -3078,7 +3098,7 @@
 
         .credit-text {
             color: var(--text-muted);
-            font-size: 13px;
+            font-size: var(--font-sm);
         }
 
         .credit-text a {
@@ -3154,14 +3174,15 @@
         }
 
         .marker-popup-header {
-            background: linear-gradient(135deg, #c41e3a 0%, #a01830 100%);
+            background: var(--brand);
             color: white;
-            padding: var(--space-4) 34px var(--space-3) var(--space-4);
+            padding: var(--space-5) 34px var(--space-4) var(--space-4);
         }
 
         .marker-popup-header h3 {
             margin: 0;
-            font-size: var(--font-md);
+            font-size: var(--font-lg);
+            text-wrap: balance;
             font-weight: 700;
             line-height: 1.35;
         }
@@ -3232,6 +3253,7 @@
             border-radius: var(--radius-sm);
             font-size: var(--font-base);
             font-weight: 600;
+            min-height: 44px;
             cursor: pointer;
             box-shadow: 0 2px 8px rgba(0,0,0,0.2);
             transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.15s cubic-bezier(0.16, 1, 0.3, 1);
@@ -3280,6 +3302,16 @@
         }
 
         @media (max-width: 768px) {
+            header { padding: var(--space-3) var(--space-4); gap: var(--space-2) var(--space-4); }
+            h1 { font-size: var(--font-lg); }
+            .brand svg { width: 22px; height: 22px; }
+            .filters { width: 100%; flex-wrap: nowrap; gap: var(--space-2); }
+            .filter-label { display: none; }
+            input[type="date"] { flex: 0 0 auto; width: 142px; padding: 0 var(--space-2); }
+            .segmented { flex: 1 1 auto; justify-content: space-between; }
+            .segmented button { flex: 1 1 auto; padding: 0 var(--space-2); }
+            .info-panel { padding: var(--space-2) var(--space-4); font-size: var(--font-sm); }
+            .info-links .credit-text { display: none; }
             .toggle-panel-btn {
                 display: block;
             }
@@ -3309,14 +3341,14 @@
             .distance-panel-close {
                 display: none;
                 position: absolute;
-                top: 5px;
-                right: 5px;
+                top: 4px;
+                right: 4px;
                 background: none;
                 border: none;
                 font-size: 20px;
                 cursor: pointer;
                 color: var(--text-secondary);
-                padding: 4px 8px;
+                width: 44px; height: 44px;
                 z-index: 1002;
             }
 
@@ -3416,7 +3448,7 @@
         .community-row { margin: 4px 0; }
         .community-row .lbl { font-weight: 600; }
         .community-row .empty { color: var(--text-muted); }
-        .community button, .community-banner button { font: inherit; cursor: pointer; border: 1px solid #c41e3a; background: none; color: #c41e3a; border-radius: var(--radius-sm); padding: 2px 8px; margin-left: 4px; }
+        .community button, .community-banner button { font: inherit; cursor: pointer; border: 1px solid #c41e3a; background: none; color: #c41e3a; border-radius: var(--radius-sm); min-height: 32px; padding: 2px 10px; margin-left: 4px; }
         .community button.primary, .community-banner button { background: #c41e3a; color: #fff; }
         .community textarea, .community input[type=text] { width: 100%; box-sizing: border-box; font: inherit; margin: 4px 0; background: var(--item-bg); color: var(--text-primary); border: 1px solid var(--panel-border); border-radius: var(--radius-sm); padding: 4px 6px; }
         .community .hp { position: absolute; left: -9999px; }
@@ -3435,30 +3467,46 @@
         .edit-sheet button.primary { background: #c41e3a; color: #fff; }
         .edit-sheet button:disabled { opacity: .6; }
 
-        .share-btn { font: inherit; font-size: var(--font-sm); cursor: pointer; border: 1px solid var(--panel-border); background: var(--item-bg); color: var(--text-primary); border-radius: var(--radius-sm); padding: 4px 10px; margin: 8px 0 0 6px; }
+        .share-btn { font: inherit; font-size: var(--font-sm); cursor: pointer; border: 1px solid var(--panel-border); background: var(--item-bg); color: var(--text-primary); border-radius: var(--radius-sm); min-height: 40px; padding: 0 14px; margin: 10px 0 0 0; display: inline-flex; align-items: center; gap: 6px; }
+        .share-btn:hover { background: var(--item-bg-hover); }
 
-        .travel-link { display: block; margin-top: 8px; font-size: var(--font-sm); font-weight: 600; color: #c41e3a; text-decoration: none; }
+        .travel-link { display: inline-flex; align-items: center; min-height: 40px; margin-top: 10px; margin-right: 8px; font-size: var(--font-sm); font-weight: 600; color: var(--brand); text-decoration: none; }
         .travel-link:hover { text-decoration: underline; }
 
         .sheet { position: fixed; left: 50%; bottom: 0; z-index: 1200; width: min(560px, 100%); max-height: 60vh; max-height: 60dvh; display: flex; flex-direction: column; overflow: hidden; padding-bottom: env(safe-area-inset-bottom); background: var(--panel-bg); color: var(--text-primary); border-radius: 16px 16px 0 0; box-shadow: 0 -8px 30px rgba(0,0,0,.28); transform: translate(-50%, 105%); visibility: hidden; transition: transform .28s cubic-bezier(.16, 1, .3, 1), visibility 0s linear .28s; }
         .sheet.open { transform: translate(-50%, 0); visibility: visible; transition-delay: 0s; }
         .sheet-content { overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
-        .sheet-close { position: absolute; top: 10px; right: 10px; z-index: 2; width: 30px; height: 30px; border: none; border-radius: 50%; background: rgba(255,255,255,.28); color: #fff; font-size: 15px; cursor: pointer; }
+        .sheet-close { position: absolute; top: 8px; right: 8px; z-index: 2; width: 44px; height: 44px; border: none; border-radius: 50%; background: transparent; color: #fff; font-size: 16px; cursor: pointer; transition: background .15s ease; }
+        .sheet-close:hover { background: rgba(255,255,255,.2); }
+        .sheet-close:focus-visible { outline-color: #fff; }
+        .sheet::before { content: ''; position: absolute; top: 6px; left: 50%; width: 36px; height: 4px; margin-left: -18px; border-radius: 2px; background: rgba(255,255,255,.45); z-index: 2; pointer-events: none; }
         .sheet .marker-popup-header { padding-right: 52px; }
         @media (prefers-reduced-motion: reduce) { .sheet { transition: none; } }
         .market-marker.selected { z-index: 1000 !important; }
+        .market-marker.tbc .marker-inner { opacity: .72; }
+        @media (prefers-reduced-motion: reduce) { .marker-inner, .market-item, .distance-panel, .panel-overlay { animation: none !important; transition: none !important; } }
+        .pin { vertical-align: -2px; }
         .market-marker.selected svg { transform: scale(1.35); transition: transform .2s ease; filter: drop-shadow(0 0 6px rgba(255,255,255,.9)); }
 </style>
 </head>
 <body>
     <div class="app-shell">
         <header>
-            <h1>🎄 Berlin Christmas Markets</h1>
-            <div class="filters">
-                <div style="display: flex; align-items: center; gap: 8px;">
-                    <label for="dateFilter">Open on:</label>
-                    <input type="date" id="dateFilter">
-                    <button type="button" class="show-all-btn" id="showAllBtn">Show all</button>
+            <div class="brand">
+                <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+                    <path d="M16 3l1.6 3.4 3.7.5-2.7 2.6.7 3.7L16 11.4l-3.3 1.8.7-3.7-2.7-2.6 3.7-.5L16 3z" fill="#ffd54a"/>
+                    <path d="M16 12L8 21h4l-5 7h18l-5-7h4l-8-9z" fill="#fff"/>
+                    <rect x="14.2" y="27" width="3.6" height="3" rx="0.6" fill="#ffd54a"/>
+                </svg>
+                <h1>Berlin Christmas Markets</h1>
+            </div>
+            <div class="filters" role="group" aria-label="Filter markets by date">
+                <span class="filter-label" id="filterLabel">Open on</span>
+                <input type="date" id="dateFilter" aria-labelledby="filterLabel">
+                <div class="segmented" id="quickFilters">
+                    <button type="button" data-quick="today" aria-pressed="false">Today</button>
+                    <button type="button" data-quick="weekend" aria-pressed="false">Weekend</button>
+                    <button type="button" data-quick="all" id="showAllBtn" aria-pressed="false">All</button>
                 </div>
             </div>
         </header>
@@ -3466,10 +3514,10 @@
         <div class="content">
             <div id="map"></div>
             <div class="panel-overlay" id="panelOverlay"></div>
-            <button class="toggle-panel-btn" id="togglePanelBtn">📍 Nearby Markets</button>
+            <button class="toggle-panel-btn" id="togglePanelBtn"><svg class="pin" width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 14.5s5-4.3 5-8.1A5 5 0 003 6.4c0 3.800 5 8.100 5 8.100z" fill="currentColor"/><circle cx="8" cy="6.5" r="1.8" fill="#fff"/></svg> Nearby</button>
             <div class="distance-panel">
-                <button class="distance-panel-close" id="closePanelBtn">✕</button>
-                <div class="distance-panel-header">📍 Nearby Markets</div>
+                <button class="distance-panel-close" id="closePanelBtn" aria-label="Close nearby markets">✕</button>
+                <div class="distance-panel-header">Nearby markets</div>
                 <div class="distance-list" id="distanceList">
                     <div class="distance-empty">Enable location to see nearby markets</div>
                 </div>
@@ -3477,8 +3525,8 @@
         </div>
 
         <div class="info-panel">
-            <span id="markerCount">Loading markets...</span>
-            <span class="credit-text">❤️ made with love by <a href="https://github.com/Datrio/berlin_xmas_markets_map">Dariusz</a></span>
+            <span id="markerCount" role="status" aria-live="polite">Loading markets…</span>
+            <span class="info-links"><a href="#all-markets">Browse the full list</a><span class="credit-text">Made by <a href="https://github.com/Datrio/berlin_xmas_markets_map">Dariusz</a></span></span>
         </div>
     </div>
 
@@ -3806,9 +3854,9 @@
             const est = travelEstimate(market);
             el.href = directionsUrl(market, est && est.mode);
             el.textContent = est
-                ? (est.here ? "📍 You're here · Directions →"
-                    : `${est.mode === 'walk' ? '🚶' : '🚇'} ~${est.minutes} min ${est.mode === 'walk' ? 'walk' : 'by transit'} (est.) · Directions →`)
-                : '🧭 Directions →';
+                ? (est.here ? "You're here · Directions →"
+                    : `~${est.minutes} min ${est.mode === 'walk' ? 'walk' : 'by transit'} (est.) · Directions →`)
+                : 'Directions →';
         }
 
         function createMarker(market) {
@@ -3827,15 +3875,15 @@
                 iconSize: [32, 32],
                 iconAnchor: [16, 16],
                 popupAnchor: [0, -16],
-                className: 'market-marker'
+                className: 'market-marker' + (market.tbc ? ' tbc' : '')
             });
 
             const hasDates = (Array.isArray(market.dates) && market.dates.length) || (market.start && market.end);
             const datesLine = hasDates
-                ? (Array.isArray(market.dates) ? market.dates.join(', ') : `${market.start} — ${market.end}`)
+                ? (Array.isArray(market.dates) ? market.dates.map(d => formatDay(d, true)).join(', ') : `${formatDay(market.start, true)} – ${formatDay(market.end, true)}`)
                 : 'Not yet announced for 2026';
             const tbcNote = market.tbc
-                ? `<div class="marker-popup-tbc"><span>⚠️</span><span><strong>${hasDates ? 'Estimated dates' : 'Dates TBC'}</strong> — pending official confirmation for 2026.</span></div>`
+                ? `<div class="marker-popup-tbc"><span class="icon"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 2l6.5 11.5h-13L8 2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M8 6.5v3M8 11.5v.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span><span><strong>${hasDates ? 'Estimated dates' : 'Dates TBC'}</strong> — pending official confirmation for 2026.</span></div>`
                 : '';
             const descriptionRow = market.description
                 ? `<div class="marker-popup-row"><span>${market.description}</span></div>`
@@ -3850,8 +3898,8 @@
                         <h3>${market.name}</h3>
                     </div>
                     <div class="marker-popup-body">
-                        <div class="marker-popup-row"><span class="icon">📍</span><span>${market.loc || ''}</span></div>
-                        <div class="marker-popup-row"><span class="icon">📅</span><span>${datesLine}</span></div>
+                        <div class="marker-popup-row"><span class="icon"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 14.5s5-4.3 5-8.1A5 5 0 003 6.4c0 3.8 5 8.1 5 8.1z" fill="currentColor"/><circle cx="8" cy="6.5" r="1.8" fill="var(--panel-bg)"/></svg></span><span>${market.loc || ''}</span></div>
+                        <div class="marker-popup-row"><span class="icon"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="2" y="3" width="12" height="11" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M2 7h12M5.5 1.5v3M10.5 1.5v3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span><span>${datesLine}</span></div>
                         ${tbcNote}
                         ${descriptionRow}
                         ${link}
@@ -3867,7 +3915,7 @@
             const share = document.createElement('button');
             share.type = 'button';
             share.className = 'share-btn';
-            share.textContent = '🔗 Share';
+            share.textContent = 'Share link';
             share.addEventListener('click', async e => {
                 e.stopPropagation();
                 const url = marketLink(market);
@@ -3877,11 +3925,11 @@
                 }
                 try {
                     await navigator.clipboard.writeText(url);
-                    share.textContent = '✓ Link copied';
+                    share.textContent = 'Link copied';
                 } catch (err) {
                     window.prompt('Copy this link:', url);
                 }
-                setTimeout(() => { share.textContent = '🔗 Share'; }, 2000);
+                setTimeout(() => { share.textContent = 'Share link'; }, 2000);
             });
             const travel = document.createElement('a');
             travel.className = 'travel-link';
@@ -4046,6 +4094,7 @@
             renderTravel(el.querySelector('.travel-link'), market);
             renderCommunity(el.querySelector('.community'), market);
             sheetBody.replaceChildren(el);
+            if (window.matchMedia('(max-width: 768px)').matches) closePanel();
             sheetBody.scrollTop = 0;
             setSelected(activeMarket, false);
             activeMarket = market;
@@ -4154,13 +4203,19 @@
                 .sort((a, b) => a.distance - b.distance);
 
             distanceList.innerHTML = marketsWithDistance.map((market, i) => `
-                <div class="market-item" style="animation-delay: ${Math.min(i, 12) * 25}ms" onclick="map.flyTo([${market.lat}, ${market.lng}], 15, { duration: 0.8 });">
+                <button type="button" class="market-item" style="animation-delay: ${Math.min(i, 12) * 25}ms" data-market="${market.name.replace(/"/g, '&quot;')}">
                     <div class="market-item-name">${market.name}</div>
-                    <div class="market-item-distance">📍 ${market.distance.toFixed(1)} km away</div>
+                    <div class="market-item-distance">${market.distance.toFixed(1)} km away</div>
                     <div class="market-item-location">${market.loc || ''}</div>
-                </div>
+                </button>
             `).join('');
         }
+
+        document.getElementById('distanceList').addEventListener('click', e => {
+            const item = e.target.closest('.market-item');
+            const market = item && markets.find(m => m.name === item.dataset.market);
+            if (market) openSheet(market, 15);
+        });
 
         const pendingRemoval = {};
 
@@ -4226,8 +4281,9 @@
                 }
             });
 
+            const dayLabel = dateFilterVal === todayStr ? 'today' : 'on ' + formatDay(dateFilterVal);
             setMarkerCountText(dateFilterVal
-                ? `${visibleCount} of ${markets.length} markets are happening today`
+                ? `${visibleCount} of ${markets.length} markets open ${dayLabel}`
                 : `Showing all ${shownCount} markets`);
             updateDistancePanel();
         }
@@ -4269,13 +4325,32 @@
         }
 
         const dateFilterInput = document.getElementById('dateFilter');
-        const showAllBtn = document.getElementById('showAllBtn');
-        const todayStr = new Date().toISOString().split('T')[0];
+        const quickButtons = document.querySelectorAll('#quickFilters button');
+
+        // Local calendar date, not UTC: toISOString() flips to tomorrow/yesterday around midnight in Berlin.
+        function localISO(d) {
+            return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+        }
+        const todayStr = localISO(new Date());
+        function formatDay(iso, withYear) {
+            const [y, m, d] = iso.split('-').map(Number);
+            return new Date(y, m - 1, d).toLocaleDateString('en-GB', withYear
+                ? { day: 'numeric', month: 'short', year: 'numeric' }
+                : { weekday: 'short', day: 'numeric', month: 'short' });
+        }
+        // The coming Saturday, or today when it is already the weekend.
+        function weekendStr() {
+            const d = new Date();
+            const dow = d.getDay();
+            if (dow !== 0) d.setDate(d.getDate() + (6 - dow));
+            return localISO(d);
+        }
 
         function updateShowAllState() {
-            const showingAll = !dateFilterInput.value;
-            showAllBtn.classList.toggle('active', showingAll);
-            showAllBtn.textContent = showingAll ? 'Show today' : 'Show all';
+            const v = dateFilterInput.value;
+            const active = !v ? 'all' : v === todayStr ? 'today' : v === weekendStr() ? 'weekend' : '';
+            quickButtons.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.quick === active)));
+            dateFilterInput.dataset.empty = String(!v);
         }
 
         dateFilterInput.addEventListener('change', () => {
@@ -4283,11 +4358,12 @@
             updateMarkers();
         });
 
-        showAllBtn.addEventListener('click', () => {
-            dateFilterInput.value = dateFilterInput.value ? '' : todayStr;
+        quickButtons.forEach(btn => btn.addEventListener('click', () => {
+            const q = btn.dataset.quick;
+            dateFilterInput.value = q === 'today' ? todayStr : q === 'weekend' ? weekendStr() : '';
             updateShowAllState();
             updateMarkers();
-        });
+        }));
 
         // Mobile panel controls
         const togglePanelBtn = document.getElementById('togglePanelBtn');
