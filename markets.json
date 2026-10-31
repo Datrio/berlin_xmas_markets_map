@@ -1141,17 +1141,6 @@
     ]
   },
   {
-    "name": "Weinlobbyist",
-    "loc": "Schöneberg",
-    "url": "https://www.derweinlobbyist.de/weihnachtsmarkt-berlin-2025",
-    "name_de": "Weinlobbyist",
-    "name_en": "Weinlobbyist",
-    "lat": 52.4865465,
-    "lng": 13.3592248,
-    "start": "2026-11-23",
-    "end": "2026-12-23"
-  },
-  {
     "name": "Weihnachtsmarkt Hauptbahnhof/Kanzleramt",
     "loc": "Mitte",
     "url": "https://www.visitberlin.de/de/weihnachtsmarkt-hauptbahnhof-kanzleramt-berlin",
@@ -1708,5 +1697,44 @@
     "lat": 52.4562,
     "lng": 13.3183,
     "tbc": true
+  },
+  {
+    "name": "Nordberliner Weihnachtsrummel",
+    "loc": "Tegel",
+    "url": "https://www.berlin.de/weihnachtsmarkt/10727807-3496862-nordberliner-weihnachtsrummel.html",
+    "name_de": "Nordberliner Weihnachtsrummel",
+    "name_en": "North Berlin Christmas Fair",
+    "lat": 52.5837613,
+    "lng": 13.2850602,
+    "start": "2026-11-23",
+    "end": "2026-12-27"
+  },
+  {
+    "name": "Weihnachtsmarkt im Tierheim Berlin",
+    "loc": "Falkenberg",
+    "url": "https://www.berlin.de/weihnachtsmarkt/7897509-3496862-christmas-market-animal-shelter.html",
+    "name_de": "Weihnachtsmarkt im Tierheim Berlin",
+    "name_en": "Christmas Market at Tierheim Berlin",
+    "lat": 52.5755866,
+    "lng": 13.545059,
+    "dates": [
+      "2026-12-06"
+    ]
+  },
+  {
+    "name": "All inclusive Weihnachtsmarkt am Spreespeicher",
+    "loc": "Friedrichshain",
+    "url": "https://www.berlin.de/weihnachtsmarkt/6333570-3496862-all-inclusive-christmas-market-at-sprees.html",
+    "name_de": "All inclusive Weihnachtsmarkt am Spreespeicher",
+    "name_en": "All-Inclusive Christmas Market at Spreespeicher",
+    "lat": 52.5017408,
+    "lng": 13.4486425,
+    "start": "2026-11-16",
+    "end": "2026-12-30",
+    "closed": [
+      "2026-12-24",
+      "2026-12-25",
+      "2026-12-26"
+    ]
   }
 ]
