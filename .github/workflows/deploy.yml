@@ -3,7 +3,7 @@ name: Deploy to Cloudflare
 on:
   push:
     branches: ["main"]
-    paths-ignore: ["docs/**", "README.md"]
+    paths-ignore: ["docs/**", "README.md", "CLAUDE.md"]
   workflow_dispatch:
 
 concurrency:

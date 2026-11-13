@@ -11,3 +11,4 @@ sitemap.xml
 node_modules
 .wrangler
 .gitignore
+CLAUDE.md
