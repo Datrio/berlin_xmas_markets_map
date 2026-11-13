@@ -3772,6 +3772,11 @@
         let userLocation = null;
 
         // Deep links: https://.../#<market-slug> opens that market's popup.
+        // Market fields come from the database and are interpolated into HTML strings below.
+        function esc(v) {
+            return String(v ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+        }
+
         function marketSlug(name) {
             return name.replace(/ß/g, 'ss').normalize('NFKD').replace(/[\u0300-\u036f]/g, '')
                 .toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
@@ -3909,19 +3914,19 @@
                 ? `<div class="marker-popup-tbc"><span class="icon"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 2l6.5 11.5h-13L8 2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M8 6.5v3M8 11.5v.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span><span><strong>${hasDates ? 'Estimated dates' : 'Dates TBC'}</strong> — pending official confirmation for 2026.</span></div>`
                 : '';
             const descriptionRow = market.description
-                ? `<div class="marker-popup-row"><span>${market.description}</span></div>`
+                ? `<div class="marker-popup-row"><span>${esc(market.description)}</span></div>`
                 : '';
             const link = market.url
-                ? `<a class="marker-popup-link" href="${market.url}" target="_blank" rel="noopener">Official page →</a>`
+                ? `<a class="marker-popup-link" href="${esc(market.url)}" target="_blank" rel="noopener">Official page →</a>`
                 : '';
 
             const popup = `
                 <div class="marker-popup">
                     <div class="marker-popup-header">
-                        <h3>${market.name}</h3>
+                        <h3>${esc(market.name)}</h3>
                     </div>
                     <div class="marker-popup-body">
-                        <div class="marker-popup-row"><span class="icon"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 14.5s5-4.3 5-8.1A5 5 0 003 6.4c0 3.8 5 8.1 5 8.1z" fill="currentColor"/><circle cx="8" cy="6.5" r="1.8" fill="var(--panel-bg)"/></svg></span><span>${market.loc || ''}</span></div>
+                        <div class="marker-popup-row"><span class="icon"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 14.5s5-4.3 5-8.1A5 5 0 003 6.4c0 3.8 5 8.1 5 8.1z" fill="currentColor"/><circle cx="8" cy="6.5" r="1.8" fill="var(--panel-bg)"/></svg></span><span>${esc(market.loc)}</span></div>
                         <div class="marker-popup-row"><span class="icon"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="2" y="3" width="12" height="11" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M2 7h12M5.5 1.5v3M10.5 1.5v3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span><span>${datesLine}</span></div>
                         ${tbcNote}
                         ${descriptionRow}
@@ -4255,10 +4260,10 @@
                 .sort((a, b) => a.distance - b.distance);
 
             distanceList.innerHTML = marketsWithDistance.map((market, i) => `
-                <button type="button" class="market-item" style="animation-delay: ${Math.min(i, 12) * 25}ms" data-market="${market.name.replace(/"/g, '&quot;')}">
-                    <div class="market-item-name">${market.name}</div>
+                <button type="button" class="market-item" style="animation-delay: ${Math.min(i, 12) * 25}ms" data-market="${esc(market.name)}">
+                    <div class="market-item-name">${esc(market.name)}</div>
                     <div class="market-item-distance">${market.distance.toFixed(1)} km away</div>
-                    <div class="market-item-location">${market.loc || ''}</div>
+                    <div class="market-item-location">${esc(market.loc)}</div>
                 </button>
             `).join('');
         }
