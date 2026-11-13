@@ -183,7 +183,12 @@ async function marketsAdminApi(request, env, path) {
   if (!m) return null;
   const id = m[1] ? Number(m[1]) : null;
   const bad = (v) => json({ error: v.error, field: v.field }, 400);
-  const body = async () => { try { return await request.json(); } catch { return undefined; } };
+  // Requiring the JSON content type keeps cross-site form posts (text/plain) from reaching the writes.
+  const body = async () => {
+    if (!(request.headers.get('content-type') || '').includes('application/json')) return undefined;
+    try { return await request.json(); } catch { return undefined; }
+  };
+  const taken = (e) => (/UNIQUE/i.test(String(e?.message)) ? json({ error: 'A market with that name or URL already exists', field: 'name' }, 409) : Promise.reject(e));
 
   if (!id && request.method === 'GET') {
     const [{ results }, { results: infoRows }, { results: countRows }] = await Promise.all([
@@ -205,9 +210,12 @@ async function marketsAdminApi(request, env, path) {
     const conflict = await nameConflict(env, v.value.name, null);
     if (conflict) return conflict;
     const cols = Object.keys(v.value);
-    const res = await env.DB.prepare(`INSERT INTO markets (${cols.join(', ')}) VALUES (${cols.map(() => '?').join(', ')})`)
-      .bind(...cols.map((c) => v.value[c])).run();
-    return json({ id: res.meta.last_row_id }, 201);
+    // Two simultaneous requests can both pass nameConflict; the UNIQUE constraint then decides.
+    try {
+      const res = await env.DB.prepare(`INSERT INTO markets (${cols.join(', ')}) VALUES (${cols.map(() => '?').join(', ')})`)
+        .bind(...cols.map((c) => v.value[c])).run();
+      return json({ id: res.meta.last_row_id }, 201);
+    } catch (e) { return taken(e); }
   }
 
   if (id && !m[2] && request.method === 'PATCH') {
@@ -225,8 +233,10 @@ async function marketsAdminApi(request, env, path) {
     const start = 'start' in v.value ? v.value.start : cur.start, end = 'end' in v.value ? v.value.end : cur.end;
     if (start && end && start > end) return json({ error: 'End must not be before start', field: 'end' }, 400);
     const cols = Object.keys(v.value);
-    await env.DB.prepare(`UPDATE markets SET ${cols.map((c) => `${c} = ?`).join(', ')} WHERE id = ?`)
-      .bind(...cols.map((c) => v.value[c]), id).run();
+    try {
+      await env.DB.prepare(`UPDATE markets SET ${cols.map((c) => `${c} = ?`).join(', ')} WHERE id = ?`)
+        .bind(...cols.map((c) => v.value[c]), id).run();
+    } catch (e) { return taken(e); }
     return json(await adminMarketById(env, id));
   }
 

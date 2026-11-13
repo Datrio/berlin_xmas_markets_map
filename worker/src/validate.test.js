@@ -46,6 +46,9 @@ test('days_of_week are unique integers 0-6', () => {
   bad({ ...base, days_of_week: [7] }, 'days_of_week');
   assert.equal(validateMarket({ ...base, days_of_week: [3, 4, 5] }, { partial: false }).value.days_of_week, '[3,4,5]');
 });
+test('days_of_week are stored sorted', () => {
+  assert.equal(validateMarket({ ...base, days_of_week: [1, 2, 3, 4, 5, 6, 0] }, { partial: false }).value.days_of_week, '[0,1,2,3,4,5,6]');
+});
 test('empty list is stored as null', () => {
   assert.equal(validateMarket({ ...base, closed: [] }, { partial: false }).value.closed, null);
 });

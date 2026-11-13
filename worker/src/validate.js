@@ -69,7 +69,7 @@ export function validateMarket(input, { partial }) {
       if (!Array.isArray(v) || !v.every((d) => Number.isInteger(d) && d >= 0 && d <= 6) || new Set(v).size !== v.length) {
         return fail(k, 'days_of_week must be unique integers 0-6 (0 = Sunday)');
       }
-      out[k] = v.length ? JSON.stringify(v) : null;
+      out[k] = v.length ? JSON.stringify([...v].sort((a, b) => a - b)) : null;
     }
   }
   if (out.start && out.end && out.start > out.end) return fail('end', 'End must not be before start');

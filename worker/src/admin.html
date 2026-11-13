@@ -209,6 +209,11 @@ function renderHead(){
   }),el('th',{},'Details'),el('th',{},''));
 }
 
+async function refreshPending(){
+  const r=await api('GET','/api/admin/markets');
+  if(r.ok)$('pending-count').textContent=r.data.reduce((n,m)=>n+m.pending,0)||'';
+}
+
 async function loadMarkets(){
   const r=await api('GET','/api/admin/markets');
   if(!r.ok){$('count').textContent='Failed to load: '+r.error;return}
@@ -225,7 +230,13 @@ $('add-btn').onclick=()=>{
   const save=el('button',{type:'button',className:'btn primary',onclick:async()=>{
     const r=await api('POST','/api/admin/markets',{name:f.name.value,lat:f.lat.value,lng:f.lng.value});
     if(!r.ok){msg.textContent=r.error;if(f[r.field])f[r.field].classList.add('bad');return}
-    $('addbody').replaceChildren();expanded.add(r.data.id);$('q').value='';await loadMarkets();
+    $('addbody').replaceChildren();expanded.add(r.data.id);
+    const all=await api('GET','/api/admin/markets');
+    const added=all.ok&&all.data.find(x=>x.id===r.data.id);
+    if(!added){await loadMarkets();return}
+    markets.push(added);
+    $('body').prepend(...rowFor(added).children);
+    $('count').textContent=markets.length+' markets';
   }},'Save');
   const cancel=el('button',{type:'button',className:'btn',onclick:()=>$('addbody').replaceChildren()},'Cancel');
   $('addbody').append(el('tr',{},inp('name','New market name','text'),el('td',{colSpan:5},'Name, latitude and longitude are required; the rest can be filled in after saving.'),
@@ -255,6 +266,7 @@ function tab(name){
   $('tab-markets').classList.toggle('on',m);$('tab-suggestions').classList.toggle('on',!m);
   $('tab-markets').setAttribute('aria-selected',m);$('tab-suggestions').setAttribute('aria-selected',!m);
   if(!m)loadSuggestions();
+  else if(!document.querySelector('#body input.dirty,#body input.bad,#body .field.bad'))loadMarkets();
 }
 $('tab-markets').onclick=()=>tab('markets');
 $('tab-suggestions').onclick=()=>tab('suggestions');
@@ -288,7 +300,7 @@ async function loadSuggestions(){
 }
 async function act(id,what,value){
   await fetch(`/api/admin/suggestions/${id}/${what}`,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({value})});
-  loadSuggestions();loadMarkets();
+  loadSuggestions();refreshPending();
 }
 document.querySelectorAll('#suggestions-pane nav button').forEach(b=>b.onclick=()=>{status=b.dataset.s;document.querySelectorAll('#suggestions-pane nav button').forEach(x=>x.classList.toggle('on',x===b));loadSuggestions()});
 
