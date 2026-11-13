@@ -6,7 +6,8 @@ Live at https://xmas.dariuszsiedlecki.com. A single-page Leaflet map (`index.htm
 
 - `index.html`: the whole front end (HTML, CSS, JS inline, ~200 KB). It fetches `/api/markets` at runtime. It also holds a static, crawlable market list and JSON-LD between generated markers, for SEO. Never hand-edit the generated block.
 - `worker/src/index.js`: Worker. Routes: `/api/markets`, `/api/info`, `/api/suggest` (rate-limited POST), `/api/admin/*` and `/admin` (behind Cloudflare Access), `/sitemap.xml`, `/market/<slug>`. Everything else falls through to static assets.
-- `worker/src/admin.html`: admin UI for approving community suggestions.
+- `worker/src/admin.html`: admin UI. Markets tab: table of every market with inline editing, an expandable row for dates, open days and community info, add and delete (typed-name confirmation). Suggestions tab: approve or reject community edits. Markets are edited through `/api/admin/markets*`.
+- `worker/src/validate.js`: pure validation for admin edits (dates, coordinates, name slugs). `worker/src/access.js`: the `DEV_ADMIN` local bypass. Tests sit next to them as `*.test.js`.
 - `worker/wrangler.jsonc`: Worker config. The assets directory is `..` (the repo root), filtered by `.assetsignore`. It also holds the D1 binding, the rate limit and the Access vars.
 - `worker/schema.sql`, `worker/seed.sql`: D1 schema and seed data.
 - `scripts/`: Python 3 stdlib only.
@@ -28,7 +29,8 @@ Pushing to `main` deploys. `.github/workflows/deploy.yml` runs `npx wrangler@4 d
 
 ## Local development
 
-- Worker and site: `cd worker && npx wrangler@4 dev`. Local secrets go in `worker/.dev.vars` (gitignored).
+- Worker and site: `cd worker && npx wrangler@4 dev --local-upstream localhost:8787` (without the flag the Worker sees the production host). Local secrets go in `worker/.dev.vars` (gitignored). Set `DEV_ADMIN=1` there to open `/admin` on localhost without Cloudflare Access; never put it in `wrangler.jsonc`. First run: apply `schema.sql` and `seed.sql` with `wrangler d1 execute berlin-xmas-markets --local --file=...`.
+- Unit tests: `cd worker && node --test src/*.test.js`.
 - `index.html` is a static file, so for front-end-only work open it through the dev server so `/api/markets` resolves.
 - Verify UI changes in a browser, on mobile width and desktop width. The mobile bottom sheet, dynamic viewport sizing and scroll locking have been fragile before.
 
@@ -45,7 +47,7 @@ Pushing to `main` deploys. `.github/workflows/deploy.yml` runs `npx wrangler@4 d
 ## Engineering practices
 
 - **Small, frequent deploys.** Ship each change as soon as it is done and verified, rather than batching. Small changes are easier to review and revert, and they make a broken deploy easy to trace. If a deploy breaks the site, revert the offending commit first and diagnose afterwards.
-- **Test before you ship.** There is no automated test suite yet. Until there is one:
+- **Test before you ship.** Only the Worker's validation and access rules have automated tests (`node --test`); the rest has none yet:
   - Load the page and exercise the changed flow in a real browser, and check the console for errors.
   - Call changed API endpoints with `curl`.
   - Run `python3 scripts/check_berlin_dates.py` after data changes.
