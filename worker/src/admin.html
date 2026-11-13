@@ -1,24 +1,269 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="robots" content="noindex"><title>Review edits</title>
+<meta name="robots" content="noindex"><title>Admin</title>
 <style>
-body{font:16px/1.4 system-ui,sans-serif;max-width:720px;margin:0 auto;padding:16px;color:#222;background:#fff}
-@media(prefers-color-scheme:dark){body{background:#161616;color:#eee}.card{border-color:#444}textarea{background:#222;color:#eee}}
-nav button{margin-right:6px;padding:6px 12px;border:1px solid #c41e3a;background:none;color:inherit;border-radius:6px;cursor:pointer}
-nav button.on{background:#c41e3a;color:#fff}
-.card{border:1px solid #ddd;border-radius:8px;padding:12px;margin:12px 0}
-.old{opacity:.6;text-decoration:line-through}.badge{background:#e8a200;color:#000;border-radius:4px;padding:1px 6px;font-size:12px}
-textarea{width:100%;box-sizing:border-box;min-height:60px;font:inherit}.row{display:flex;gap:8px;margin-top:8px}
+:root{--bg:#fff;--fg:#222;--line:#ddd;--soft:#f5f5f5;--accent:#c41e3a}
+@media(prefers-color-scheme:dark){:root{--bg:#161616;--fg:#eee;--line:#444;--soft:#232323}}
+body{font:16px/1.4 system-ui,sans-serif;margin:0 auto;padding:16px;color:var(--fg);background:var(--bg)}
+h1{margin:0 0 12px;font-size:22px}
+button,input,textarea{font:inherit;color:inherit}
+input,textarea{background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:4px 6px;box-sizing:border-box}
+.tabs button,.bar button{margin-right:6px;padding:6px 12px;border:1px solid var(--accent);background:none;border-radius:6px;cursor:pointer}
+.tabs button.on,.bar .primary{background:var(--accent);color:#fff}
+.tabs{margin-bottom:12px}
+.bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:8px}
+.bar input[type=search]{flex:1;min-width:160px;max-width:320px;padding:6px 8px}
+.wrap{overflow:auto;max-height:calc(100vh - 170px);border:1px solid var(--line);border-radius:8px}
+table{border-collapse:collapse;width:100%;min-width:1100px}
+th{position:sticky;top:0;background:var(--soft);text-align:left;font-size:13px;padding:6px;cursor:pointer;white-space:nowrap;z-index:1}
+th[aria-sort]::after{content:" ▲"}th[aria-sort=descending]::after{content:" ▼"}
+td{padding:3px 4px;border-top:1px solid var(--line);vertical-align:middle}
+td input[type=text],td input[type=url],td input[type=number],td input[type=date],td input:not([type]){width:100%;min-width:70px}
+td.name input{min-width:200px}
+input.dirty{border-color:#e8a200;background:rgba(232,162,0,.12)}
+input.bad,.field.bad{border-color:#b71c1c;background:rgba(183,28,28,.12)}
+.status{font-size:12px;min-width:90px;white-space:nowrap}.status.err{color:#d32f2f;white-space:normal}
+.detail td{background:var(--soft);padding:12px}
+.detail .pin{position:sticky;left:0;width:min(1100px,calc(100vw - 50px))}
+.detail .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.field label.t,.field .t{display:block;font-weight:600;font-size:13px;margin-bottom:4px}
+.chip{display:inline-flex;align-items:center;gap:4px;border:1px solid var(--line);border-radius:12px;padding:4px 6px 4px 12px;margin:0 4px 6px 0;font-size:13px;background:var(--bg)}
+.chip button{border:0;background:none;cursor:pointer;padding:0 4px}
+.dow label{margin-right:8px;white-space:nowrap}
+.field textarea{width:100%;min-height:54px}
+.btn{padding:4px 10px;border-radius:6px;border:1px solid #888;background:none;cursor:pointer}
+.danger{background:#b71c1c;color:#fff;border-color:#b71c1c}
+.card{border:1px solid var(--line);border-radius:8px;padding:12px;margin:12px 0;max-width:720px}
+.old{opacity:.6;text-decoration:line-through}.badge{background:#e8a200;color:#000;border-radius:4px;padding:3px 8px;font-size:12px}
+.card textarea{width:100%;min-height:60px}.row{display:flex;gap:8px;margin-top:8px}
 .row button{padding:6px 14px;border-radius:6px;border:1px solid #888;cursor:pointer}.ok{background:#2e7d32;color:#fff;border-color:#2e7d32}.no{background:#b71c1c;color:#fff;border-color:#b71c1c}
+dialog{background:var(--bg);color:var(--fg);border:1px solid var(--line);border-radius:8px;max-width:440px}
+dialog input{width:100%;margin:8px 0}
+.note{font-size:12px;opacity:.75;margin-top:4px}
+.sub{padding:12px;background:var(--soft)}
 </style></head><body>
-<h1>Community edits</h1>
-<nav><button data-s="pending" class="on">Pending</button><button data-s="approved">Approved</button><button data-s="rejected">Rejected</button></nav>
-<div id="list"></div>
+<h1>Admin</h1>
+<div class="tabs" role="tablist">
+  <button role="tab" id="tab-markets" class="on" aria-selected="true">Markets</button>
+  <button role="tab" id="tab-suggestions" aria-selected="false">Suggestions <span id="pending-count"></span></button>
+</div>
+
+<section id="markets-pane">
+  <div class="bar">
+    <input type="search" id="q" placeholder="Search name or location" aria-label="Search markets">
+    <button class="primary" id="add-btn">+ Add market</button>
+    <span id="count" aria-live="polite"></span>
+  </div>
+  <div class="wrap"><table>
+    <thead><tr id="head"></tr></thead>
+    <tbody id="addbody"></tbody>
+    <tbody id="body"></tbody>
+  </table></div>
+</section>
+
+<section id="suggestions-pane" hidden>
+  <nav class="tabs"><button data-s="pending" class="on">Pending</button><button data-s="approved">Approved</button><button data-s="rejected">Rejected</button></nav>
+  <div id="list"></div>
+</section>
+
+<dialog id="del"><form method="dialog" id="delform">
+  <p id="deltext"></p>
+  <label>Type the market's name to confirm<input id="delinput" autocomplete="off"></label>
+  <div class="row"><button class="btn danger" id="delok" value="ok" disabled>Delete</button><button class="btn" value="cancel" formnovalidate>Cancel</button></div>
+</form></dialog>
+
 <script>
+const el=(t,props={},...kids)=>{const e=document.createElement(t);for(const[k,v]of Object.entries(props)){if(k.startsWith('aria-')||k.startsWith('data-'))e.setAttribute(k,v);else e[k]=v}kids.forEach(k=>e.append(k));return e};
+const $=id=>document.getElementById(id);
+
+async function api(method,url,body){
+  try{
+    const r=await fetch(url,{method,headers:{'content-type':'application/json'},body:body===undefined?undefined:JSON.stringify(body)});
+    const data=await r.json().catch(()=>({}));
+    return r.ok?{ok:true,data}:{ok:false,error:data.error||('Request failed ('+r.status+')'),field:data.field};
+  }catch{return{ok:false,error:'Network error'}}
+}
+
+/* ---------- Markets ---------- */
+const COLS=[['name','Name'],['name_de','Name (DE)'],['name_en','Name (EN)'],['loc','Location'],['url','URL'],['type','Type'],['lat','Lat'],['lng','Lng'],['start','Start'],['end','End'],['tbc','TBC']];
+const INFO=[['entrance','Entrance'],['gluehwein_price','Glühwein price'],['fun_fact','Fun fact'],['description','Description']];
+const DOW=[[1,'Mon'],[2,'Tue'],[3,'Wed'],[4,'Thu'],[5,'Fri'],[6,'Sat'],[0,'Sun']];
+let markets=[],sortBy='name',sortDir=1,expanded=new Set();
+const show=v=>v==null?'':String(v);
+
+function setStatus(m,text,err){const s=m._status;if(!s)return;s.textContent=text;s.className='status'+(err?' err':'')}
+
+// Saves one field; on failure the typed value stays, flagged, so it can be fixed or reverted with Escape.
+async function commit(m,field,target,value){
+  setStatus(m,'saving…');
+  const r=await api('PATCH','/api/admin/markets/'+m.id,{[field]:value});
+  if(!r.ok){target.classList.add('bad');target.title=r.error;setStatus(m,r.error,true);return false}
+  target.classList.remove('bad','dirty');target.title='';
+  const ui=m._status;Object.assign(m,r.data);m._status=ui;
+  setStatus(m,'saved');
+  return true;
+}
+
+function cell(m,field){
+  const tbc=field==='tbc';
+  const type={lat:'number',lng:'number',start:'date',end:'date',tbc:'checkbox',url:'text'}[field]||'text';
+  const input=el('input',{type,'aria-label':field+' of '+m.name});
+  if(type==='number')input.step='any';
+  const load=()=>{if(tbc)input.checked=m.tbc;else input.value=show(m[field])};
+  load();
+  input.addEventListener('input',()=>{
+    if(!tbc)input.classList.add('dirty');
+    if(field==='name'){const n=input.value.trim();setStatus(m,n&&n!==m.name?'Renaming changes the public URL':'')}
+  });
+  input.addEventListener('change',async()=>{
+    const ok=await commit(m,field,input,tbc?input.checked:input.value);
+    if(ok||tbc)load();
+  });
+  input.addEventListener('keydown',e=>{if(e.key==='Escape'){load();input.classList.remove('dirty','bad');input.title='';setStatus(m,'')}});
+  return el('td',{className:field==='name'?'name':''},input);
+}
+
+function dateList(m,field,label){
+  const wrap=el('div',{className:'field'},el('span',{className:'t'},label));
+  const chips=el('div');
+  const picker=el('input',{type:'date','aria-label':'Add date to '+label});
+  const draw=()=>chips.replaceChildren(...m[field].map(d=>el('span',{className:'chip'},d,
+    el('button',{type:'button',title:'Remove '+d,'aria-label':'Remove '+d,onclick:()=>save(m[field].filter(x=>x!==d))},'×'))));
+  const save=async arr=>{await commit(m,field,wrap,arr);draw()};
+  const add=el('button',{type:'button',className:'btn',onclick:()=>{
+    if(picker.value&&!m[field].includes(picker.value)){save([...m[field],picker.value].sort());picker.value=''}}},'Add');
+  draw();wrap.append(chips,picker,' ',add);
+  return wrap;
+}
+
+function daysField(m){
+  const wrap=el('div',{className:'field dow'},el('span',{className:'t'},'Open days of the week'));
+  const boxes=DOW.map(([n,label])=>{
+    const cb=el('input',{type:'checkbox',value:n,checked:m.days_of_week.includes(n)});
+    cb.addEventListener('change',async()=>{
+      const days=boxes.filter(b=>b.checked).map(b=>Number(b.value));
+      if(!(await commit(m,'days_of_week',wrap,days)))cb.checked=!cb.checked;
+    });
+    wrap.append(el('label',{},cb,' '+label));
+    return cb;
+  });
+  return wrap;
+}
+
+function infoField(m,[field,label]){
+  const ta=el('textarea',{value:m.info[field]||'',maxLength:500,'aria-label':label+' of '+m.name});
+  const msg=el('span',{className:'note'});
+  const btn=el('button',{type:'button',className:'btn',onclick:async()=>{
+    msg.textContent='saving…';
+    const r=await api('PUT',`/api/admin/markets/${m.id}/info/${field}`,{value:ta.value});
+    if(!r.ok){msg.textContent=r.error;return}
+    if(r.data.value===null)delete m.info[field];else m.info[field]=r.data.value;
+    ta.value=r.data.value||'';msg.textContent='saved';
+  }},'Save');
+  return el('div',{className:'field'},el('span',{className:'t'},label),ta,btn,' ',msg);
+}
+
+function detailRow(m){
+  const del=el('button',{type:'button',className:'btn danger',onclick:()=>askDelete(m)},'Delete market…');
+  return el('tr',{className:'detail'},el('td',{colSpan:COLS.length+2},el('div',{className:'pin'},
+    el('div',{className:'grid'},
+      dateList(m,'dates','Specific dates'),dateList(m,'closed','Closed on'),dateList(m,'special_open','Special opening days'),daysField(m),
+      ...INFO.map(i=>infoField(m,i))),
+    el('div',{style:'margin-top:12px'},del))));
+}
+
+function rowFor(m){
+  const tb=el('tbody');
+  m._status=el('span',{className:'status'});
+  const toggle=el('button',{type:'button',className:'btn','aria-expanded':String(expanded.has(m.id)),'aria-label':'Details for '+m.name},expanded.has(m.id)?'▾':'▸');
+  const main=el('tr',{},...COLS.map(([f])=>cell(m,f)),el('td',{},toggle),el('td',{},m._status));
+  tb.append(main);
+  let detail=null;
+  const open=()=>{detail=detailRow(m);main.after(detail)};
+  if(expanded.has(m.id))open();
+  toggle.onclick=()=>{
+    if(detail){detail.remove();detail=null;expanded.delete(m.id)}else{open();expanded.add(m.id)}
+    toggle.textContent=detail?'▾':'▸';toggle.setAttribute('aria-expanded',String(!!detail));
+  };
+  return tb;
+}
+
+function renderMarkets(){
+  const q=$('q').value.trim().toLowerCase();
+  const rows=markets.filter(m=>!q||(m.name+' '+show(m.loc)).toLowerCase().includes(q));
+  rows.sort((a,b)=>{
+    const x=a[sortBy],y=b[sortBy];
+    if(x==null&&y!=null)return 1;if(y==null&&x!=null)return -1;
+    return (typeof x==='string'?x.localeCompare(y,undefined,{sensitivity:'base'}):x<y?-1:x>y?1:0)*sortDir;
+  });
+  $('body').replaceChildren(...rows.map(rowFor).flatMap(tb=>[...tb.children]));
+  $('count').textContent=rows.length+' of '+markets.length+' markets';
+}
+
+function renderHead(){
+  $('head').replaceChildren(...COLS.map(([f,label])=>{
+    const th=el('th',{tabIndex:0,onclick:()=>{sortDir=sortBy===f?-sortDir:1;sortBy=f;renderHead();renderMarkets()},
+      onkeydown:e=>{if(e.key==='Enter')th.click()}},label);
+    if(sortBy===f)th.setAttribute('aria-sort',sortDir===1?'ascending':'descending');
+    return th;
+  }),el('th',{},'Details'),el('th',{},''));
+}
+
+async function loadMarkets(){
+  const r=await api('GET','/api/admin/markets');
+  if(!r.ok){$('count').textContent='Failed to load: '+r.error;return}
+  markets=r.data;renderMarkets();
+  $('pending-count').textContent=markets.reduce((n,m)=>n+m.pending,0)||'';
+}
+
+/* ---------- Add ---------- */
+$('add-btn').onclick=()=>{
+  if($('addbody').children.length)return;
+  const f={};
+  const inp=(k,label,type)=>{f[k]=el('input',{type,'aria-label':label,placeholder:label,required:true});if(type==='number')f[k].step='any';return el('td',{},f[k])};
+  const msg=el('span',{className:'status err'});
+  const save=el('button',{type:'button',className:'btn primary',onclick:async()=>{
+    const r=await api('POST','/api/admin/markets',{name:f.name.value,lat:f.lat.value,lng:f.lng.value});
+    if(!r.ok){msg.textContent=r.error;if(f[r.field])f[r.field].classList.add('bad');return}
+    $('addbody').replaceChildren();expanded.add(r.data.id);$('q').value='';await loadMarkets();
+  }},'Save');
+  const cancel=el('button',{type:'button',className:'btn',onclick:()=>$('addbody').replaceChildren()},'Cancel');
+  $('addbody').append(el('tr',{},inp('name','New market name','text'),el('td',{colSpan:5},'Name, latitude and longitude are required; the rest can be filled in after saving.'),
+    inp('lat','Latitude','number'),inp('lng','Longitude','number'),el('td',{colSpan:3},save,' ',cancel),el('td',{},msg)));
+  f.name.focus();
+};
+
+/* ---------- Delete ---------- */
+let delTarget=null;
+function askDelete(m){
+  delTarget=m;
+  $('deltext').textContent=`This removes "${m.name}", ${Object.keys(m.info).length} community info value(s) and ${m.suggestions} suggestion(s). This cannot be undone.`;
+  $('delinput').value='';$('delok').disabled=true;$('del').returnValue='';$('del').showModal();$('delinput').focus();
+}
+$('delinput').oninput=()=>{$('delok').disabled=$('delinput').value!==(delTarget&&delTarget.name)};
+$('del').addEventListener('close',async()=>{
+  if($('del').returnValue!=='ok'||!delTarget||$('delinput').value!==delTarget.name)return;
+  const m=delTarget;const r=await api('DELETE','/api/admin/markets/'+m.id);
+  if(!r.ok){$('count').textContent='Delete failed: '+r.error;return}
+  markets=markets.filter(x=>x.id!==m.id);expanded.delete(m.id);renderMarkets();
+});
+
+/* ---------- Tabs ---------- */
+function tab(name){
+  const m=name==='markets';
+  $('markets-pane').hidden=!m;$('suggestions-pane').hidden=m;
+  $('tab-markets').classList.toggle('on',m);$('tab-suggestions').classList.toggle('on',!m);
+  $('tab-markets').setAttribute('aria-selected',m);$('tab-suggestions').setAttribute('aria-selected',!m);
+  if(!m)loadSuggestions();
+}
+$('tab-markets').onclick=()=>tab('markets');
+$('tab-suggestions').onclick=()=>tab('suggestions');
+$('q').oninput=renderMarkets;
+
+/* ---------- Suggestions (unchanged behaviour) ---------- */
 let status='pending';
-const list=document.getElementById('list');
-const el=(t,props={},...kids)=>{const e=document.createElement(t);Object.assign(e,props);kids.forEach(k=>e.append(k));return e};
-async function load(){
+const list=$('list');
+async function loadSuggestions(){
   const r=await fetch('/api/admin/suggestions?status='+status);
   list.replaceChildren();
   if(!r.ok){list.append('Failed to load ('+r.status+')');return}
@@ -35,7 +280,7 @@ async function load(){
       el('small',{},s.created_at+(s.distance_m!=null?' · '+s.distance_m+' m away':'')));
     if(status==='pending'){
       card.append(el('div',{className:'row'},
-        el('button',{className:'ok',onclick:()=>act(s.id,'approve',ta.value)},'Approve'+''),
+        el('button',{className:'ok',onclick:()=>act(s.id,'approve',ta.value)},'Approve'),
         el('button',{className:'no',onclick:()=>act(s.id,'reject')},'Reject')));
     }
     list.append(card);
@@ -43,8 +288,9 @@ async function load(){
 }
 async function act(id,what,value){
   await fetch(`/api/admin/suggestions/${id}/${what}`,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({value})});
-  load();
+  loadSuggestions();loadMarkets();
 }
-document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{status=b.dataset.s;document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('on',x===b));load()});
-load();
+document.querySelectorAll('#suggestions-pane nav button').forEach(b=>b.onclick=()=>{status=b.dataset.s;document.querySelectorAll('#suggestions-pane nav button').forEach(x=>x.classList.toggle('on',x===b));loadSuggestions()});
+
+renderHead();loadMarkets();
 </script></body></html>
