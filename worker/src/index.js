@@ -1,4 +1,6 @@
 import adminHtml from './admin.html';
+import { isDevAdmin } from './access.js';
+import { validateMarket, validateInfo, marketSlug } from './validate.js';
 
 const FIELDS = ['entrance', 'gluehwein_price', 'fun_fact', 'description'];
 const MAX_VALUE = 500;
@@ -12,10 +14,6 @@ function withCurrency(field, value) {
   return `${value} EUR`;
 }
 
-function marketSlug(name) {
-  return name.replace(/ß/g, 'ss').normalize('NFKD').replace(/[\u0300-\u036f]/g, '')
-    .toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-}
 
 const escXml = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
 
@@ -150,8 +148,121 @@ async function postSuggest(request, env, cors) {
   return json({ ok: true }, 200, cors);
 }
 
+// Market row as the admin UI edits it: JSON columns parsed, community info and suggestion counts attached.
+function adminMarket(r, info = {}, counts = {}) {
+  return {
+    id: r.id, name: r.name, name_de: r.name_de, name_en: r.name_en, loc: r.loc, url: r.url, type: r.type,
+    lat: r.lat, lng: r.lng, start: r.start, end: r.end, tbc: !!r.tbc,
+    dates: parseJson(r.dates) || [], days_of_week: parseJson(r.days_of_week) || [],
+    closed: parseJson(r.closed) || [], special_open: parseJson(r.special_open) || [],
+    info, pending: counts.pending || 0, suggestions: counts.total || 0,
+  };
+}
+
+async function adminMarketById(env, id) {
+  const r = await env.DB.prepare('SELECT * FROM markets WHERE id = ?').bind(id).first();
+  if (!r) return null;
+  const { results: infoRows } = await env.DB.prepare('SELECT field, value FROM market_info WHERE market_id = ?').bind(id).all();
+  const c = await env.DB.prepare("SELECT COUNT(*) AS total, COALESCE(SUM(status='pending'), 0) AS pending FROM suggestions WHERE market_id = ?").bind(id).first();
+  return adminMarket(r, Object.fromEntries(infoRows.map((i) => [i.field, i.value])), c);
+}
+
+// Two names that slugify the same would share one /market/<slug> page, which SQLite's case-sensitive UNIQUE does not catch.
+async function nameConflict(env, name, exceptId) {
+  const slug = marketSlug(name);
+  if (!slug) return json({ error: 'Name needs at least one letter or digit', field: 'name' }, 400);
+  const { results } = await env.DB.prepare('SELECT id, name FROM markets').all();
+  if (results.some((r) => r.id !== exceptId && marketSlug(r.name) === slug)) {
+    return json({ error: 'A market with that name or URL already exists', field: 'name' }, 409);
+  }
+  return null;
+}
+
+async function marketsAdminApi(request, env, path) {
+  const m = path.match(/^\/api\/admin\/markets(?:\/(\d+)(?:\/info\/([a-z_]+))?)?$/);
+  if (!m) return null;
+  const id = m[1] ? Number(m[1]) : null;
+  const bad = (v) => json({ error: v.error, field: v.field }, 400);
+  const body = async () => { try { return await request.json(); } catch { return undefined; } };
+
+  if (!id && request.method === 'GET') {
+    const [{ results }, { results: infoRows }, { results: countRows }] = await Promise.all([
+      env.DB.prepare('SELECT * FROM markets ORDER BY name COLLATE NOCASE').all(),
+      env.DB.prepare('SELECT market_id, field, value FROM market_info').all(),
+      env.DB.prepare("SELECT market_id, COUNT(*) AS total, SUM(status='pending') AS pending FROM suggestions GROUP BY market_id").all(),
+    ]);
+    const info = {}, counts = {};
+    for (const i of infoRows) (info[i.market_id] ||= {})[i.field] = i.value;
+    for (const c of countRows) counts[c.market_id] = c;
+    return json(results.map((r) => adminMarket(r, info[r.id], counts[r.id])));
+  }
+
+  if (!id && request.method === 'POST') {
+    const b = await body();
+    if (b === undefined) return json({ error: 'Invalid JSON' }, 400);
+    const v = validateMarket(b, { partial: false });
+    if (!v.ok) return bad(v);
+    const conflict = await nameConflict(env, v.value.name, null);
+    if (conflict) return conflict;
+    const cols = Object.keys(v.value);
+    const res = await env.DB.prepare(`INSERT INTO markets (${cols.join(', ')}) VALUES (${cols.map(() => '?').join(', ')})`)
+      .bind(...cols.map((c) => v.value[c])).run();
+    return json({ id: res.meta.last_row_id }, 201);
+  }
+
+  if (id && !m[2] && request.method === 'PATCH') {
+    if (!(await env.DB.prepare('SELECT 1 FROM markets WHERE id = ?').bind(id).first())) return json({ error: 'Not found' }, 404);
+    const b = await body();
+    if (b === undefined) return json({ error: 'Invalid JSON' }, 400);
+    const v = validateMarket(b, { partial: true });
+    if (!v.ok) return bad(v);
+    if (v.value.name) {
+      const conflict = await nameConflict(env, v.value.name, id);
+      if (conflict) return conflict;
+    }
+    // Merged start/end must still be ordered when only one of them is being changed.
+    const cur = await env.DB.prepare('SELECT start, end FROM markets WHERE id = ?').bind(id).first();
+    const start = 'start' in v.value ? v.value.start : cur.start, end = 'end' in v.value ? v.value.end : cur.end;
+    if (start && end && start > end) return json({ error: 'End must not be before start', field: 'end' }, 400);
+    const cols = Object.keys(v.value);
+    await env.DB.prepare(`UPDATE markets SET ${cols.map((c) => `${c} = ?`).join(', ')} WHERE id = ?`)
+      .bind(...cols.map((c) => v.value[c]), id).run();
+    return json(await adminMarketById(env, id));
+  }
+
+  if (id && !m[2] && request.method === 'DELETE') {
+    const market = await adminMarketById(env, id);
+    if (!market) return json({ error: 'Not found' }, 404);
+    await env.DB.batch([
+      env.DB.prepare('DELETE FROM market_info WHERE market_id = ?').bind(id),
+      env.DB.prepare('DELETE FROM suggestions WHERE market_id = ?').bind(id),
+      env.DB.prepare('DELETE FROM markets WHERE id = ?').bind(id),
+    ]);
+    return json({ ok: true, removed: { info: Object.keys(market.info).length, suggestions: market.suggestions } });
+  }
+
+  if (id && m[2] && request.method === 'PUT') {
+    if (!(await env.DB.prepare('SELECT 1 FROM markets WHERE id = ?').bind(id).first())) return json({ error: 'Not found' }, 404);
+    const b = await body();
+    if (b === undefined) return json({ error: 'Invalid JSON' }, 400);
+    const v = validateInfo(m[2], b.value);
+    if (!v.ok) return json({ error: v.error, field: m[2] }, 400);
+    if (v.value === null) {
+      await env.DB.prepare('DELETE FROM market_info WHERE market_id = ? AND field = ?').bind(id, m[2]).run();
+      return json({ ok: true, value: null });
+    }
+    const value = withCurrency(m[2], v.value);
+    await env.DB.prepare("INSERT INTO market_info (market_id, field, value) VALUES (?1, ?2, ?3) ON CONFLICT(market_id, field) DO UPDATE SET value=?3, suggestion_id=NULL, approved_at=datetime('now')")
+      .bind(id, m[2], value).run();
+    return json({ ok: true, value });
+  }
+  return json({ error: 'Method not allowed' }, 405);
+}
+
 async function adminApi(request, env, url) {
   const path = url.pathname;
+  const marketsResponse = await marketsAdminApi(request, env, path);
+  if (marketsResponse) return marketsResponse;
   if (request.method === 'GET' && path === '/api/admin/suggestions') {
     const status = ['pending', 'approved', 'rejected'].includes(url.searchParams.get('status')) ? url.searchParams.get('status') : 'pending';
     const { results } = await env.DB.prepare(
@@ -201,7 +312,7 @@ export default {
     }
 
     if (url.pathname.startsWith('/api/admin/') || url.pathname.startsWith('/admin')) {
-      if (!(await verifyAccess(request, env))) return json({ error: 'Forbidden' }, 403);
+      if (!isDevAdmin(request, env) && !(await verifyAccess(request, env))) return json({ error: 'Forbidden' }, 403);
       if (url.pathname.startsWith('/api/admin/')) return adminApi(request, env, url);
       return new Response(adminHtml, { headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'no-store' } });
     }
