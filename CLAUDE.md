@@ -14,6 +14,7 @@ Live at https://xmas.dariuszsiedlecki.com. A single-page Leaflet map (`index.htm
   - `markets_api.py`: fetches the live API.
   - `generate_seo_content.py`: rewrites the SEO block in `index.html` from the API.
   - `check_berlin_dates.py`: compares our dates with berlin.de. It only reports. Run it before each season.
+  - `upload_photo.py`: uploads a market's banner photo to R2 and records it in D1 (see Market photos).
 - `docs/superpowers/specs/`: design docs.
 
 ## Deploying
@@ -26,6 +27,14 @@ Pushing to `main` deploys. `.github/workflows/deploy.yml` runs `npx wrangler@4 d
 - This project has `worker/wrangler.jsonc`, so use Wrangler here, not the `cf` CLI.
 - Market data changes (dates, coordinates, new markets) go into the D1 database, not into files. The API picks them up within about a minute and the nightly job refreshes the SEO block. There is no `markets.json` any more.
 - Before changing the schema, write the SQL in `worker/schema.sql` and apply it with `npx wrangler@4 d1 execute berlin-xmas-markets --remote --file=...`. Ask the user before running anything destructive against the remote database.
+
+## Market photos
+
+Each market's detail sheet has a banner: its photo, or a placeholder if it has none. Photos live in the R2 bucket `berlin-xmas-photos` (binding `PHOTOS`) and are served by the Worker at `/img/<key>`; only keys shaped `<slug>-<hash8>.jpg|webp` are read. The `markets` table has `image` (the key), `image_credit` and `image_source` columns, passed through `/api/markets`.
+
+- Upload: `python3 scripts/upload_photo.py "Market name" photo.jpg --credit "Photo: Name" --source https://official.site/page`. Remove: `... "Market name" --remove`. `--dry-run` prints what would happen; `--local` targets the local dev R2/D1 instead of production.
+- Prepare photos at about 800 px wide, JPEG or WebP, under 500 KB (the script refuses over 2 MB). Credit and source are required, and a person must check each photo's licence first; the official sites' photos are usually copyrighted.
+- Keys include a content hash, so replacing a photo gives a new URL and the day-long cache never serves the old one. `--remove` leaves the old R2 object in place.
 
 ## Local development
 
