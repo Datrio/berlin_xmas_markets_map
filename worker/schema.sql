@@ -4,7 +4,8 @@ CREATE TABLE IF NOT EXISTS markets (
   name_de TEXT, name_en TEXT, loc TEXT, url TEXT, type TEXT,
   lat REAL, lng REAL, start TEXT, end TEXT,
   dates TEXT, days_of_week TEXT, closed TEXT, special_open TEXT,
-  tbc INTEGER NOT NULL DEFAULT 0
+  tbc INTEGER NOT NULL DEFAULT 0,
+  image TEXT, image_credit TEXT, image_source TEXT
 );
 CREATE TABLE IF NOT EXISTS market_info (
   market_id INTEGER NOT NULL REFERENCES markets(id),
@@ -26,3 +27,8 @@ CREATE TABLE IF NOT EXISTS suggestions (
   distance_m INTEGER
 );
 CREATE INDEX IF NOT EXISTS idx_suggestions_status ON suggestions(status, created_at);
+
+-- Photo columns were added to existing databases with (SQLite has no ADD COLUMN IF NOT EXISTS):
+--   ALTER TABLE markets ADD COLUMN image TEXT;
+--   ALTER TABLE markets ADD COLUMN image_credit TEXT;
+--   ALTER TABLE markets ADD COLUMN image_source TEXT;

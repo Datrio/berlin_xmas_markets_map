@@ -1,6 +1,7 @@
 import adminHtml from './admin.html';
 import { isDevAdmin } from './access.js';
 import { validateMarket, validateInfo, marketSlug } from './validate.js';
+import { isPhotoKey, photoContentType } from './photos.js';
 
 const FIELDS = ['entrance', 'gluehwein_price', 'fun_fact', 'description'];
 const MAX_VALUE = 500;
@@ -94,7 +95,7 @@ async function verifyAccess(request, env) {
 const parseJson = (s) => (s ? JSON.parse(s) : undefined);
 
 function marketRowToJson(r) {
-  const m = { name: r.name, loc: r.loc, url: r.url, name_de: r.name_de, name_en: r.name_en, type: r.type, lat: r.lat, lng: r.lng, start: r.start, end: r.end };
+  const m = { name: r.name, loc: r.loc, url: r.url, name_de: r.name_de, name_en: r.name_en, type: r.type, lat: r.lat, lng: r.lng, start: r.start, end: r.end, image: r.image, image_credit: r.image_credit, image_source: r.image_source };
   const dates = parseJson(r.dates), dow = parseJson(r.days_of_week), closed = parseJson(r.closed), special = parseJson(r.special_open);
   if (dates) m.dates = dates;
   if (dow) m.daysOfWeek = dow;
@@ -325,6 +326,17 @@ export default {
       if (!isDevAdmin(request, env) && !(await verifyAccess(request, env))) return json({ error: 'Forbidden' }, 403);
       if (url.pathname.startsWith('/api/admin/')) return adminApi(request, env, url);
       return new Response(adminHtml, { headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'no-store' } });
+    }
+
+    const img = url.pathname.match(/^\/img\/([^/]+)$/);
+    if (img && (request.method === 'GET' || request.method === 'HEAD')) {
+      let key = '';
+      try { key = decodeURIComponent(img[1]); } catch { /* malformed escape: treated as not found */ }
+      const obj = isPhotoKey(key) ? await env.PHOTOS.get(key) : null;
+      if (!obj) return new Response('Not found', { status: 404 });
+      return new Response(request.method === 'HEAD' ? null : obj.body, {
+        headers: { 'content-type': photoContentType(key), 'cache-control': 'public, max-age=86400', etag: obj.httpEtag },
+      });
     }
 
     if (url.pathname === '/sitemap.xml') return sitemap(env);
