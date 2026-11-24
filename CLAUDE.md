@@ -32,8 +32,8 @@ Pushing to `main` deploys. `.github/workflows/deploy.yml` runs `npx wrangler@4 d
 
 Each market's detail sheet has a banner: its photo, or a placeholder if it has none. Photos live in the R2 bucket `berlin-xmas-photos` (binding `PHOTOS`) and are served by the Worker at `/img/<key>`; only keys shaped `<slug>-<hash8>.jpg|webp` are read. The `markets` table has `image` (the key), `image_credit` and `image_source` columns, passed through `/api/markets`.
 
-- Upload: `python3 scripts/upload_photo.py "Market name" photo.jpg --credit "Photo: Name" --source https://official.site/page`. Remove: `... "Market name" --remove`. `--dry-run` prints what would happen; `--local` targets the local dev R2/D1 instead of production.
-- Prepare photos at about 800 px wide, JPEG or WebP, under 500 KB (the script refuses over 2 MB). Credit and source are required, and a person must check each photo's licence first; the official sites' photos are usually copyrighted.
+- Upload: `python3 scripts/upload_photo.py "Market name" photo.jpg` for the owner's own photos (no credit or source). For anyone else's photo add `--credit "Photo: Name" --source https://official.site/page`. Remove: `... "Market name" --remove`. `--dry-run` prints what would happen; `--local` targets the local dev R2/D1 instead of production.
+- Prepare photos at about 800 px wide, JPEG or WebP, under 500 KB (the script refuses over 2 MB). Credit and source are optional only for the owner's own photos; for anyone else's, always give both, and a person must check the licence first (the official sites' photos are usually copyrighted).
 - Keys include a content hash, so replacing a photo gives a new URL and the day-long cache never serves the old one. `--remove` leaves the old R2 object in place.
 
 ## Local development

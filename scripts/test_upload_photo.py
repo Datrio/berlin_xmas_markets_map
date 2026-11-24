@@ -1,7 +1,7 @@
 import hashlib
 import unittest
 
-from upload_photo import detect_type, photo_key, sql_quote
+from upload_photo import detect_type, photo_key, sql_quote, sql_value
 
 
 class PhotoKey(unittest.TestCase):
@@ -33,6 +33,15 @@ class DetectType(unittest.TestCase):
 class SqlQuote(unittest.TestCase):
     def test_doubles_single_quotes(self):
         self.assertEqual(sql_quote("O'Brien <b>"), "'O''Brien <b>'")
+
+
+class SqlValue(unittest.TestCase):
+    def test_none_and_empty_become_null(self):
+        self.assertEqual(sql_value(None), "NULL")
+        self.assertEqual(sql_value(""), "NULL")
+
+    def test_text_is_quoted(self):
+        self.assertEqual(sql_value("a'b"), "'a''b'")
 
 
 if __name__ == "__main__":

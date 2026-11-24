@@ -7,7 +7,7 @@ The market detail sheet has no picture. Add a banner photo at the top. Photos wi
 - A banner at the top of the sheet: the photo if the market has one, otherwise a placeholder.
 - Photos stored in R2 and served by the Worker, so they stay out of git and out of the site deploy.
 - A script (`scripts/upload_photo.py`) that resizes nothing itself but validates, uploads to R2 and records the photo in D1.
-- Every photo carries a credit and a source URL, shown on the banner.
+- Photos from other people carry a credit and a source URL, shown on the banner. The owner's own photos need neither.
 
 ## Non-goals
 - No upload UI in the admin page (possible later).

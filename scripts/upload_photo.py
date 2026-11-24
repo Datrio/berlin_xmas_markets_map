@@ -1,9 +1,10 @@
 """Uploads a market's banner photo to R2 and records it in D1 (via Wrangler, so no Cloudflare Access needed).
 
+  python3 scripts/upload_photo.py "Market name" photo.jpg                      # your own photo: no credit needed
   python3 scripts/upload_photo.py "Market name" photo.jpg --credit "Photo: Name" --source https://official.site/page
   python3 scripts/upload_photo.py "Market name" --remove
 
-Photos should be about 800 px wide JPEG or WebP under 500 KB (2 MB is the hard limit). Check each photo's licence first.
+Photos should be about 800 px wide JPEG or WebP under 500 KB (2 MB is the hard limit). Someone else's photo needs a credit and its source page, and its licence checked first.
 """
 import argparse
 import difflib
@@ -47,6 +48,11 @@ def sql_quote(value):
     return "'" + value.replace("'", "''") + "'"
 
 
+def sql_value(value):
+    """Quoted text, or NULL for a missing or empty value."""
+    return sql_quote(value) if value else "NULL"
+
+
 def wrangler(*args):
     subprocess.run(["npx", "wrangler@4", *args], cwd=WORKER_DIR, check=True)
 
@@ -64,8 +70,8 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("market", help="exact market name, as in the API")
     ap.add_argument("file", nargs="?", help="JPEG or WebP file to upload")
-    ap.add_argument("--credit", help="credit line shown on the banner, e.g. 'Photo: Name'")
-    ap.add_argument("--source", help="http(s) URL of the page the photo came from")
+    ap.add_argument("--credit", help="credit line shown on the banner, e.g. 'Photo: Name' (omit for your own photos)")
+    ap.add_argument("--source", help="http(s) URL of the page the photo came from (omit for your own photos)")
     ap.add_argument("--remove", action="store_true", help="clear the market's photo (the R2 object is left in place)")
     ap.add_argument("--local", action="store_true", help="use the local dev R2/D1 instead of production (for testing)")
     ap.add_argument("--dry-run", action="store_true", help="validate and print what would happen, change nothing")
@@ -87,9 +93,9 @@ def main():
             run_sql(sql, target)
         return
 
-    if not args.file or not args.credit or not args.source:
-        sys.exit("A file, --credit and --source are required.")
-    if not re.match(r"^https?://", args.source):
+    if not args.file:
+        sys.exit("A photo file is required.")
+    if args.source and not re.match(r"^https?://", args.source):
         sys.exit("--source must start with http:// or https://")
     with open(args.file, "rb") as f:
         data = f.read()
@@ -100,8 +106,8 @@ def main():
         sys.exit(f"{args.file} is not a JPEG or WebP file.")
 
     key = photo_key(args.market, data, ext)
-    sql = (f"UPDATE markets SET image = {sql_quote(key)}, image_credit = {sql_quote(args.credit)}, "
-           f"image_source = {sql_quote(args.source)} {where}\n")
+    sql = (f"UPDATE markets SET image = {sql_quote(key)}, image_credit = {sql_value(args.credit)}, "
+           f"image_source = {sql_value(args.source)} {where}\n")
     url = f"{API}/img/{key}"
     if args.dry_run:
         print(f"Would upload {args.file} to r2://{BUCKET}/{key}\n{sql}{url}")
